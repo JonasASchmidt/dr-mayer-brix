@@ -10,7 +10,7 @@ Then open http://localhost:4173/.
 
 ## Tests
 
-    node --test tests/
+    npm test
 
 ## Editing the announcement banner
 
