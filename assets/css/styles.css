@@ -5,6 +5,42 @@ html { -webkit-text-size-adjust: 100%; }
 img, picture, video { display: block; max-width: 100%; }
 input, button, textarea, select { font: inherit; }
 
+/* Headline font chosen in Task 11 to match the logo wordmark's geometric sans
+   letterforms (see reference/original-site-assets/logo_large.png): Jost, whose
+   thin/light stroke weight, straight diagonal "R" leg, sharply pointed "A"
+   apex, and vertical-sided "M" most closely track the logo's Futura-style
+   geometric caps, compared against Questrial (heavier — only ships one static
+   weight — and a fuller/rounder "R" bowl) and Poppins (more optically
+   rounded joints, less crisply geometric). */
+@font-face {
+  font-family: 'Jost';
+  src: url('../fonts/jost-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Jost';
+  src: url('../fonts/jost-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../fonts/roboto-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../fonts/roboto-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-brand: #009bc7;
   --color-brand-dark: #00799c;
@@ -23,7 +59,7 @@ input, button, textarea, select { font: inherit; }
   --space-8: 4rem;
   --container-width: 71rem;
   --gutter-mobile: 1.25rem;
-  --font-heading: -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: 'Jost', -apple-system, 'Segoe UI', sans-serif;
   --font-body: 'Roboto', -apple-system, 'Segoe UI', sans-serif;
 }
 
@@ -39,6 +75,8 @@ h1, h2, h3, h4 {
   line-height: 1.15;
   color: var(--color-ink);
 }
+h1, h2 { font-weight: 500; }
+h3, h4 { font-weight: 400; }
 
 a { color: var(--color-brand-dark); }
 a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); outline-offset: 2px; }
