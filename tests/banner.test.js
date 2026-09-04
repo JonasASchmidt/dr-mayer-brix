@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { renderBannerHTML, escapeHtml } from '../assets/js/banner.js';
+import { isBannerDismissed, dismissBanner } from '../assets/js/banner.js';
 
 test('escapeHtml escapes angle brackets and ampersands', () => {
   assert.equal(escapeHtml('<b> & "x"'), '&lt;b&gt; &amp; &quot;x&quot;');
@@ -29,4 +30,18 @@ test('renderBannerHTML includes the optional link when present', () => {
     linkUrl: 'https://webtermin.medatixx.de/#/bec45e38-6a42-46f2-a0da-36f22b64ebee/search',
   });
   assert.match(html, /<a class="banner__link" href="https:\/\/webtermin\.medatixx\.de\/#\/bec45e38-6a42-46f2-a0da-36f22b64ebee\/search">Termin buchen<\/a>/);
+});
+
+test('dismissBanner sets sessionStorage and isBannerDismissed reads it back', () => {
+  // node:test runs in Node, not a browser — sessionStorage isn't global.
+  // Stub a minimal sessionStorage before calling either function.
+  const store = {};
+  global.sessionStorage = {
+    getItem: (k) => (k in store ? store[k] : null),
+    setItem: (k, v) => { store[k] = v; },
+  };
+  assert.equal(isBannerDismissed(), false);
+  dismissBanner();
+  assert.equal(isBannerDismissed(), true);
+  delete global.sessionStorage;
 });

@@ -17,10 +17,22 @@ export function renderBannerHTML(data) {
   const link = data.linkUrl && data.linkLabel
     ? `<a class="banner__link" href="${escapeHtml(data.linkUrl)}">${escapeHtml(data.linkLabel)}</a>`
     : '';
-  return `<div class="banner__inner container">${paragraphs}${link}</div>`;
+  return `<div class="banner__inner container"><div class="banner__text">${paragraphs}${link}</div><button type="button" class="banner__dismiss" aria-label="Hinweis schließen">×</button></div>`;
+}
+
+export function isBannerDismissed() {
+  return sessionStorage.getItem('bannerDismissed') === '1';
+}
+
+export function dismissBanner() {
+  sessionStorage.setItem('bannerDismissed', '1');
 }
 
 export async function loadBanner(slotEl) {
+  if (isBannerDismissed()) {
+    slotEl.hidden = true;
+    return;
+  }
   try {
     const res = await fetch('content/banner.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`banner.json ${res.status}`);

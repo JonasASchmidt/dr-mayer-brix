@@ -1,6 +1,6 @@
 import { initNav } from './nav.js';
 import { initVideoFacades } from './video-facade.js';
-import { loadBanner } from './banner.js';
+import { loadBanner, dismissBanner } from './banner.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('nav-toggle');
@@ -10,7 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideoFacades(document);
 
   const bannerSlot = document.getElementById('site-banner');
-  if (bannerSlot) loadBanner(bannerSlot);
+  if (bannerSlot) {
+    loadBanner(bannerSlot).then(() => {
+      const dismissBtn = bannerSlot.querySelector('.banner__dismiss');
+      if (dismissBtn) {
+        dismissBtn.addEventListener('click', () => {
+          dismissBanner();
+          bannerSlot.hidden = true;
+        });
+      }
+    });
+  }
 
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
