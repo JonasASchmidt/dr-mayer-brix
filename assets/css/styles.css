@@ -215,3 +215,18 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 @media (min-width: 48rem) {
   .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
 }
+
+.kontakt-layout { display: grid; gap: var(--space-7); margin-top: var(--space-4); }
+.kontakt-form { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
+.kontakt-form label { font-size: 0.85rem; font-weight: 600; }
+.kontakt-form input, .kontakt-form textarea {
+  padding: var(--space-3); border: 1px solid var(--color-border); border-radius: 0.5rem; width: 100%;
+}
+.kontakt-form textarea { min-height: 8rem; resize: vertical; }
+.kontakt-info h3 { margin-top: var(--space-5); font-size: 1rem; }
+.kontakt-info h3:first-child { margin-top: 0; }
+.kontakt-info .embed-frame { aspect-ratio: 4 / 3; }
+
+@media (min-width: 64rem) {
+  .kontakt-layout { grid-template-columns: 1fr 1fr; }
+}

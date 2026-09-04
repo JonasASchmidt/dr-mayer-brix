@@ -202,6 +202,51 @@
         },
       }).render('#paypal-button-container');
     </script>
+
+    <section id="kontakt" class="section section--alt">
+      <div class="container kontakt-layout">
+        <div>
+          <h2>Kontakt</h2>
+          <p class="section__lede">Per E-Mail</p>
+          <form name="kontakt" method="POST" data-netlify="true" netlify-honeypot="firma" class="kontakt-form">
+            <input type="hidden" name="form-name" value="kontakt">
+            <p hidden><label>Firma (nicht ausfüllen): <input name="firma"></label></p>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Ihr Name ...">
+            <label for="email">E-Mail Adresse</label>
+            <input id="email" name="email" type="email" required placeholder="Ihre E-Mail Adresse ...">
+            <label for="betreff">Betreff</label>
+            <input id="betreff" name="betreff" type="text" required placeholder="Worum geht es?">
+            <label for="nachricht">Ihre Nachricht (bitte Tel.-Nr. und Krankenkasse angeben!)</label>
+            <textarea id="nachricht" name="nachricht" required placeholder="Was können wir für Sie tun?"></textarea>
+            <button type="submit" class="button button--primary">Senden</button>
+          </form>
+        </div>
+        <div class="kontakt-info">
+          <h3>Adresse</h3>
+          <p>Allee am Röthelheimpark 6<br>91052 Erlangen</p>
+          <p>Tel.: <a href="tel:+499131208899">+49 (0) 91 31 / 20 88 99</a><br>Fax: +49 (0) 91 31 / 20 52 45</p>
+          <h3>Telefonzeiten</h3>
+          <!-- The live site shows two slightly different Sprechzeiten blocks (hero vs. this
+               Kontakt block) — Mi phone hours 9–11.15 here vs 10–11.15 in the hero, and
+               Mo/Di/Do opening 8.15 here vs 8.30 in the hero. Using this block's numbers as
+               canonical since it's the more complete one; FLAGGED for the family to confirm
+               which is correct. -->
+          <p>Mo, Di, Do 8.15 – 11.15 und 14.15 – 16.30<br>Mi 9 – 11.15<br>Fr 8.15 – 11.15</p>
+          <h3>Öffnungszeiten</h3>
+          <p>Mo, Di, Do 8.15 – 12.30 und 14 – 17.30<br>Mi 10 – 15.30<br>Fr 8.15 – 13.30</p>
+          <h3>So finden Sie uns</h3>
+          <div class="embed-frame">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!4v1668604104241!6m8!1m7!1sCAoSLEFGMVFpcE9ab0FHbjFpeklpdFNIMnJiUkd5WUNobUlRekROSW90elRsY1pp!2m2!1d49.591735308831!2d11.025465644748!3f120!4f0!5f0.7820865974627469"
+              title="Standort der HNO-Praxis Dr. Mayer-Brix"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="site-footer container">
     <p>&copy; <span id="year"></span> HNO-Praxis Dr. Mayer-Brix · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
