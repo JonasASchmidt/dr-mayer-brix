@@ -109,6 +109,61 @@
         <p class="embed-frame__note">Buttons am rechten Rand: Rundgang 1 – Flur / Rundgang 2 – Arztzimmer und Hörtestraum</p>
       </div>
     </section>
+
+    <section id="buch" class="section section--alt">
+      <div class="container buch-layout">
+        <img src="assets/img/book-cover.webp" alt='Buchcover "Klassische Homöopathie in der HNO-Heilkunde"' width="284" height="400" loading="lazy">
+        <div>
+          <h2>Neu – Unser Buch</h2>
+          <p class="section__lede">Klassische Homöopathie in der HNO-Heilkunde</p>
+          <p>Die Verbindung von Schulmedizin mit alternativen Heilverfahren ist eine optimale Kombination. In diesem Buch habe ich für jedes HNO-Krankheitsbild den aktuellen schulmedizinischen Wissensstand und die naturheilkundliche Behandlung mit vielen Abbildungen verständlich erläutert und durch Fallbeispiele illustriert.</p>
+          <p>Von Polypen (Adenoiden) bei Kindern, über Paukenergüsse und Allergien bis zu chronischen Nebenhöhlen- und Halsentzündungen finden Sie alle häufigen Erkrankungen ausführlich beschrieben.</p>
+          <p>Interessant für Ärzte, Heilpraktiker und alle von der Homöopathie begeisterten Laien. Eine Leseprobe ist auf der Website des <a href="https://www.narayana-verlag.de/Klassische-Homoeopathie-in-der-HNO-Heilkunde-Joachim-Mayer-Brix/b24327">Narayana-Verlags</a> zu finden.</p>
+          <p class="price">69,90 €</p>
+          <div id="paypal-button-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!--
+      KNOWN ISSUE — flagged for the user, not silently fixed:
+      This SDK script uses client-id=sb, PayPal's public SANDBOX id. It is copied
+      verbatim from what is live on dr-mayer-brix.de today, so this button cannot
+      take real payments as configured, on the old site OR here, until it's swapped
+      for a real PayPal REST app client-id. Get one from
+      https://developer.paypal.com/dashboard/applications and replace "sb" below
+      before launch.
+    -->
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=EUR"></script>
+    <script>
+      paypal.Buttons({
+        style: { shape: 'pill', color: 'gold', layout: 'horizontal', label: 'buynow' },
+        createOrder: function (data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              description: 'Buch: "Klassische Homöopathie in der HNO-Heilkunde" von Dr. med. Joachim Mayer-Brix (390 Seiten, geb., ISBN: 978-3-95582-206-4)',
+              amount: {
+                currency_code: 'EUR',
+                value: 69.90,
+                breakdown: {
+                  item_total: { currency_code: 'EUR', value: 65.33 },
+                  shipping: { currency_code: 'EUR', value: 0 },
+                  tax_total: { currency_code: 'EUR', value: 4.57 },
+                },
+              },
+            }],
+          });
+        },
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function () {
+            document.getElementById('paypal-button-container').innerHTML = '<h3>Vielen Dank für Ihre Bestellung!</h3>';
+          });
+        },
+        onError: function (err) {
+          console.log(err);
+        },
+      }).render('#paypal-button-container');
+    </script>
   </main>
   <footer class="site-footer container">
     <p>&copy; <span id="year"></span> HNO-Praxis Dr. Mayer-Brix · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
