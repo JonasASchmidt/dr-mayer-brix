@@ -11,4 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const bannerSlot = document.getElementById('site-banner');
   if (bannerSlot) loadBanner(bannerSlot);
+
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 });

@@ -19,7 +19,7 @@
   <header class="site-header">
     <div class="container site-header__bar">
       <a class="site-header__logo" href="index.html#willkommen">
-        <img src="assets/img/logo.webp" alt="HNO-Praxis Dr. Mayer-Brix" width="180" height="60">
+        <img src="assets/img/logo.svg" alt="HNO-Praxis Dr. Mayer-Brix" width="180" height="82">
       </a>
       <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menü öffnen">
         <span></span>
@@ -124,16 +124,24 @@
         <p>Zur Nutzung der Funktionen von Google Maps ist es notwendig, Ihre IP-Adresse zu speichern. Diese Informationen werden in der Regel an einen Server von Google in den USA übertragen und dort gespeichert. Der Anbieter dieser Seite hat keinen Einfluss auf diese Datenübertragung.</p>
         <p>Mehr Informationen zum Umgang mit Nutzerdaten finden Sie in der Datenschutzerklärung von Google: <a href="https://www.google.de/intl/de/policies/privacy/">google.de/intl/de/policies/privacy</a>.</p>
 
-        <h3>Google Analytics</h3>
-        <p>Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. ("Google"). Google Analytics verwendet sog. "Cookies", Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website durch Sie ermöglichen. Die durch den Cookie erzeugten Informationen über Ihre Benutzung dieser Website werden an einen Server von Google in den USA übertragen und dort gespeichert.</p>
-        <p>Sie können die Installation der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website voll umfänglich nutzen können.</p>
+        <!-- ACCURACY NOTE: a Google Analytics section previously stood here, describing
+             tracking that this rebuilt site does not actually implement — no gtag.js,
+             no google-analytics.com script, no measurement ID anywhere in the codebase.
+             Declaring data processing that doesn't occur is as much a legal-accuracy
+             problem as omitting real processing, so it has been removed rather than
+             ported forward. If the family wants analytics, add it with a real
+             measurement ID and reinstate an accurate section describing it then. -->
 
         <h3>PayPal</h3>
         <p>Auf dieser Website bieten wir die Bezahlung via PayPal an. Anbieter dieses Zahlungsdienstes ist die PayPal (Europe) S.à.r.l. et Cie, S.C.A., 22-24 Boulevard Royal, L-2449 Luxembourg. Wenn Sie die Bezahlung via PayPal auswählen, werden die von Ihnen eingegebenen Zahlungsdaten an PayPal übermittelt. Näheres entnehmen Sie der Datenschutzerklärung von PayPal: <a href="https://www.paypal.com/de/webapps/mpp/ua/privacy-full">paypal.com/de/webapps/mpp/ua/privacy-full</a>.</p>
 
-        <h3>jameda Siegel und Widget</h3>
-        <p>Auf unserer Internetseite sind Siegel oder Widgets der jameda GmbH, St. Cajetan-Straße 41, 81669 München eingebunden. Ein Widget ist ein kleines Fenster, das veränderliche Informationen anzeigt. Auch unser Siegel funktioniert in ähnlicher Weise, d.h. es sieht nicht immer gleich aus, sondern die Anzeige ändert sich. Dabei wird der entsprechende Inhalt zwar auf unserer Internetseite dargestellt, er wird aber in diesem Moment von den jameda-Servern abgerufen.</p>
-        <p>Wir verfolgen mit der Einbindung den Zweck und das berechtigte Interesse, aktuelle und korrekte Inhalte auf unserer Homepage darzustellen. Rechtsgrundlage ist Art. 6 Abs. 1 f) DSGVO. Weitere Informationen zur Datenverarbeitung durch jameda können Sie der Datenschutzerklärung der Seite www.jameda.de entnehmen.</p>
+        <!-- ACCURACY NOTE: a "jameda Siegel und Widget" section previously stood here,
+             describing a jameda embed that this rebuilt site does not actually include —
+             no jameda script, widget, or seal anywhere in the codebase. Declaring data
+             processing that doesn't occur is as much a legal-accuracy problem as omitting
+             real processing, so it has been removed rather than ported forward. If the
+             family wants the jameda widget back, add it and reinstate an accurate section
+             describing it then. -->
       </div>
     </section>
   </main>

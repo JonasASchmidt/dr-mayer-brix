@@ -274,3 +274,17 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand-dark); }
 .legal p { max-width: 42rem; }
 .legal p + p { margin-top: var(--space-3); }
+
+/* Clear the sticky header when jumping to an in-page anchor or landing on a
+   URL with a hash. Live header height is ~69px on mobile and ~86px at the
+   64rem+ desktop breakpoint (nav sits inline in the header bar there), so
+   6rem (96px) clears both with room to spare. */
+section[id] { scroll-margin-top: 6rem; }
+
+.site-footer {
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+  text-align: center;
+}
