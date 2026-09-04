@@ -209,3 +209,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .buch-layout { grid-template-columns: 12rem 1fr; }
   .buch-layout img { margin-inline: 0; }
 }
+
+.card-grid--2 { grid-template-columns: 1fr; }
+.paypal-hosted-form { margin-top: var(--space-4); }
+@media (min-width: 48rem) {
+  .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
+}
