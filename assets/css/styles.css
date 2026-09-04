@@ -168,18 +168,34 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   background: none; border: none; cursor: pointer; padding: 0;
 }
 .hero__video-frame { width: 100%; aspect-ratio: 16 / 9; border: 0; }
-.hero__content { padding-block: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); }
-.hero__note { font-size: 0.85rem; color: var(--color-ink-soft); }
+.hero {
+  position: relative;
+}
+.hero__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-block: var(--space-7);
+}
+.hero__welcome p, .hero__contact p { margin-top: var(--space-3); }
+.hero__signature { font-weight: 600; }
+.hero__contact h3 { margin-bottom: var(--space-3); }
+.hero__contact h4 { margin-top: var(--space-4); margin-bottom: var(--space-2); }
+.hero__address { display: block; font-weight: 600; text-decoration: underline; }
+
+@media (min-width: 64rem) {
+  .hero__content { flex-direction: row; gap: var(--space-8); padding-block: var(--space-8); }
+  .hero__welcome { flex: 1 1 0; max-width: 24rem; }
+  .hero__contact { flex: 0 0 16rem; }
+}
+
 .button {
   display: inline-block; width: fit-content; padding: var(--space-3) var(--space-6);
   border-radius: 999px; text-decoration: none; font-weight: 700;
 }
 .button--primary { background: var(--color-brand); color: var(--color-ink); }
 .button--primary:hover { background: var(--color-brand-dark); color: var(--color-paper); }
-
-@media (min-width: 48rem) {
-  .hero__content { padding-block: var(--space-8); max-width: 40rem; }
-}
 
 .banner {
   position: absolute;
