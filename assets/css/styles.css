@@ -155,3 +155,23 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 @media (min-width: 48rem) {
   .hero__content { padding-block: var(--space-8); max-width: 40rem; }
 }
+
+.banner {
+  background: var(--color-brand);
+  color: #fff;
+}
+.banner__inner {
+  padding-block: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.banner__link {
+  display: inline-block;
+  width: fit-content;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+}
