@@ -192,3 +192,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 @media (min-width: 48rem) {
   .card-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+.team-photo { margin-top: var(--space-6); }
+.team-photo img { border-radius: 0.75rem; width: 100%; height: auto; }
+.team-photo figcaption { margin-top: var(--space-3); font-size: 0.85rem; color: var(--color-ink-soft); }
