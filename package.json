@@ -1,0 +1,8 @@
+{
+  "name": "dr-mayer-brix-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/"
+  }
+}
