@@ -243,7 +243,7 @@
           <p class="section__lede">Per E-Mail</p>
           <form name="kontakt" method="POST" data-netlify="true" netlify-honeypot="firma" class="kontakt-form">
             <input type="hidden" name="form-name" value="kontakt">
-            <p hidden><label>Firma (nicht ausfüllen): <input name="firma"></label></p>
+            <p hidden aria-hidden="true"><label>Firma (nicht ausfüllen): <input name="firma" tabindex="-1"></label></p>
             <label for="name">Name</label>
             <input id="name" name="name" type="text" placeholder="Ihr Name ...">
             <label for="email">E-Mail Adresse</label>

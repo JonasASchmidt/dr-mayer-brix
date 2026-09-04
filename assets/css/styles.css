@@ -196,7 +196,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .banner {
   background: var(--color-brand);
-  color: #fff;
+  color: var(--color-ink);
 }
 .banner__inner {
   padding-block: var(--space-4);
@@ -209,7 +209,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .banner__link {
   display: inline-block;
   width: fit-content;
-  color: #fff;
+  color: var(--color-ink);
   font-weight: 700;
   text-decoration: underline;
 }
