@@ -230,3 +230,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 @media (min-width: 64rem) {
   .kontakt-layout { grid-template-columns: 1fr 1fr; }
 }
+
+.legal h1 { margin-bottom: var(--space-5); }
+.legal h2 { font-size: 1.25rem; margin-top: var(--space-7); margin-bottom: var(--space-3); }
+.legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand-dark); }
+.legal p { max-width: 42rem; }
+.legal p + p { margin-top: var(--space-3); }
