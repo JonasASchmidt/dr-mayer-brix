@@ -94,35 +94,63 @@
     <section id="leistungen" class="section section--alt">
       <div class="container">
         <h2>Leistungen</h2>
-        <p class="section__lede">Wir sind auf die optimale Verbindung von Schulmedizin und naturheilkundlicher Behandlung spezialisiert</p>
+        <p class="uppercase-label">Wir sind auf die optimale Verbindung von Schulmedizin und naturheilkundlicher Behandlung spezialisiert</p>
         <p>Wir bieten die kompletten Leistungen einer modernen HNO ärztlichen und phoniatrischen Praxis an. Darüber hinaus bieten wir die Diagnostik von Allergien mittels normalem Allergietest und von Nahrungsmitteln (IGG3 und 4 Allergien) an, sowie eine Darmfloraanalyse und Darmsanierung, soweit diese im Zusammenhang mit HNO-Erkrankungen steht.</p>
         <p>Im therapeutischen Bereich behandeln wir nach Möglichkeit mit Naturheilverfahren und klassischer Homöopathie. Hierfür kann allerdings auch eine ausführliche Fallaufnahme (Anamnese) von bis zu 1 Stunde Dauer notwendig sein, die wir ggf. berechnen müssen.</p>
-        <ul class="pill-row">
-          <li>HNO Leistungen</li>
-          <li>Auditive Wahrnehmung</li>
-          <li>Naturheilkundliche Diagnostik und Therapie</li>
-          <li>Diagnostik von Störungen der Darmflora bei HNO-Erkrankungen</li>
-        </ul>
+        <div class="accordion">
+          <div class="accordion__item" data-accordion-item>
+            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
+              <span>HNO Leistungen</span>
+              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="accordion__panel" data-accordion-panel hidden></div>
+          </div>
+          <div class="accordion__item" data-accordion-item>
+            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
+              <span>Auditive Wahrnehmung</span>
+              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="accordion__panel" data-accordion-panel hidden></div>
+          </div>
+          <div class="accordion__item" data-accordion-item>
+            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
+              <span>Naturheilkundliche Diagnostik und Therapie</span>
+              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="accordion__panel" data-accordion-panel hidden></div>
+          </div>
+          <div class="accordion__item accordion__item--last" data-accordion-item>
+            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
+              <span>Diagnostik von Störungen der Darmflora bei HNO-Erkrankungen</span>
+              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="accordion__panel" data-accordion-panel hidden></div>
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="schwerpunkte" class="section">
       <div class="container">
         <h2>Schwerpunkte</h2>
-        <p>Viele Krankheiten kann man heute sehr gut diagnostizieren. Die Behandlung ist dann aber teilweise enttäuschend oder sie hat starke Nebenwirkungen. Dies kann z.B. bei Asthma, Neurodermitis, Rheuma, Tinnitus, Fibromyalgie und Pfeifferschem Drüsenfieber etc. der Fall sein. Hier finden wir durch eine genaue Erhebung der Krankengeschichte und naturheilkundliche Behandlung Lösungen für Sie.</p>
-        <div class="card-grid">
-          <article class="card">
-            <h3>Chronische Erkrankungen</h3>
-            <p>Viele chronische Erkrankungen wie Nebenhöhlenentzündungen, Polypen, Migräne, Pfeiffersches Drüsenfieber, Mittelohrprobleme, Tinnitus (Ohrgeräusche) lassen sich mit Zeit und Geduld noch behandeln. Hierin haben wir jahrelange Erfahrung und bilden uns ständig weiter.</p>
-          </article>
-          <article class="card">
-            <h3>Kinder</h3>
-            <p>Wir sind spezialisiert auf die sanfte und natürliche Behandlung von Kindern mit ständigen Infekten, vergrößerten Adenoiden und Schwerhörigkeiten durch Paukenergüsse (Schleim im Mittelohr). Gerne geben wir Ihnen auch eine Zweitmeinung zur Notwendigkeit einer Operation der "Polypen", Gaumenmandeln oder der Ohren.</p>
-          </article>
-          <article class="card">
-            <h3>AVWS, ADS/ADHS</h3>
-            <p>Wir führen spezielle Hörtests bei Schwierigkeiten im Hören, Verstehen, bei Lese-/Rechtschreibproblemen und zur Abgrenzung von ADS/ADHS zu auditiven Wahrnehmungsstörungen durch. Bevor starke Medikamente gegeben werden, kann häufig auch eine homöopathische Therapie ein guter Mittelweg sein.</p>
-          </article>
+        <p>Viele Krankheiten kann man heute sehr gut diagnostizieren. Die Behandlung ist dann aber teilweise enttäuschend oder sie hat starke Nebenwirkungen.</p>
+        <p>Dies kann z.B. bei Asthma, Neurodermitis, Rheuma, Tinnitus, Fibromyalgie und Pfeifferschem Drüsenfieber etc. der Fall sein. Hier finden wir durch eine genaue Erhebung der Krankengeschichte und naturheilkundliche Behandlung Lösungen für Sie.</p>
+        <div class="schwerpunkte__full">
+          <h4>Chronische Erkrankungen</h4>
+          <p>Viele chronische Erkrankungen wie Nebenhöhlenentzündungen, Polypen, Migräne, Pfeiffersches Drüsenfieber, Mittelohrprobleme, Tinnitus (Ohrgeräusche) lassen sich mit Zeit und Geduld noch behandeln.</p>
+          <p>Hierin haben wir jahrelange Erfahrung und bilden uns ständig weiter.</p>
+        </div>
+        <div class="schwerpunkte__row">
+          <div>
+            <h4>Kinder</h4>
+            <p>Wir sind spezialisiert auf die sanfte und natürliche Behandlung von Kindern mit ständigen Infekten, vergrößerten Adenoiden und Schwerhörigkeiten durch Paukenergüsse (Schleim im Mittelohr).</p>
+            <p>Gerne geben wir Ihnen auch eine Zweitmeinung zur Notwendigkeit einer Operation der "Polypen", Gaumenmandeln oder der Ohren.</p>
+          </div>
+          <div>
+            <h4>AVWS, ADS/ADHS</h4>
+            <p>Wir führen spezielle Hörtests bei Schwierigkeiten im Hören, Verstehen, bei Lese-/Rechtschreibproblemen und zur Abgrenzung von ADS/ADHS zu auditiven Wahrnehmungsstörungen durch.</p>
+            <p>Bevor starke Medikamente gegeben werden, kann häufig auch eine homöopathische Therapie ein guter Mittelweg sein.</p>
+          </div>
         </div>
       </div>
     </section>

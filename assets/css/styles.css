@@ -231,8 +231,23 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .section__lede { font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.03em; color: var(--color-brand-dark); }
 .section p + p { margin-top: var(--space-4); }
 
-.pill-row { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-5); padding: 0; }
-.pill-row li { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 999px; padding: var(--space-2) var(--space-4); font-size: 0.8rem; font-weight: 600; }
+.accordion__item { border-bottom: 1px solid var(--color-grey); }
+.accordion__trigger {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding-block: var(--space-5); background: none; border: none; cursor: pointer; text-align: left;
+  color: var(--color-brand); font-family: var(--font-body); font-weight: 600; text-transform: uppercase; font-size: 1rem;
+}
+.accordion__chevron { transition: transform 0.2s ease; flex-shrink: 0; color: var(--color-ink); }
+.accordion__item.is-open .accordion__chevron { transform: rotate(90deg); }
+.accordion__panel { padding-bottom: var(--space-4); }
+
+.schwerpunkte__full, .schwerpunkte__row > div { margin-top: var(--space-6); }
+.schwerpunkte__row { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
+.schwerpunkte__row h4, .schwerpunkte__full h4 { color: var(--color-brand); margin-bottom: var(--space-2); }
+
+@media (min-width: 48rem) {
+  .schwerpunkte__row { grid-template-columns: 1fr 1fr; }
+}
 
 .card-grid { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
 .card { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 0.75rem; padding: var(--space-5); }

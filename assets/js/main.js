@@ -1,5 +1,6 @@
 import { initNav } from './nav.js';
 import { initVideoFacades } from './video-facade.js';
+import { initAccordions } from './accordion.js';
 import { loadBanner, dismissBanner } from './banner.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggle && nav) initNav(toggle, nav);
 
   initVideoFacades(document);
+
+  initAccordions(document);
 
   const bannerSlot = document.getElementById('site-banner');
   if (bannerSlot) {
