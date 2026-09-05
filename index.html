@@ -270,11 +270,17 @@
             <li>Wo finde ich Hilfe?</li>
           </ul>
           <p>... zum Weiterlesen erwerben Sie bitte den gesamten Artikel.</p>
-          <p class="uppercase-label">PDF per E-Mail 4,99 €</p>
+          <p class="uppercase-label">PDF per E-Mail €4,99 EUR</p>
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="paypal-hosted-form fachartikel-buy">
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="ZVE567CQTAPRC">
             <input type="hidden" name="on0" value="Fachartikel: Die Polypen bei meinem Kind sollen operiert werden,">
+            <!-- The original Squarespace form used a <select name="os0"> with a
+                 single, non-optional <option> — there's nothing for a visitor to
+                 actually choose, and Figma shows no dropdown control here at all.
+                 A hidden field submits PayPal the identical os0 value without
+                 rendering a pointless one-item native select. -->
+            <input type="hidden" name="os0" value="PDF per E-Mail">
             <input type="hidden" name="currency_code" value="EUR">
             <button type="submit" class="fachartikel-buy__button"><span class="fachartikel-buy__button-short">Bestellen (PayPal)</span><span class="fachartikel-buy__button-long">Kostenpflichtig bestellen (PayPal)</span></button>
           </form>
@@ -291,11 +297,15 @@
             <li>Wo bekomme ich Hilfe?</li>
           </ul>
           <p>... zum Weiterlesen erwerben Sie bitte den gesamten Artikel.</p>
-          <p class="uppercase-label">PDF per E-Mail 4,99 €</p>
+          <p class="uppercase-label">PDF per E-Mail € 4,99 EUR</p>
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="paypal-hosted-form fachartikel-buy">
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="QCJGWD4PRCMEC">
             <input type="hidden" name="on0" value="Fachartikel: Hilfe, ich bin ständig krank...">
+            <!-- See the first form's comment: a hidden field replaces the
+                 original single-item <select name="os0">, since there's
+                 nothing to choose and Figma shows no dropdown here. -->
+            <input type="hidden" name="os0" value="PDF per E-Mail">
             <input type="hidden" name="currency_code" value="EUR">
             <button type="submit" class="fachartikel-buy__button"><span class="fachartikel-buy__button-short">Bestellen (PayPal)</span><span class="fachartikel-buy__button-long">Kostenpflichtig bestellen (PayPal)</span></button>
           </form>
