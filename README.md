@@ -19,6 +19,6 @@ Editing `content/banner.json` directly and pushing to `main` also works.
 
 ## Deployment
 
-Connected to Netlify, auto-deploys `main`. Netlify Forms handles the
-Kontakt form automatically (detected at deploy time via the `data-netlify`
-form attributes) — no extra configuration needed.
+Connected to Netlify, auto-deploys `main`. There is no contact form on the
+site — visitors reach the practice by phone, via the 321med Online-Rezeption
+floating widget, or via the `mailto:` link in the footer.

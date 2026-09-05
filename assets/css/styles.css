@@ -108,6 +108,22 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   font-size: 1rem;
 }
 
+/* Standard clip-based visually-hidden pattern: keeps content in the
+   accessibility tree and document outline for screen-reader users while
+   removing it from visual layout. Used for section-level headings that
+   have no visible on-page title (#fachartikel, #zitat). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (min-width: 64rem) {
   .container { padding-inline: var(--gutter-desktop); }
   .content { padding-inline: 0; }
@@ -199,8 +215,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 }
 .hero__welcome p, .hero__contact p { margin-top: var(--space-3); }
 .hero__signature { font-weight: 600; }
-.hero__contact h3 { margin-bottom: var(--space-3); }
-.hero__contact h4 { margin-top: var(--space-4); margin-bottom: var(--space-2); }
+/* Heading-hierarchy fix (final review): these were <h3>/<h4> (skipping h2
+   after the hero's own <h1>). Promoted to <h2>/<h3> in the markup; these
+   overrides keep their original visual sizes (24px / 20px) instead of
+   growing to the default h2 (32px) / h3 (24px) sizes. */
+.hero__contact h2 { margin-bottom: var(--space-3); font-size: 1.5rem; line-height: 1.5; }
+.hero__contact h3 { margin-top: var(--space-4); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
 .hero__address { display: block; font-weight: 600; text-decoration: underline; }
 
 @media (min-width: 64rem) {
@@ -214,16 +234,20 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   border-radius: 999px; text-decoration: none; font-weight: 700;
 }
 .button--primary { background: var(--color-brand); color: var(--color-ink); }
-.button--primary:hover { background: var(--color-brand-dark); color: var(--color-paper); }
+.button--primary:hover { background: var(--color-brand-text); color: var(--color-paper); }
 
+/* Final-review Fix 1: .banner used to be position:absolute, floating over
+   the hero image with a top offset tuned only against index.html's tall
+   hero. With the real content/banner.json message (several paragraphs,
+   600+px tall on mobile) that overlay covered the page's own <h1> on every
+   page that has no tall hero underneath it (impressum.html, datenschutz.html)
+   and even on index.html itself at mobile widths. An absolute overlay can
+   never be made safe for an arbitrary-length CMS-edited message, so the
+   banner is now in normal document flow (a full-width bar above the sticky
+   header) — it reserves real layout space and pushes everything below it
+   down by its own rendered height, on every page, at every width. */
 .banner {
-  position: absolute;
-  top: 6.625rem;
-  right: var(--gutter-mobile);
-  left: var(--gutter-mobile);
-  z-index: 15;
   background: var(--color-brand);
-  border-radius: 0.5rem;
   /* White text on --color-brand measures 3.07:1 (fails the 4.5:1 text
      minimum; the banner's 1rem/16px copy doesn't qualify as "large text").
      --color-ink on --color-brand measures 5.31:1 and passes, matching the
@@ -234,8 +258,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   display: flex;
   gap: var(--space-4);
   align-items: flex-start;
-  padding: var(--space-5);
-  max-width: none;
+  padding-block: var(--space-4);
 }
 .banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1rem; font-weight: 700; }
 .banner__text p:not(:first-child) { font-weight: 500; }
@@ -247,15 +270,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    invisible (1:1) against this banner's own brand-colored background.
    Override to ink here, which measures 5.31:1 against the brand background. */
 .banner a:focus-visible, .banner button:focus-visible { outline-color: var(--color-ink); }
-
-@media (min-width: 64rem) {
-  /* Measured live header height at >=64rem is 169px (142px bar + 27px nav
-     row) vs. 104px below that breakpoint, so the banner needs a taller top
-     offset here or its top edge (including the dismiss button) renders
-     behind the sticky header. 10.75rem (172px) clears 169px with a 3px
-     margin. */
-  .banner { left: auto; width: 45rem; max-width: calc(100% - 2 * var(--gutter-desktop)); right: var(--gutter-desktop); top: 10.75rem; }
-}
 
 .section { padding-block: 3rem; }
 .section--alt { background: var(--color-bg-light); }
@@ -272,7 +286,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .section--alt a:focus-visible, .section--alt button:focus-visible { outline-color: var(--color-ink); }
 .section--dark a:focus-visible, .section--dark button:focus-visible { outline-color: var(--color-paper); }
 .section h2 { font-size: 1.75rem; margin-bottom: var(--space-4); }
-.section__lede { font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.03em; color: var(--color-brand-dark); }
 .section p + p { margin-top: var(--space-4); }
 
 @media (min-width: 64rem) {
@@ -291,7 +304,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .schwerpunkte__full, .schwerpunkte__row > div { margin-top: var(--space-6); }
 .schwerpunkte__row { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
-.schwerpunkte__row h4, .schwerpunkte__full h4 { color: var(--color-brand-text); margin-bottom: var(--space-2); }
+/* Heading-hierarchy fix (final review): these were <h4>, skipping h3 right
+   after the section's own <h2>. Promoted to <h3> in the markup; this
+   override keeps their original 20px visual size instead of growing to the
+   default h3 (24px) size. */
+.schwerpunkte__row h3, .schwerpunkte__full h3 { color: var(--color-brand-text); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
 
 @media (min-width: 48rem) {
   .schwerpunkte__row { grid-template-columns: 1fr 1fr; }
@@ -299,7 +316,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .card-grid { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
 .card { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 0.75rem; padding: var(--space-5); }
-.card h3 { font-size: 1.1rem; margin-bottom: var(--space-3); color: var(--color-brand-dark); }
+.card h3 { font-size: 1.1rem; margin-bottom: var(--space-3); color: var(--color-brand-text); }
 
 @media (min-width: 48rem) {
   .card-grid { grid-template-columns: repeat(3, 1fr); }
@@ -361,7 +378,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .legal h1 { margin-bottom: var(--space-5); }
 .legal h2 { font-size: 1.25rem; margin-top: var(--space-7); margin-bottom: var(--space-3); }
-.legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand-dark); }
+.legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand-text); }
 .legal p { max-width: 42rem; }
 .legal p + p { margin-top: var(--space-3); }
 
