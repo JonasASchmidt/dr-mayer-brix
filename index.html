@@ -78,79 +78,110 @@
     <p class="hero__signature">Ihr Dr. J. Mayer-Brix<br>und das Praxisteam</p>
   </div>
   <div class="hero__contact">
-    <h2>Kontakt</h2>
-    <a class="hero__address" href="https://goo.gl/maps/VMeG75iZF5uAmwec9" target="_blank" rel="noopener">Allee am Röthelheimpark 6<br>91052 Erlangen</a>
-    <p class="hero__phone">Tel. <a href="tel:+499131208899">+49 (0) 91 31 / 20 88 99</a><br>Fax +49 (0) 91 31 / 20 52 45</p>
-    <p class="uppercase-label">Sie erreichen uns am besten über die Online-Rezeption.</p>
-    <h3>Telefonzeiten</h3>
-    <p>Mo, Di, Do<br>8.15 – 11.15 und 14.15 – 16.30</p>
-    <p>Mi 10 – 11.15<br>Fr 8.15 – 11.15</p>
-    <h3>Öffnungszeiten</h3>
-    <p>Mo, Di, Do<br>8.30 – 12.30 und 14 – 17.30</p>
-    <p>Mi 10 – 15.30<br>Fr 8.30 – 13.30</p>
+    <div class="hero__contact-block">
+      <h2>Kontakt</h2>
+      <a class="hero__address" href="https://goo.gl/maps/VMeG75iZF5uAmwec9" target="_blank" rel="noopener">Allee am Röthelheimpark 6<br>91052 Erlangen</a>
+      <p class="hero__phone">Tel. <a href="tel:+499131208899">+49 (0) 91 31 / 20 88 99</a><br>Fax +49 (0) 91 31 / 20 52 45</p>
+      <p class="uppercase-label">Sie erreichen uns am besten über die <span class="hero__rezeption-link">Online-Rezeption</span>.</p>
+    </div>
+    <div class="hero__hours hero__hours--telefonzeiten">
+      <h3>Telefonzeiten</h3>
+      <p>Mo, Di, Do<br>8.15 – 11.15 und 14.15 – 16.30</p>
+      <p>Mi 10 – 11.15<br>Fr 8.15 – 11.15</p>
+    </div>
+    <div class="hero__hours hero__hours--oeffnungszeiten">
+      <h3>Öffnungszeiten</h3>
+      <p>Mo, Di, Do<br>8.30 – 12.30 und 14 – 17.30</p>
+      <p>Mi 10 – 15.30<br>Fr 8.30 – 13.30</p>
+    </div>
   </div>
 </div>
     </section>
 
-    <section id="leistungen" class="section section--alt">
+    <!-- Figma models Leistungen and Schwerpunkte as ONE combined section
+         ("Leistungen & Schwerpunkte"): one shared light-grey background,
+         one padding, with the two content groups stacked 60px apart —
+         not two separate <section> blocks as before. -->
+    <section id="leistungen" class="section section--alt leistungen-schwerpunkte">
       <div class="content">
-        <h2>Leistungen</h2>
-        <p class="uppercase-label">Wir sind auf die optimale Verbindung von Schulmedizin und naturheilkundlicher Behandlung spezialisiert</p>
-        <p>Wir bieten die kompletten Leistungen einer modernen HNO ärztlichen und phoniatrischen Praxis an. Darüber hinaus bieten wir die Diagnostik von Allergien mittels normalem Allergietest und von Nahrungsmitteln (IGG3 und 4 Allergien) an, sowie eine Darmfloraanalyse und Darmsanierung, soweit diese im Zusammenhang mit HNO-Erkrankungen steht.</p>
-        <p>Im therapeutischen Bereich behandeln wir nach Möglichkeit mit Naturheilverfahren und klassischer Homöopathie. Hierfür kann allerdings auch eine ausführliche Fallaufnahme (Anamnese) von bis zu 1 Stunde Dauer notwendig sein, die wir ggf. berechnen müssen.</p>
-        <div class="accordion">
-          <div class="accordion__item" data-accordion-item>
-            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
-              <span>HNO Leistungen</span>
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-            <div class="accordion__panel" data-accordion-panel hidden></div>
+        <div class="leistungen-group">
+          <h2>Leistungen</h2>
+          <div class="leistungen-intro">
+            <p class="uppercase-label">Wir sind auf die optimale Verbindung von Schulmedizin und naturheilkundlicher Behandlung spezialisiert</p>
+            <p>Wir bieten die kompletten Leistungen einer modernen HNO ärztlichen und phoniatrischen Praxis an. Darüber hinaus bieten wir die Diagnostik von Allergien mittels normalem Allergietest und von Nahrungsmitteln (IGG3 und 4 Allergien) an, sowie eine Darmfloraanalyse und Darmsanierung, soweit diese im Zusammenhang mit HNO-Erkrankungen steht.</p>
+            <p>Im therapeutischen Bereich behandeln wir nach Möglichkeit mit Naturheilverfahren und klassischer Homöopathie. Hierfür kann allerdings auch eine ausführliche Fallaufnahme (Anamnese) von bis zu 1 Stunde Dauer notwendig sein, die wir ggf. berechnen müssen.</p>
           </div>
-          <div class="accordion__item" data-accordion-item>
-            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
-              <span>Auditive Wahrnehmung</span>
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-            <div class="accordion__panel" data-accordion-panel hidden></div>
-          </div>
-          <div class="accordion__item" data-accordion-item>
-            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
-              <span>Naturheilkundliche Diagnostik und Therapie</span>
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-            <div class="accordion__panel" data-accordion-panel hidden></div>
-          </div>
-          <div class="accordion__item accordion__item--last" data-accordion-item>
-            <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false">
-              <span>Diagnostik von Störungen der Darmflora bei HNO-Erkrankungen</span>
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="accordion__chevron"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-            <div class="accordion__panel" data-accordion-panel hidden></div>
+          <div class="accordion">
+            <div class="accordion__item" data-accordion-item>
+              <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false" aria-controls="accordion-panel-1">
+                <span>HNO Leistungen</span>
+                <img class="accordion__chevron" data-chevron-closed="assets/img/icons/chevron-closed.svg" data-chevron-open="assets/img/icons/chevron-open.svg" src="assets/img/icons/chevron-closed.svg" width="24" height="24" alt="">
+              </button>
+              <div id="accordion-panel-1" class="accordion__panel" data-accordion-panel hidden>
+                <p>Hörtest bei Kindern und Erwachsenen</p>
+                <p>Abklärung und Diagnostik von Schwindel, Gleichgewichtsstörungen</p>
+                <p>Ambulante Operationen bei Kindern und Erwachsenen, wie Polypen, Nasenscheidewandoperation, Kehlkopfeingriffe, Schnarchtherapie</p>
+              </div>
+            </div>
+            <div class="accordion__item" data-accordion-item>
+              <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false" aria-controls="accordion-panel-2">
+                <span>Auditive Wahrnehmung</span>
+                <img class="accordion__chevron" data-chevron-closed="assets/img/icons/chevron-closed.svg" data-chevron-open="assets/img/icons/chevron-open.svg" src="assets/img/icons/chevron-closed.svg" width="24" height="24" alt="">
+              </button>
+              <div id="accordion-panel-2" class="accordion__panel" data-accordion-panel hidden>
+                <p>Abklärung von auditiven Wahrnehmungsstörungen bei Kindern und Erwachsenen</p>
+              </div>
+            </div>
+            <div class="accordion__item" data-accordion-item>
+              <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false" aria-controls="accordion-panel-3">
+                <span>Naturheilkundliche Diagnostik und Therapie</span>
+                <img class="accordion__chevron" data-chevron-closed="assets/img/icons/chevron-closed.svg" data-chevron-open="assets/img/icons/chevron-open.svg" src="assets/img/icons/chevron-closed.svg" width="24" height="24" alt="">
+              </button>
+              <div id="accordion-panel-3" class="accordion__panel" data-accordion-panel hidden>
+                <p>Eigenbluttherapie zur Immunstärkung und Allergietherapie</p>
+                <p>Klassische Homöopathie, akut und chronisch</p>
+                <p>Darmfloraanalyse und Therapie</p>
+                <p>Therapie von Amalgamvergiftungen</p>
+                <p>Neuraltherapie der HWS</p>
+              </div>
+            </div>
+            <div class="accordion__item" data-accordion-item>
+              <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false" aria-controls="accordion-panel-4">
+                <span>Diagnostik von Störungen der Darmflora bei HNO-Erkrankungen</span>
+                <img class="accordion__chevron" data-chevron-closed="assets/img/icons/chevron-closed.svg" data-chevron-open="assets/img/icons/chevron-open.svg" src="assets/img/icons/chevron-closed.svg" width="24" height="24" alt="">
+              </button>
+              <div id="accordion-panel-4" class="accordion__panel" data-accordion-panel hidden>
+                <p>Der Darm ist unser größter Kontaktpunkt zur Umwelt und er leistet enormes zur Entgiftung, Versorgung des Körpers mit Vitaminen und zur Erhaltung der Immunabwehr.</p>
+                <p>Eine geschädigte Darmflora bewirkt ständige Infekte und eine anhaltende Immunschwäche.</p>
+                <p>Daher führen wir eine gezielte Diagnostik der Darmflora und eine darauf abgestimmte Behandlung durch, wenn auch HNO-Erkrankungen vorliegen.</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section id="schwerpunkte" class="section">
-      <div class="content">
-        <h2>Schwerpunkte</h2>
-        <p>Viele Krankheiten kann man heute sehr gut diagnostizieren. Die Behandlung ist dann aber teilweise enttäuschend oder sie hat starke Nebenwirkungen.</p>
-        <p>Dies kann z.B. bei Asthma, Neurodermitis, Rheuma, Tinnitus, Fibromyalgie und Pfeifferschem Drüsenfieber etc. der Fall sein. Hier finden wir durch eine genaue Erhebung der Krankengeschichte und naturheilkundliche Behandlung Lösungen für Sie.</p>
-        <div class="schwerpunkte__full">
-          <h3>Chronische Erkrankungen</h3>
-          <p>Viele chronische Erkrankungen wie Nebenhöhlenentzündungen, Polypen, Migräne, Pfeiffersches Drüsenfieber, Mittelohrprobleme, Tinnitus (Ohrgeräusche) lassen sich mit Zeit und Geduld noch behandeln.</p>
-          <p>Hierin haben wir jahrelange Erfahrung und bilden uns ständig weiter.</p>
-        </div>
-        <div class="schwerpunkte__row">
-          <div>
-            <h3>Kinder</h3>
-            <p>Wir sind spezialisiert auf die sanfte und natürliche Behandlung von Kindern mit ständigen Infekten, vergrößerten Adenoiden und Schwerhörigkeiten durch Paukenergüsse (Schleim im Mittelohr).</p>
-            <p>Gerne geben wir Ihnen auch eine Zweitmeinung zur Notwendigkeit einer Operation der "Polypen", Gaumenmandeln oder der Ohren.</p>
+        <div id="schwerpunkte" class="schwerpunkte-group">
+          <div class="schwerpunkte-intro">
+            <h2>Schwerpunkte</h2>
+            <p>Viele Krankheiten kann man heute sehr gut diagnostizieren. Die Behandlung ist dann aber teilweise enttäuschend oder sie hat starke Nebenwirkungen.</p>
+            <p>Dies kann z.B. bei Asthma, Neurodermitis, Rheuma, Tinnitus, Fibromyalgie und Pfeifferschem Drüsenfieber etc. der Fall sein. Hier finden wir durch eine genaue Erhebung der Krankengeschichte und naturheilkundliche Behandlung Lösungen für Sie.</p>
           </div>
-          <div>
-            <h3>AVWS, ADS/ADHS</h3>
-            <p>Wir führen spezielle Hörtests bei Schwierigkeiten im Hören, Verstehen, bei Lese-/Rechtschreibproblemen und zur Abgrenzung von ADS/ADHS zu auditiven Wahrnehmungsstörungen durch.</p>
-            <p>Bevor starke Medikamente gegeben werden, kann häufig auch eine homöopathische Therapie ein guter Mittelweg sein.</p>
+          <div class="schwerpunkte__layout">
+            <div class="schwerpunkte__card schwerpunkte__full">
+              <h3>Chronische Erkrankungen</h3>
+              <p>Viele chronische Erkrankungen wie Nebenhöhlenentzündungen, Polypen, Migräne, Pfeiffersches Drüsenfieber, Mittelohrprobleme, Tinnitus (Ohrgeräusche) lassen sich mit Zeit und Geduld noch behandeln.</p>
+              <p>Hierin haben wir jahrelange Erfahrung und bilden uns ständig weiter.</p>
+            </div>
+            <div class="schwerpunkte__row">
+              <div class="schwerpunkte__card">
+                <h3>Kinder</h3>
+                <p>Wir sind spezialisiert auf die sanfte und natürliche Behandlung von Kindern mit ständigen Infekten, vergrößerten Adenoiden und Schwerhörigkeiten durch Paukenergüsse (Schleim im Mittelohr).</p>
+                <p>Gerne geben wir Ihnen auch eine Zweitmeinung zur Notwendigkeit einer Operation der "Polypen", Gaumenmandeln oder der Ohren.</p>
+              </div>
+              <div class="schwerpunkte__card">
+                <h3>AVWS, ADS/ADHS</h3>
+                <p>Wir führen spezielle Hörtests bei Schwierigkeiten im Hören, Verstehen, bei Lese-/Rechtschreibproblemen und zur Abgrenzung von ADS/ADHS zu auditiven Wahrnehmungsstörungen durch.</p>
+                <p>Bevor starke Medikamente gegeben werden, kann häufig auch eine homöopathische Therapie ein guter Mittelweg sein.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

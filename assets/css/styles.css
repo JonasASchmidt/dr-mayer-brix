@@ -254,15 +254,27 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   padding-block: var(--space-7);
 }
 .hero__welcome h1 { color: var(--color-brand); }
-.hero__welcome p, .hero__contact p { margin-top: var(--space-3); }
+.hero__welcome p { margin-top: var(--space-3); }
 .hero__signature { font-weight: 600; }
+/* Figma groups the hero's contact column into 3 sub-blocks (Kontakt info,
+   Telefonzeiten, Öffnungszeiten) 36px apart — each with its own tighter
+   16px-per-line internal spacing, not one flat list of children all
+   spaced alike. */
+.hero__contact { display: flex; flex-direction: column; gap: 2.25rem; }
+.hero__contact-block > * + * { margin-top: 1rem; }
+.hero__hours h3 { margin-bottom: 1rem; }
 /* Figma: only the hour-detail paragraphs (the 4 plain, class-less <p>s
    under Telefonzeiten/Öffnungszeiten) in the hero's compact contact column
    are explicitly 14px — .hero__phone and .uppercase-label are their own,
    separately-specified 16px roles and must stay excluded. The Kontakt
    section's own (larger, later) copy of the hour paragraphs is a separate,
    explicitly-16px treatment; the two are not meant to match. */
-.hero__contact p:not(.hero__phone):not(.uppercase-label) { font-size: 0.875rem; }
+.hero__hours p { font-size: 0.875rem; }
+/* Figma has the two blocks disagree on their own internal gap — 12px
+   between Telefonzeiten's two lines, 8px between Öffnungszeiten's —
+   flagged as a likely inconsistency, but implemented exactly as specced. */
+.hero__hours--telefonzeiten p + p { margin-top: var(--space-3); }
+.hero__hours--oeffnungszeiten p + p { margin-top: var(--space-2); }
 /* Figma's Willkommen "Content" wrapper sets a mint (--color-brand) base
    text color inherited by every child that has no more specific color
    class — the H1, the "Kontakt" heading, the "Sie erreichen uns..." label,
@@ -271,9 +283,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    number, and hour-detail paragraphs have an explicit ink override. This
    codebase doesn't replicate Figma's wrapper-inheritance mechanism, so
    each of those inheriting elements needs its own explicit color rule. */
-.hero__contact h2 { color: var(--color-brand); margin-bottom: 1rem; }
-.hero__contact h3 { color: var(--color-brand); margin-top: var(--space-4); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
+.hero__contact h2 { color: var(--color-brand); }
+.hero__hours h3 { color: var(--color-brand); font-size: 1.25rem; line-height: 1.3; }
 .hero__address { display: block; font-weight: 600; text-decoration: underline; }
+/* "Sie erreichen uns am besten über die Online-Rezeption." — only the
+   product-name span is underlined in Figma, not the whole sentence. */
+.hero__rezeption-link { text-decoration: underline; }
 
 @media (min-width: 64rem) {
   .hero__content { flex-direction: row; gap: 5rem; padding-block: var(--space-8); }
@@ -357,28 +372,61 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .section { padding-block: 5.625rem; }
 }
 
-.accordion__item { border-bottom: 1px solid var(--color-grey); }
+/* Figma models "Leistungen" and "Schwerpunkte" as ONE combined section
+   with a single 60px gap between the two content groups — not two
+   separate sections each with their own .content gap (2.25rem/36px). */
+.leistungen-schwerpunkte .content { gap: 3.75rem; }
+.leistungen-group, .schwerpunkte-group { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
+.leistungen-group { gap: var(--space-6); }
+.schwerpunkte-group { gap: var(--space-7); }
+/* Figma: the lede paragraphs are 12px apart within their own intro block —
+   not the section-wide 16px default, and not the group's own 32px/48px
+   gap (which only separates heading/intro/content at the top level). */
+.leistungen-intro p + p, .schwerpunkte-intro p + p { margin-top: var(--space-3); }
+
+.accordion { display: flex; flex-direction: column; gap: var(--space-5); width: 100%; }
+/* Figma's whole card (label row + body copy) shares ONE padding box, with
+   a 24px gap between the label row and the body when it's showing — not
+   a separately-padded trigger button sitting above a separately-padded
+   panel. The panel is simply `hidden` when closed, which excludes it from
+   this flex column's gap automatically. */
+.accordion__item {
+  background: var(--color-paper);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: 1.25rem 1.75rem 1.25rem 2rem;
+}
+/* Open state gets its own padding (28px top / 32px bottom vs. the closed
+   row's even 20px top/bottom) per Figma's two distinct component variants. */
+.accordion__item.is-open { padding: 1.75rem 1.75rem 2rem 2rem; }
 .accordion__trigger {
-  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
-  padding-block: var(--space-5); background: none; border: none; cursor: pointer; text-align: left;
+  width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6);
+  padding: 0; background: none; border: none; cursor: pointer; text-align: left;
   color: var(--color-brand); font-family: var(--font-body); font-weight: 600; text-transform: uppercase; font-size: 1rem;
 }
-.accordion__chevron { transition: transform 0.2s ease; flex-shrink: 0; color: var(--color-ink); }
-.accordion__item.is-open .accordion__chevron { transform: rotate(90deg); }
-.accordion__panel { padding-bottom: var(--space-4); }
+.accordion__chevron { flex-shrink: 0; }
+.accordion__panel { font-size: 0.875rem; }
+.accordion__panel p + p { margin-top: var(--space-2); }
 
-.schwerpunkte__full, .schwerpunkte__row > div { margin-top: var(--space-6); }
-.schwerpunkte__row { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
-/* Heading-hierarchy fix (final review): these were <h4>, skipping h3 right
-   after the section's own <h2>. Promoted to <h3> in the markup; this
-   override keeps their original 20px visual size instead of growing to the
-   default h3 (24px) size. */
-.schwerpunkte__row h3, .schwerpunkte__full h3 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
+.schwerpunkte__layout { display: flex; flex-direction: column; gap: var(--space-7); width: 100%; }
+.schwerpunkte__row { display: grid; gap: var(--space-7); }
+.schwerpunkte__card {
+  background: var(--color-paper);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 0.75rem;
+  padding: var(--space-6);
+  width: 100%;
+}
+.schwerpunkte__card h3 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
 /* Figma: body text under Chronische Erkrankungen AND under Kinder/AVWS is
    explicitly 14px (Body text SM) throughout — not the site's 16px default.
    Only the section's own intro paragraphs (Schwerpunkte's own 2 lede
-   paragraphs, outside .schwerpunkte__full/.schwerpunkte__row) stay 16px. */
-.schwerpunkte__row p, .schwerpunkte__full p { font-size: 0.875rem; }
+   paragraphs, outside the cards) stay 16px. */
+.schwerpunkte__card p { font-size: 0.875rem; }
+.schwerpunkte__card p + p { margin-top: var(--space-2); }
 
 @media (min-width: 48rem) {
   .schwerpunkte__row { grid-template-columns: 1fr 1fr; }
@@ -492,10 +540,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    URL with a hash. Measured live header height is 104px below the 64rem
    breakpoint and 169px at/above it (bar + stacked nav row), so scroll-margin
    needs to grow at that same breakpoint too, each with a few px to spare. */
-section[id] { scroll-margin-top: 6.75rem; }
+/* "schwerpunkte" is a plain <div id> (Leistungen and Schwerpunkte share
+   one <section>, per Figma), not a <section id> like the rest — included
+   explicitly so a direct #schwerpunkte link still clears the header. */
+section[id], #schwerpunkte { scroll-margin-top: 6.75rem; }
 
 @media (min-width: 64rem) {
-  section[id] { scroll-margin-top: 10.75rem; }
+  section[id], #schwerpunkte { scroll-margin-top: 10.75rem; }
 }
 
 .site-footer {
