@@ -418,18 +418,27 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .button--primary { background: var(--color-brand); color: #fff; }
 .button--primary:hover { opacity: 0.9; }
 
-/* Final-review Fix 1: .banner used to be position:absolute, floating over
-   the hero image with a top offset tuned only against index.html's tall
-   hero. With the real content/banner.json message (several paragraphs,
-   600+px tall on mobile) that overlay covered the page's own <h1> on every
-   page that has no tall hero underneath it (impressum.html, datenschutz.html)
-   and even on index.html itself at mobile widths. An absolute overlay can
-   never be made safe for an arbitrary-length CMS-edited message, so the
-   banner is now in normal document flow (a full-width bar above the sticky
-   header) — it reserves real layout space and pushes everything below it
-   down by its own rendered height, on every page, at every width. */
+/* Direct request: match Figma's literal floating-card positioning, not an
+   in-flow bar. A previous pass ("Final-review Fix 1") deliberately moved
+   this into normal document flow instead, because an absolute overlay
+   covered the page's own <h1> whenever the CMS message got long — that
+   failure mode is real and is being reintroduced knowingly here, flagged
+   per the standing rule: on impressum.html/datenschutz.html (no tall hero
+   under it) and on index.html at narrow widths, a long enough banner
+   message WILL cover page content beneath it again. Positioned against
+   .site-header (its nearest sticky/positioned ancestor, same mechanism as
+   .site-nav above), starting right where the header ends. Figma's own
+   canvas coordinates place this card overlapping the header itself — that
+   specific nuance (the card's top corners tucked behind the header) isn't
+   reproduced; this starts flush below the header instead. */
 .banner {
+  position: absolute;
+  top: 100%;
+  left: var(--gutter-mobile);
+  right: var(--gutter-mobile);
+  z-index: 15;
   background: var(--color-brand);
+  border-radius: 0.5rem;
   /* Figma specifies literal white text on this mint background — see the
      accessibility flag list for this pairing's contrast ratio. */
   color: #fff;
@@ -438,16 +447,19 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
      Schwerpunkte cards, the Buch card) — the banner overlay carries it too. */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
 }
-/* Figma's floating card version of this banner uses 16px/20px top/bottom
-   padding and a 16px gap on mobile, 24px/24px and a 24px gap at desktop —
-   re-verified live. This is a full-width in-flow bar rather than that
-   floating card (see the box-shadow comment above for why), but the same
-   vertical rhythm still applies. */
+@media (min-width: 64rem) {
+  /* Figma: 720px wide (== --content-width exactly), right-aligned with
+     the standard desktop gutter — not full-width, not centered. */
+  .banner { left: auto; right: var(--gutter-desktop); max-width: var(--content-width); }
+}
+/* Figma's floating card uses 16px/20px top/bottom padding (16px left/right)
+   and a 16px gap on mobile, 24px all around and a 24px gap at desktop —
+   re-verified live. */
 .banner__inner {
   display: flex;
   gap: var(--space-4);
   align-items: flex-start;
-  padding-block: 1rem 1.25rem;
+  padding: 1rem 1rem 1.25rem;
 }
 .banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1.125rem; font-weight: 700; }
 .banner__text p:not(:first-child) { font-weight: 500; }
@@ -905,7 +917,7 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
   .schwerpunkte-group { gap: var(--space-7); }
   .schwerpunkte__layout { gap: var(--space-7); }
   .schwerpunkte__row { gap: var(--space-7); }
-  .banner__inner { gap: var(--space-5); padding-block: var(--space-5); }
+  .banner__inner { gap: var(--space-5); padding: var(--space-5); }
   .accordion__trigger { font-size: 1.5rem; }
   .schwerpunkte__card-trigger { font-size: 1.5rem; }
   .hero__contact h2 { font-size: 2rem; }

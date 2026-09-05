@@ -107,7 +107,6 @@
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  <div id="site-banner" class="banner" hidden></div>
   <header class="site-header">
     <div class="site-header__inner">
       <div class="site-header__bar">
@@ -130,6 +129,12 @@
         </button>
       </nav>
     </div>
+    <!-- Positioned against .site-header itself (its nearest sticky/
+         positioned ancestor), same mechanism as .site-nav above — a
+         floating card per Figma, not an in-flow bar. See the .banner CSS
+         comment for the accepted tradeoff (can cover page content below
+         it if the message is long, on pages with no tall hero). -->
+    <div id="site-banner" class="banner" hidden></div>
   </header>
   <main>
     <section id="willkommen" class="hero">

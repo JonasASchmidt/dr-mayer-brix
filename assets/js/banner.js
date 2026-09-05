@@ -25,7 +25,10 @@ export function renderBannerHTML(text) {
     // hard-coded footer/legal-page ones.
     .map((p) => `<p>${obfuscateEmailsInHtml(escapeHtml(p).replaceAll('\n', '<br>'))}</p>`)
     .join('');
-  return `<div class="banner__inner container"><div class="banner__text">${paragraphs}</div><button type="button" class="banner__dismiss" aria-label="Hinweis schließen">×</button></div>`;
+  // No .container here: the banner is now a floating card positioned and
+  // sized by .banner itself (per Figma), not a full-width bar that needs
+  // an inner content-width-capped wrapper.
+  return `<div class="banner__inner"><div class="banner__text">${paragraphs}</div><button type="button" class="banner__dismiss" aria-label="Hinweis schließen">×</button></div>`;
 }
 
 // Dismissing the banner only hides it for the current page view — nothing
