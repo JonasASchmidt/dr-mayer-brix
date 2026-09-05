@@ -418,25 +418,41 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .button--primary { background: var(--color-brand); color: #fff; }
 .button--primary:hover { opacity: 0.9; }
 
-/* Direct request: match Figma's literal floating-card positioning, not an
-   in-flow bar. A previous pass ("Final-review Fix 1") deliberately moved
-   this into normal document flow instead, because an absolute overlay
-   covered the page's own <h1> whenever the CMS message got long — that
-   failure mode is real and is being reintroduced knowingly here, flagged
-   per the standing rule: on impressum.html/datenschutz.html (no tall hero
-   under it) and on index.html at narrow widths, a long enough banner
-   message WILL cover page content beneath it again. Positioned against
-   .site-header (its nearest sticky/positioned ancestor, same mechanism as
-   .site-nav above), starting right where the header ends. Figma's own
-   canvas coordinates place this card overlapping the header itself — that
-   specific nuance (the card's top corners tucked behind the header) isn't
-   reproduced; this starts flush below the header instead. */
+/* Direct request: match Figma's literal floating-card positioning
+   (including overlapping the header), not an in-flow bar. A previous pass
+   ("Final-review Fix 1") deliberately moved this into normal document flow
+   instead, because an absolute overlay covered the page's own <h1> whenever
+   the CMS message got long — that failure mode is real and is being
+   reintroduced knowingly here, flagged per the standing rule: on
+   impressum.html/datenschutz.html (no tall hero under it) and on index.html
+   at narrow widths, a long enough banner message WILL cover page content
+   beneath it again.
+
+   Positioned against .site-header (its nearest sticky/positioned ancestor,
+   same mechanism as .site-nav above) at Figma's own canvas y — 75px mobile,
+   106px desktop — both BEFORE the header's own bottom edge, i.e. genuinely
+   overlapping it. z-index: -1 (scoped to .site-header's own stacking
+   context, which position:sticky + z-index establish) paints the banner
+   UNDER .site-header's own opaque background, matching Figma's layer order
+   (Announcement Bar sits below Header in the layer list) — only the part
+   of the card that extends past the header's own box (which has no
+   background beyond its own height) stays visible, giving the "peeking out
+   from under the header" look.
+
+   FLAGGED FINDING: the dismiss (×) button sits inside the overlapped
+   region at both breakpoints — Figma's own layout puts roughly the top
+   half of that 24×24 icon behind the header (measured: ~12px of it on
+   desktop, ~8px on mobile), which is genuinely unclickable there since
+   the header's opaque background sits in front of it at those pixels.
+   This is a real usability gap in the source design, not an
+   implementation shortcut — flagging rather than silently moving the
+   icon down to "fix" it. */
 .banner {
   position: absolute;
-  top: 100%;
+  top: 4.6875rem; /* 75px */
   left: var(--gutter-mobile);
   right: var(--gutter-mobile);
-  z-index: 15;
+  z-index: -1;
   background: var(--color-brand);
   border-radius: 0.5rem;
   /* Figma specifies literal white text on this mint background — see the
@@ -449,8 +465,21 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 }
 @media (min-width: 64rem) {
   /* Figma: 720px wide (== --content-width exactly), right-aligned with
-     the standard desktop gutter — not full-width, not centered. */
-  .banner { left: auto; right: var(--gutter-desktop); max-width: var(--content-width); }
+     the standard desktop gutter — not full-width, not centered. Direct
+     request: aligned to the same right edge as the last nav link
+     ("Kontakt"), not the raw viewport edge — .site-header itself spans
+     the full viewport, but .site-header__inner (which the nav sits in)
+     is centered and capped at --container-width, so past that width a
+     plain `right: var(--gutter-desktop)` on .banner drifts away from the
+     nav's actual right edge. This reproduces .site-header__inner's own
+     centering math (half the leftover space beyond --container-width)
+     so the two stay aligned at any viewport width. */
+  .banner {
+    top: 6.625rem; /* 106px */
+    left: auto;
+    right: calc(max(0rem, (100vw - var(--container-width)) / 2) + var(--gutter-desktop));
+    max-width: var(--content-width);
+  }
 }
 /* Figma's floating card uses 16px/20px top/bottom padding (16px left/right)
    and a 16px gap on mobile, 24px all around and a 24px gap at desktop —
@@ -461,7 +490,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   align-items: flex-start;
   padding: 1rem 1rem 1.25rem;
 }
-.banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1.125rem; font-weight: 700; }
+/* 16px both breakpoints — the user just unified this in Figma (desktop was
+   18px before). */
+.banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1rem; font-weight: 700; }
 .banner__text p:not(:first-child) { font-weight: 500; }
 .banner__link { color: #fff; font-weight: 600; text-decoration: underline; width: fit-content; }
 /* Exception to the site-wide "links turn mint on hover" policy: this link
