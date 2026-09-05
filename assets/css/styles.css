@@ -513,9 +513,23 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .banner__link:hover, .banner__link:focus-visible { color: #fff; }
 /* Figma's close icon (a real 24×24 "lucide/x" component, same one the nav
    uses — see renderBannerHTML) sits flush against the card's own padding,
-   with no extra padding of its own around it. */
+   with no extra padding of its own around it — the icon itself stays put. */
 .banner__dismiss {
   display: flex; background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0;
+  position: relative;
+}
+/* Enlarges the actual clickable/tappable area to 44×44 (WCAG 2.5.8's
+   minimum, and comfortable for a thumb) via an invisible pseudo-element
+   that overflows past the 24×24 visible icon, rather than adding real
+   padding that would push the icon away from Figma's exact position.
+   Especially useful here since part of the visible icon already sits
+   behind the header (see the .banner comment above on the overlap) —
+   a bigger invisible target makes the remaining visible/unobscured
+   sliver easier to actually hit. */
+.banner__dismiss::before {
+  content: '';
+  position: absolute;
+  inset: -0.625rem;
 }
 /* The global a/button focus-visible outline is --color-brand, which is
    invisible (1:1) against this banner's own brand-colored background.
