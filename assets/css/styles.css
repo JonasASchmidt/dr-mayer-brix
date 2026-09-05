@@ -616,17 +616,19 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .legal p { max-width: 42rem; }
 .legal p + p { margin-top: var(--space-3); }
 
-/* Clear the sticky header when jumping to an in-page anchor or landing on a
-   URL with a hash. Measured live header height is 104px below the 64rem
-   breakpoint and 169px at/above it (bar + stacked nav row), so scroll-margin
-   needs to grow at that same breakpoint too, each with a few px to spare. */
+/* Clicking a main nav item (or landing on a URL with a hash) should leave
+   the target section's top edge sitting flush against the sticky header's
+   bottom edge — no gap, no overlap. scroll-margin-top is therefore set to
+   the sticky header's own live-measured height exactly, not an
+   approximation with slack: 94.667px below the 64rem breakpoint, 142px
+   at/above it (the header's own padding/logo size both change there). */
 /* "schwerpunkte" is a plain <div id> (Leistungen and Schwerpunkte share
    one <section>, per Figma), not a <section id> like the rest — included
    explicitly so a direct #schwerpunkte link still clears the header. */
-section[id], #schwerpunkte { scroll-margin-top: 6.75rem; }
+section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
 
 @media (min-width: 64rem) {
-  section[id], #schwerpunkte { scroll-margin-top: 10.75rem; }
+  section[id], #schwerpunkte { scroll-margin-top: 8.875rem; }
 }
 
 .site-footer {
@@ -647,7 +649,11 @@ section[id], #schwerpunkte { scroll-margin-top: 6.75rem; }
 .site-footer__contact a { color: inherit; text-decoration: underline; }
 .site-footer__contact a:hover, .site-footer__contact a:focus-visible { color: var(--color-brand); }
 .site-footer__inner { display: flex; flex-direction: column; align-items: center; gap: 2.25rem; }
-.site-footer__links { font-family: var(--font-heading); font-size: 1.25rem; }
+/* The middot separator was replaced with real spacing between the two
+   links (double the ~14px gap the middot + its surrounding spaces used
+   to produce), via flex gap instead of relying on collapsible whitespace
+   between inline elements. */
+.site-footer__links { display: inline-flex; gap: 1.75rem; font-family: var(--font-heading); font-size: 1.25rem; }
 /* Figma: the contact line and the credit line beneath it are grouped
    together with their own tight 8px gap — not the outer 36px that
    separates them, as a group, from the Impressum/Datenschutz links line
