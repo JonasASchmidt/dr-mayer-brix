@@ -216,7 +216,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   z-index: 15;
   background: var(--color-brand);
   border-radius: 0.5rem;
-  color: #fff;
+  /* White text on --color-brand measures 3.07:1 (fails the 4.5:1 text
+     minimum; the banner's 1rem/16px copy doesn't qualify as "large text").
+     --color-ink on --color-brand measures 5.31:1 and passes, matching the
+     ink-on-brand pattern already used for the Fachartikel buy button. */
+  color: var(--color-ink);
 }
 .banner__inner {
   display: flex;
@@ -227,13 +231,22 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 }
 .banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1rem; font-weight: 700; }
 .banner__text p:not(:first-child) { font-weight: 500; }
-.banner__link { color: #fff; font-weight: 600; text-decoration: underline; width: fit-content; }
+.banner__link { color: var(--color-ink); font-weight: 600; text-decoration: underline; width: fit-content; }
 .banner__dismiss {
-  background: none; border: none; color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 var(--space-2);
+  background: none; border: none; color: var(--color-ink); font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 var(--space-2);
 }
+/* The global a/button focus-visible outline is --color-brand, which is
+   invisible (1:1) against this banner's own brand-colored background.
+   Override to ink here, which measures 5.31:1 against the brand background. */
+.banner a:focus-visible, .banner button:focus-visible { outline-color: var(--color-ink); }
 
 @media (min-width: 64rem) {
-  .banner { left: auto; width: 45rem; max-width: calc(100% - 2 * var(--gutter-desktop)); right: var(--gutter-desktop); top: 6.625rem; }
+  /* Measured live header height at >=64rem is 169px (142px bar + 27px nav
+     row) vs. 104px below that breakpoint, so the banner needs a taller top
+     offset here or its top edge (including the dismiss button) renders
+     behind the sticky header. 10.75rem (172px) clears 169px with a 3px
+     margin. */
+  .banner { left: auto; width: 45rem; max-width: calc(100% - 2 * var(--gutter-desktop)); right: var(--gutter-desktop); top: 10.75rem; }
 }
 
 .section { padding-block: 3rem; }
@@ -242,6 +255,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .section--dark h2, .section--dark h3, .section--dark h4 { color: #fff; }
 .section--dark a { color: #fff; }
 .section--dark .uppercase-label { color: #8fe0ea; }
+/* The global a/button focus-visible outline (--color-brand) measures only
+   2.82:1 on --color-bg-light and 2.74:1 on --color-bg-dark, both under the
+   3:1 minimum for non-text UI contrast (SC 1.4.11), which would make the
+   accordion's focus state hard to see once tabbed to. Override with
+   already-passing tokens for each section background: ink on bg-light
+   (14.95:1) and paper/white on bg-dark (8.43:1). */
+.section--alt a:focus-visible, .section--alt button:focus-visible { outline-color: var(--color-ink); }
+.section--dark a:focus-visible, .section--dark button:focus-visible { outline-color: var(--color-paper); }
 .section h2 { font-size: 1.75rem; margin-bottom: var(--space-4); }
 .section__lede { font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.03em; color: var(--color-brand-dark); }
 .section p + p { margin-top: var(--space-4); }
@@ -337,10 +358,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .legal p + p { margin-top: var(--space-3); }
 
 /* Clear the sticky header when jumping to an in-page anchor or landing on a
-   URL with a hash. Live header height is ~69px on mobile and ~86px at the
-   64rem+ desktop breakpoint (nav sits inline in the header bar there), so
-   6rem (96px) clears both with room to spare. */
-section[id] { scroll-margin-top: 6rem; }
+   URL with a hash. Measured live header height is 104px below the 64rem
+   breakpoint and 169px at/above it (bar + stacked nav row), so scroll-margin
+   needs to grow at that same breakpoint too, each with a few px to spare. */
+section[id] { scroll-margin-top: 6.75rem; }
+
+@media (min-width: 64rem) {
+  section[id] { scroll-margin-top: 10.75rem; }
+}
 
 .site-footer {
   background: var(--color-ink);
