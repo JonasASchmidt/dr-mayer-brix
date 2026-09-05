@@ -18,7 +18,7 @@ export function initNav(toggleEl, panelEl) {
   });
 
   panelEl.addEventListener('click', (event) => {
-    if (isOpen && event.target.closest('a')) setOpen(false);
+    if (isOpen && event.target.closest('a, .site-nav__close')) setOpen(false);
   });
 }
 

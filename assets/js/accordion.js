@@ -12,7 +12,11 @@ export function initAccordions(root) {
       isOpen = nextAccordionState(isOpen);
       item.classList.toggle('is-open', isOpen);
       trigger.setAttribute('aria-expanded', String(isOpen));
-      panel.hidden = !isOpen;
+      // A CSS grid-rows transition (0fr/1fr) animates the collapse/expand
+      // smoothly, which the old `hidden` attribute (display:none) can't —
+      // `inert` takes over hidden's job of pulling closed-panel content
+      // out of focus order and assistive-tech exposure.
+      panel.inert = !isOpen;
       // Figma exports the open/closed chevron as two distinct icon assets
       // (left- vs down-pointing), not one icon rotated by CSS.
       if (chevron) {

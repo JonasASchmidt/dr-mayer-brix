@@ -7,33 +7,24 @@ test('escapeHtml escapes angle brackets and ampersands', () => {
   assert.equal(escapeHtml('<b> & "x"'), '&lt;b&gt; &amp; &quot;x&quot;');
 });
 
-test('renderBannerHTML returns empty string when disabled', () => {
-  assert.equal(renderBannerHTML({ enabled: false, message: 'hi' }), '');
+test('renderBannerHTML returns empty string for empty/missing text', () => {
+  assert.equal(renderBannerHTML(''), '');
+  assert.equal(renderBannerHTML(undefined), '');
+  assert.equal(renderBannerHTML(null), '');
 });
 
-test('renderBannerHTML returns empty string when enabled but message is empty/missing', () => {
-  assert.equal(renderBannerHTML({ enabled: true, message: '' }), '');
-  assert.equal(renderBannerHTML({ enabled: true }), '');
+test('renderBannerHTML returns empty string for whitespace-only text', () => {
+  assert.equal(renderBannerHTML('   \n\n  \t  '), '');
 });
 
 test('renderBannerHTML renders paragraphs split on blank lines', () => {
-  const html = renderBannerHTML({ enabled: true, message: 'Zeile eins\n\nZeile zwei' });
+  const html = renderBannerHTML('Zeile eins\n\nZeile zwei');
   assert.match(html, /<p>Zeile eins<\/p>/);
   assert.match(html, /<p>Zeile zwei<\/p>/);
 });
 
-test('renderBannerHTML includes the optional link when present', () => {
-  const html = renderBannerHTML({
-    enabled: true,
-    message: 'Info',
-    linkLabel: 'Termin buchen',
-    linkUrl: 'https://webtermin.medatixx.de/#/bec45e38-6a42-46f2-a0da-36f22b64ebee/search',
-  });
-  assert.match(html, /<a class="banner__link" href="https:\/\/webtermin\.medatixx\.de\/#\/bec45e38-6a42-46f2-a0da-36f22b64ebee\/search">Termin buchen<\/a>/);
-});
-
 test('renderBannerHTML obfuscates a plain-text email address in the message', () => {
-  const html = renderBannerHTML({ enabled: true, message: 'Schreiben Sie uns: mbpraxis@duck.com' });
+  const html = renderBannerHTML('Schreiben Sie uns: mbpraxis@duck.com');
   assert.equal(html.includes('mbpraxis@duck.com'), false, 'raw address must not appear in the source HTML');
   assert.match(html, /class="js-email" data-user="mbpraxis" data-domain="duck\.com"/);
 });

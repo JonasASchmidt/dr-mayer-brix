@@ -3,6 +3,7 @@ import { initVideoFacades } from './video-facade.js';
 import { initAccordions } from './accordion.js';
 import { loadBanner, dismissBanner } from './banner.js';
 import { initEmailLinks } from './email-obfuscate.js';
+import { initOnlineRezeptionButtons } from './online-rezeption.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('nav-toggle');
@@ -22,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initAccordions(document);
 
   initEmailLinks(document);
+
+  initOnlineRezeptionButtons(document);
 
   const bannerSlot = document.getElementById('site-banner');
   if (bannerSlot) {
