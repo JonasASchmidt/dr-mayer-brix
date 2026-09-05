@@ -40,7 +40,7 @@ export function buildScrollSpyMap(sectionIds, linkedIds) {
   return map;
 }
 
-export function initScrollSpy(navEl, sectionEls) {
+export function initScrollSpy(navEl, sectionEls, headerEl) {
   if (!sectionEls.length) return;
   const links = new Map(
     [...navEl.querySelectorAll('a[href^="#"]')].map((a) => [a.getAttribute('href').slice(1), a])
@@ -57,29 +57,27 @@ export function initScrollSpy(navEl, sectionEls) {
     }
   }
 
-  const visible = new Map();
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        visible.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
-      }
-      let bestId = null;
-      let bestRatio = 0;
-      for (const [id, ratio] of visible) {
-        if (ratio > bestRatio) {
-          bestRatio = ratio;
-          bestId = id;
-        }
-      }
-      if (bestId) setCurrent(bestId);
-    },
-    // A band centered just below the sticky header: a section counts as
-    // "current" once it occupies that band, not merely on first touching
-    // the viewport edge.
-    { rootMargin: '-15% 0px -55% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
-  );
-  sectionEls.forEach((section) => observer.observe(section));
+  // "Current" is the last section (in document order) whose top has
+  // scrolled up past the sticky header — i.e. whichever section's heading
+  // sits right under the header right now. Deliberately not an
+  // IntersectionObserver ratio comparison (the previous approach): ratio is
+  // relative to each section's own height, which varies wildly across this
+  // page (a 700px section vs. a 1800px one), and the observer only re-fires
+  // when a ratio crosses one of its fixed thresholds — both of which let a
+  // stale "current" section linger after jumping straight into a much
+  // taller section, until the user scrolled a little further.
+  function update() {
+    const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0;
+    const line = headerHeight + 1;
+    let current = sectionEls[0];
+    for (const section of sectionEls) {
+      if (section.getBoundingClientRect().top <= line) current = section;
+      else break;
+    }
+    setCurrent(current.id);
+  }
 
-  // First section is current before any scrolling/intersection fires.
-  setCurrent(sectionEls[0].id);
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 }

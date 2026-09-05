@@ -253,6 +253,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   line-height: 1.5;
 }
 .site-nav a:hover, .site-nav a.is-current { color: var(--color-brand); }
+/* "Praxisteam"/"Unser Buch" are the full labels on mobile; desktop shows
+   the shortened "Team"/"Buch" instead (per direct request, mobile unchanged) —
+   both spans exist in the markup and CSS toggles which one is shown. */
+.nav-label--short { display: none; }
 .site-nav__close {
   display: flex;
   align-items: center;
@@ -305,6 +309,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
     padding-block: 0.875rem 0;
   }
   .site-nav a { width: auto; text-align: left; padding: 0; font-size: 1.125rem; line-height: 1.25; }
+  .nav-label--full { display: none; }
+  .nav-label--short { display: inline; }
 }
 
 .hero { position: relative; }

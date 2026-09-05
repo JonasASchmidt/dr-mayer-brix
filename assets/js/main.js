@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // index.html#... instead and have no local sections to observe.
   if (nav) {
     const sections = [...document.querySelectorAll('main > section[id]')];
-    if (sections.length) initScrollSpy(nav, sections);
+    if (sections.length) initScrollSpy(nav, sections, document.querySelector('.site-header'));
   }
 
   initVideoFacades(document);
