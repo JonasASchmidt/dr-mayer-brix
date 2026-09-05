@@ -318,6 +318,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   /* Figma specifies literal white text on this mint background — see the
      accessibility flag list for this pairing's contrast ratio. */
   color: #fff;
+  /* Figma's one named drop-shadow style ("PMB Drop Shadow v01"), reused
+     identically on every card in this design (accordion items,
+     Schwerpunkte cards, the Buch card) — the banner overlay carries it too. */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
 }
 .banner__inner {
   display: flex;
@@ -375,7 +379,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 /* Figma models "Leistungen" and "Schwerpunkte" as ONE combined section
    with a single 60px gap between the two content groups — not two
    separate sections each with their own .content gap (2.25rem/36px). */
-.leistungen-schwerpunkte .content { gap: 3.75rem; }
+.leistungen-schwerpunkte .content { display: flex; flex-direction: column; align-items: center; gap: 3.75rem; }
 .leistungen-group, .schwerpunkte-group { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
 .leistungen-group { gap: var(--space-6); }
 .schwerpunkte-group { gap: var(--space-7); }
@@ -449,7 +453,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .card-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-.team-photo { margin-top: var(--space-6); }
+/* Figma: Praxisteam's Content gaps (h2→intro-label, intro-label→photo)
+   are both 24px, not plain document-flow margins. .content itself is a
+   plain block container (not flex) elsewhere on the site, so this needs
+   its own explicit flex+gap rather than relying on a shared base rule. */
+#team .content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
+#team .content > h2 { margin-bottom: 0; }
 .team-photo img { border-radius: 0.75rem; width: 100%; height: auto; }
 .team-photo figcaption { margin-top: var(--space-3); font-size: 0.875rem; color: var(--color-ink); }
 
@@ -459,9 +468,18 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    rounded-rectangle placeholders with no visible border in the provided
    frame, so removing the border entirely (rather than inventing a color)
    matches the source most literally. */
-.embed-frame { margin-top: var(--space-6); aspect-ratio: 16 / 10; border-radius: 0.75rem; overflow: hidden; }
+.embed-frame { aspect-ratio: 16 / 10; border-radius: 0.75rem; overflow: hidden; }
 .embed-frame iframe { width: 100%; height: 100%; border: 0; }
-.embed-frame__note { margin-top: var(--space-2); font-size: 0.875rem; color: var(--color-ink); text-align: right; }
+.embed-frame__note { font-size: 0.875rem; color: var(--color-ink); text-align: right; }
+/* Figma: heading/intro-copy block and image+caption block are each their
+   own gap-32 (the section-wide .content default of 36px was too loose for
+   this particular gap); the image→caption gap inside is a tighter,
+   separate 12px, and the heading's own margin-bottom is 24px here (not
+   the sitewide 16px default) with 16px between the two intro paragraphs. */
+#einblicke .content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-6); }
+.einblicke-tour { display: flex; flex-direction: column; gap: var(--space-3); width: 100%; }
+.einblicke-intro > h2 { margin-bottom: var(--space-5); }
+.einblicke-intro > p + p { margin-top: 1rem; }
 
 /* Figma: the whole Buch section is ONE white drop-shadow card (not a dark
    section with plain text) — grey (#bdbcbc) page background behind it. */
@@ -523,7 +541,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   /* Figma specifies literal white text on the mint background — see the
      accessibility flag list for this pairing's contrast ratio. */
   width: 100%; background: var(--color-brand); color: #fff; border: none; border-radius: 0.5rem;
-  padding: var(--space-5); font-family: var(--font-body); font-weight: 600; font-size: 1rem; text-align: right; cursor: pointer;
+  padding: 1rem 1.25rem; font-family: var(--font-body); font-weight: 600; font-size: 1rem; text-align: right; cursor: pointer;
 }
 .fachartikel-buy__button:hover { opacity: 0.9; }
 
@@ -533,6 +551,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 }
 
 #kontakt .content { display: flex; flex-direction: column; gap: 2.25rem; }
+/* h2 is a direct flex child of .content here, so the global ".section h2"
+   margin-bottom would double up with this gap. */
+#kontakt .content > h2 { margin-bottom: 0; }
 .kontakt-info-row { display: grid; gap: 2rem; }
 /* Figma: address/phone/label are each 16px apart within the first block. */
 .kontakt-info-block > * + * { margin-top: 1rem; }
