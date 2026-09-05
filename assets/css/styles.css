@@ -658,6 +658,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   margin-top: 0;
   transition: grid-template-rows 0.22s ease, margin-top 0.22s ease;
 }
+/* 24px mobile — a real itemSpacing between two separate Figma text nodes
+   (label, body) there. Desktop fuses them into ONE text node instead
+   (verified live via getRangeParagraphSpacing on the fused node, across
+   all 4 collapsibles): the real gap is 16px, not this same 24px — see the
+   desktop override at the end of this file. */
 .accordion__item.is-open .accordion__panel { grid-template-rows: 1fr; margin-top: var(--space-5); }
 .accordion__panel-inner { overflow: hidden; min-height: 0; font-size: 0.875rem; }
 .accordion__panel-inner p + p { margin-top: var(--space-2); }
@@ -988,7 +993,8 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
   .schwerpunkte__row { gap: var(--space-7); }
   .banner__inner { gap: var(--space-5); padding: var(--space-5); }
   .accordion__trigger { font-size: 1.5rem; }
-  .schwerpunkte__card-trigger { font-size: 1.5rem; }
+  /* 16px, not the mobile 24px above — see the base-rule comment. */
+  .accordion__item.is-open .accordion__panel { margin-top: var(--space-4); }
   .hero__contact h2 { font-size: 2rem; }
   .team-photo figcaption { font-size: 0.875rem; }
   .embed-frame__note { font-size: 0.875rem; }
