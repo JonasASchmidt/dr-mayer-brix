@@ -1,6 +1,6 @@
-# Diese Datei sorgt dafür dass ein Ankündigungs-Banner auf der Website der Praxis Dr. Mayer-Brix erscheint.
-# Sobald hier drin Inhalte ist dessen Zeilen kein # voran stehen haben, wird der Inhalt im banner angezeigt.
+# Diese Datei sorgt dafür dass ein Banner mit dem enthaltenen Text auf der Website der HNO Praxis Dr. Mayer-Brix erscheint.
+# Sobald in dieser Datei Zeilen stehen denen kein # voran steht, werden diese im Banner angezeigt.
 # Wenn Text mit **und** umschlossen ist, wird er im Banner fett hervorgehoben.
 
-**Dies ist eine besondere Nachricht wie z.B. dass unsere Praxis vom 31.8. bis zum 4.9.2026 geschlossen war.**
-Dies ist der reguläre text in diesem Banner für weitere Hinweise. Löschen Sie ihn oder kommentieren Sie alle Zeilen mit # aus, um das Banner auszublenden.
+# **Dies ist eine besondere Nachricht wie z.B. dass unsere Praxis vom 31.8. bis zum 4.9.2026 geschlossen war.**
+# Dies ist der reguläre text in diesem Banner für weitere Hinweise. Löschen Sie ihn oder kommentieren Sie alle Zeilen mit # aus, um das Banner auszublenden.
