@@ -230,6 +230,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .hero__welcome h1 { color: var(--color-brand); }
 .hero__welcome p, .hero__contact p { margin-top: var(--space-3); }
 .hero__signature { font-weight: 600; }
+/* Figma: only the hour-detail paragraphs (the 4 plain, class-less <p>s
+   under Telefonzeiten/Öffnungszeiten) in the hero's compact contact column
+   are explicitly 14px — .hero__phone and .uppercase-label are their own,
+   separately-specified 16px roles and must stay excluded. The Kontakt
+   section's own (larger, later) copy of the hour paragraphs is a separate,
+   explicitly-16px treatment; the two are not meant to match. */
+.hero__contact p:not(.hero__phone):not(.uppercase-label) { font-size: 0.875rem; }
 /* Figma's Willkommen "Content" wrapper sets a mint (--color-brand) base
    text color inherited by every child that has no more specific color
    class — the H1, the "Kontakt" heading, the "Sie erreichen uns..." label,
@@ -331,11 +338,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    override keeps their original 20px visual size instead of growing to the
    default h3 (24px) size. */
 .schwerpunkte__row h3, .schwerpunkte__full h3 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
-/* Figma: body text under Kinder/AVWS is explicitly 14px (Body text SM),
-   not the site's 16px default — the Chronische Erkrankungen blurb above
-   them, by contrast, IS explicitly 16px, so this override is scoped to
-   just the two-column row, not .schwerpunkte__full. */
-.schwerpunkte__row p { font-size: 0.875rem; }
+/* Figma: body text under Chronische Erkrankungen AND under Kinder/AVWS is
+   explicitly 14px (Body text SM) throughout — not the site's 16px default.
+   Only the section's own intro paragraphs (Schwerpunkte's own 2 lede
+   paragraphs, outside .schwerpunkte__full/.schwerpunkte__row) stay 16px. */
+.schwerpunkte__row p, .schwerpunkte__full p { font-size: 0.875rem; }
 
 @media (min-width: 48rem) {
   .schwerpunkte__row { grid-template-columns: 1fr 1fr; }
@@ -369,9 +376,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .buch-layout { display: grid; gap: var(--space-6); align-items: start; margin-top: var(--space-4); }
 .buch-layout img { border-radius: 0.5rem; max-width: 13rem; margin-inline: auto; }
-/* Figma: every paragraph and the price line in this section are explicitly
-   14px (Body text SM) — no larger/bolder emphasis on the price specifically. */
+/* Figma: the 4 body paragraphs, the Leseprobe link, and the price line are
+   all explicitly 14px (Body text SM) — no larger/bolder emphasis on the
+   price specifically. The tagline (a <p class="uppercase-label"> sharing
+   this same selector) is its own, separately-specified 16px role — the
+   second, more specific rule below wins back its correct size. */
 .buch-layout p, .buch-layout a { font-size: 0.875rem; margin-top: var(--space-3); }
+.buch-layout p.uppercase-label { font-size: 1rem; }
 .price { font-size: 0.875rem; margin-top: var(--space-3); }
 
 @media (min-width: 48rem) {
@@ -385,10 +396,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Figma: all Fachartikel body text (paragraphs and list items) is 14px
-   (Body text SM), not the site's 16px default. */
+/* Figma: the "Auszug aus dem Fachartikel..." lede AND the body paragraphs/
+   list items are all 14px (Body text SM) — but the "PDF per E-Mail..."
+   label (also a <p class="uppercase-label">, otherwise identical styling)
+   is its own, separately-specified 16px role. Both ledes carry an extra
+   .fachartikel-item__lede class so the 14px rule can target them
+   specifically despite sharing .uppercase-label with the 16px PDF label. */
 .fachartikel-layout { display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-4); }
 .fachartikel-item p, .fachartikel-item ul { margin-top: var(--space-3); font-size: 0.875rem; }
+.fachartikel-item p.uppercase-label { font-size: 1rem; }
+.fachartikel-item p.fachartikel-item__lede { font-size: 0.875rem; }
 .fachartikel-item ul { padding-left: 1.25rem; }
 .fachartikel-item li { margin-top: var(--space-2); font-weight: 600; }
 /* Figma: the "Hilfe, ich bin ständig krank..." pull-quote paragraph is
