@@ -32,6 +32,12 @@ test('renderBannerHTML includes the optional link when present', () => {
   assert.match(html, /<a class="banner__link" href="https:\/\/webtermin\.medatixx\.de\/#\/bec45e38-6a42-46f2-a0da-36f22b64ebee\/search">Termin buchen<\/a>/);
 });
 
+test('renderBannerHTML obfuscates a plain-text email address in the message', () => {
+  const html = renderBannerHTML({ enabled: true, message: 'Schreiben Sie uns: mbpraxis@duck.com' });
+  assert.equal(html.includes('mbpraxis@duck.com'), false, 'raw address must not appear in the source HTML');
+  assert.match(html, /class="js-email" data-user="mbpraxis" data-domain="duck\.com"/);
+});
+
 test('dismissBanner sets sessionStorage and isBannerDismissed reads it back', () => {
   // node:test runs in Node, not a browser — sessionStorage isn't global.
   // Stub a minimal sessionStorage before calling either function.

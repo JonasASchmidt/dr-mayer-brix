@@ -1,3 +1,5 @@
+import { obfuscateEmailsInHtml } from './email-obfuscate.js';
+
 export function escapeHtml(str) {
   return String(str)
     .replaceAll('&', '&amp;')
@@ -12,7 +14,10 @@ export function renderBannerHTML(data) {
     .split(/\n\s*\n/)
     .map((p) => p.trim())
     .filter(Boolean)
-    .map((p) => `<p>${escapeHtml(p).replaceAll('\n', '<br>')}</p>`)
+    // The banner is CMS-edited free text; any email address the father
+    // types into it gets the same spam-proof obfuscation as everywhere
+    // else on the site, not just the hard-coded footer/legal-page ones.
+    .map((p) => `<p>${obfuscateEmailsInHtml(escapeHtml(p).replaceAll('\n', '<br>'))}</p>`)
     .join('');
   const link = data.linkUrl && data.linkLabel
     ? `<a class="banner__link" href="${escapeHtml(data.linkUrl)}">${escapeHtml(data.linkLabel)}</a>`

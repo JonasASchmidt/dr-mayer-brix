@@ -313,6 +313,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1.125rem; font-weight: 700; }
 .banner__text p:not(:first-child) { font-weight: 500; }
 .banner__link { color: #fff; font-weight: 600; text-decoration: underline; width: fit-content; }
+/* Exception to the site-wide "links turn mint on hover" policy: this link
+   sits ON the brand-mint banner background, so a mint hover color would
+   be effectively invisible against it (see flagged accessibility list).
+   Keep it white on hover/focus instead — same as its resting state. */
+.banner__link:hover, .banner__link:focus-visible { color: #fff; }
 .banner__dismiss {
   background: none; border: none; color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 var(--space-2);
 }
@@ -326,6 +331,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .section--dark { background: var(--color-bg-dark); color: #fff; }
 .section--dark h2, .section--dark h3, .section--dark h4 { color: #fff; }
 .section--dark a { color: #fff; }
+/* The site-wide a:hover rule and .section--dark a have equal specificity
+   (one class + one tag each); without this, source order alone would let
+   .section--dark a's white win over the hover state, silently defeating
+   the "every link turns mint on hover" policy on dark section backgrounds. */
+.section--dark a:hover, .section--dark a:focus-visible { color: var(--color-brand); }
 /* Figma's Buch "Content" wrapper sets a mint (--color-brand) base color;
    the tagline paragraph has no more specific override so it inherits mint
    — same value as .uppercase-label's own default, so no override is
@@ -472,8 +482,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .kontakt-info-row { grid-template-columns: 1fr 11.25rem 11.25rem; }
 }
 
-.legal h1 { margin-bottom: var(--space-5); }
-.legal h2 { font-size: 1.25rem; margin-top: var(--space-7); margin-bottom: var(--space-3); }
+.legal h1 { margin-bottom: var(--space-5); color: var(--color-brand); }
+.legal h2 { font-size: 1.25rem; margin-top: var(--space-7); margin-bottom: var(--space-3); color: var(--color-brand); }
 .legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand); }
 .legal p { max-width: 42rem; }
 .legal p + p { margin-top: var(--space-3); }
@@ -494,13 +504,17 @@ section[id] { scroll-margin-top: 6.75rem; }
   padding-block: 3rem;
   text-align: center;
 }
-/* Figma: the Impressum/Datenschutz link line explicitly colors each link
-   #f5f5f5 and underlines it — but the mailto link in the contact line has
-   NO color or underline override, so it inherits the line's own grey base
-   color and renders as plain (non-underlined) text, unlike the nav links
-   above it. Two different, deliberate treatments in the source. */
+/* Figma itself only underlines the Impressum/Datenschutz link line and
+   leaves the mailto link in the contact line unstyled (inherited grey,
+   no underline). The user has since overridden that specific nuance with
+   a site-wide policy: every text link underlines and turns mint on
+   hover, no exceptions — so the contact mailto link is deliberately
+   brought in line with that policy rather than left at its literal
+   Figma treatment. */
 .site-footer__links a { color: var(--color-bg-light); text-decoration: underline; }
-.site-footer__contact a { color: inherit; text-decoration: none; }
+.site-footer__links a:hover, .site-footer__links a:focus-visible { color: var(--color-brand); }
+.site-footer__contact a { color: inherit; text-decoration: underline; }
+.site-footer__contact a:hover, .site-footer__contact a:focus-visible { color: var(--color-brand); }
 .site-footer__inner { display: flex; flex-direction: column; gap: 2.25rem; }
 .site-footer__links { font-family: var(--font-heading); font-size: 1.25rem; }
 .site-footer__contact { font-size: 0.875rem; }
