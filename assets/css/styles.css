@@ -491,17 +491,31 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   padding: 1rem 1rem 1.25rem;
 }
 /* 16px both breakpoints — the user just unified this in Figma (desktop was
-   18px before). */
-.banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1rem; font-weight: 700; }
-.banner__text p:not(:first-child) { font-weight: 500; }
+   18px before). Paragraph gap is 12px (getRangeParagraphSpacing on the
+   live text node), not the 8px var(--space-2) an earlier pass used.
+   Default weight is Medium — <strong> (from **bold** in banner.txt, see
+   renderBannerHTML) is the only way any of it becomes Bold; there's no
+   more automatic "first paragraph is bold" behavior. */
+.banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-3); font-size: 1rem; font-weight: 500; }
+.banner__text strong { font-weight: 700; }
+/* Figma's "Layout Wrapper" frame insets the text 4px (top/left/bottom,
+   not right) on mobile, 6px at desktop — a second, smaller padding layer
+   nested inside the card's own 16px/24px padding, not folded into it. */
+.banner__text { padding: 0.25rem 0 0.25rem 0.25rem; }
+@media (min-width: 64rem) {
+  .banner__text { padding: 0.375rem 0 0.375rem 0.375rem; }
+}
 .banner__link { color: #fff; font-weight: 600; text-decoration: underline; width: fit-content; }
 /* Exception to the site-wide "links turn mint on hover" policy: this link
    sits ON the brand-mint banner background, so a mint hover color would
    be effectively invisible against it (see flagged accessibility list).
    Keep it white on hover/focus instead — same as its resting state. */
 .banner__link:hover, .banner__link:focus-visible { color: #fff; }
+/* Figma's close icon (a real 24×24 "lucide/x" component, same one the nav
+   uses — see renderBannerHTML) sits flush against the card's own padding,
+   with no extra padding of its own around it. */
 .banner__dismiss {
-  background: none; border: none; color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 var(--space-2);
+  display: flex; background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0;
 }
 /* The global a/button focus-visible outline is --color-brand, which is
    invisible (1:1) against this banner's own brand-colored background.
@@ -599,10 +613,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    row's even 20px top/bottom) per Figma's two distinct component variants. */
 .accordion__item.is-open { padding: 1.75rem 1.75rem 2rem 2rem; }
 .accordion__trigger {
-  /* Centered (not flex-start) so the 24px chevron sits centered against
-     the label's own 36px line-box instead of pinned to its top, which
-     left the chevron looking off-center with extra space below it. */
-  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-5);
+  /* flex-start, not center: direct request is that the chevron always
+     sits at the top, in line with the label's first line, however many
+     lines a longer label wraps to — align-items:center would instead
+     center it against the whole wrapped block. For every label actually
+     in this design (all one line), that's visually identical to centered
+     alignment, which .accordion__chevron's own margin-top below
+     reproduces precisely for the single-line case. */
+  width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-5);
   padding: 0; background: none; border: none; cursor: pointer; text-align: left;
   /* Re-verified live against Figma (the user updated this style directly
      while this was being built): brand heading font, original case — no
@@ -613,7 +631,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
      24px at desktop — a real breakpoint difference, not one shared size. */
   color: var(--color-brand); font-family: var(--font-heading); font-weight: 500; text-transform: none; font-size: 1.25rem; line-height: 1.5;
 }
-.accordion__chevron { flex-shrink: 0; }
+/* Nudges the 24px chevron down so its center lands on the first line's own
+   center: (line-height − chevron height) / 2 = (30px − 24px) / 2 = 3px
+   mobile, (36px − 24px) / 2 = 6px at the 24px desktop trigger size below. */
+.accordion__chevron { flex-shrink: 0; margin-top: 0.1875rem; }
+@media (min-width: 64rem) {
+  .accordion__chevron { margin-top: 0.375rem; }
+}
 .accordion__panel {
   display: grid;
   grid-template-rows: 0fr;
