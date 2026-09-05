@@ -201,7 +201,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
     padding-block: 0;
     flex-shrink: 0;
   }
-  .site-header__logo img { height: 5.125rem; }
+  .site-header__logo img { height: 5.125rem; width: 11.25rem; }
   .nav-toggle { display: none; }
   .site-nav {
     display: flex;
