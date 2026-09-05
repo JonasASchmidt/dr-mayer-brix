@@ -97,11 +97,12 @@
         <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind: Browsertyp und Browserversion, verwendetes Betriebssystem, Referrer URL, Hostname des zugreifenden Rechners, Uhrzeit der Serveranfrage, IP-Adresse.</p>
         <p>Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Grundlage für die Datenverarbeitung ist Art. 6 Abs. 1 lit. b DSGVO, der die Verarbeitung von Daten zur Erfüllung eines Vertrags oder vorvertraglicher Maßnahmen gestattet.</p>
 
-        <h3>Kontaktformular</h3>
-        <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>
-        <p>Die Verarbeitung der in das Kontaktformular eingegebenen Daten erfolgt somit ausschließlich auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Sie können diese Einwilligung jederzeit widerrufen. Dazu reicht eine formlose Mitteilung per E-Mail an uns. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitungsvorgänge bleibt vom Widerruf unberührt.</p>
-        <p>Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt (z.B. nach abgeschlossener Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen – insbesondere Aufbewahrungsfristen – bleiben unberührt.</p>
-        <p>Diese Anfragen werden ab dem Relaunch dieser Website über Netlify Forms verarbeitet, gehostet von Netlify, Inc. (San Francisco, USA).</p>
+        <!-- ACCURACY NOTE: a "Kontaktformular" section previously stood here, describing
+             a contact form that this redesign removes entirely (per the site owner's
+             explicit decision to match the new design, which has no contact form —
+             visitors reach the practice via phone, the Online-Rezeption widget below,
+             or the mailto link in the footer). Removed rather than left describing a
+             form that no longer exists. -->
 
         <h2>4. Plugins und Tools</h2>
         <!-- ACCURACY NOTE, flagged not silently fixed: the previous Datenschutzerklärung
@@ -134,6 +135,11 @@
         <h3>PayPal</h3>
         <p>Auf dieser Website bieten wir die Bezahlung via PayPal an. Anbieter dieses Zahlungsdienstes ist die PayPal (Europe) S.à.r.l. et Cie, S.C.A., 22-24 Boulevard Royal, L-2449 Luxembourg. Wenn Sie die Bezahlung via PayPal auswählen, werden die von Ihnen eingegebenen Zahlungsdaten an PayPal übermittelt. Näheres entnehmen Sie der Datenschutzerklärung von PayPal: <a href="https://www.paypal.com/de/webapps/mpp/ua/privacy-full">paypal.com/de/webapps/mpp/ua/privacy-full</a>.</p>
 
+        <h3>321med Online-Rezeption</h3>
+        <p>Für die Terminvereinbarung nutzen wir den Dienst "321med Online-Rezeption" der 321 MED GmbH, Ohmstraße 1a, D-93055 Regensburg. Der Dienst wird als eingebettetes Widget auf unserer Website bereitgestellt und ermöglicht es Ihnen, direkt online Termine zu vereinbaren und Anliegen zu übermitteln.</p>
+        <p>Bei Nutzung des Widgets werden die von Ihnen eingegebenen Daten (z.B. Name, Kontaktdaten, Terminwunsch) an 321 MED übermittelt und dort zur Bearbeitung Ihres Anliegens verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Erfüllung eines Vertrags bzw. vorvertraglicher Maßnahmen) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer reibungslosen Terminorganisation).</p>
+        <p>Weitere Informationen zum Umgang mit Ihren Daten durch 321 MED erhalten Sie direkt von 321 MED GmbH.</p>
+
         <!-- ACCURACY NOTE: a "jameda Siegel und Widget" section previously stood here,
              describing a jameda embed that this rebuilt site does not actually include —
              no jameda script, widget, or seal anywhere in the codebase. Declaring data
@@ -151,5 +157,12 @@
     </div>
   </footer>
   <script type="module" src="assets/js/main.js"></script>
+  <!-- 321med Online-Rezeption widget, provided directly by the practice's vendor
+       (321 MED GmbH) on 2026-09-04. No SRI hash: this is a vendor-hosted,
+       server-rendered widget script expected to update without a version bump,
+       same category as the PayPal SDK script elsewhere on this site — pinning
+       a hash would break it on the vendor's next legitimate update. -->
+  <script src="https://321med17.com/cdn/server/11cb0eefca4e16e350aca235e8bea2608a35c85f/321med.js"></script>
+  <script src="https://321med-cdn.com/321med.js"></script>
 </body>
 </html>
