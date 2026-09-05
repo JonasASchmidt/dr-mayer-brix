@@ -12,7 +12,8 @@ export function escapeHtml(str) {
 // empty (or whitespace-only) = banner off, anything else = banner on with
 // that text. No JSON, no enabled flag to flip — editing the file's content
 // IS the on/off switch, so a non-technical editor can't get the syntax
-// wrong. Blank lines split the text into paragraphs.
+// wrong. Every line is its own paragraph, each with a small gap before the
+// next — blank lines are just skipped, not required to separate lines.
 //
 // Wrap any part of the text in **double asterisks** to highlight/bold it
 // (matches Figma's "Bold" runs) — everything else renders at the default
@@ -42,21 +43,30 @@ function stripComments(raw) {
 export function renderBannerHTML(text) {
   const trimmed = stripComments(text || '').trim();
   if (!trimmed) return '';
+  // Every line is its own paragraph — not just blank-line-separated
+  // blocks. Figma's own "paragraph spacing" (12px, verified live via
+  // getRangeParagraphSpacing) applies at every line break in the source
+  // text node, including the single \n between this banner's two lines,
+  // not only at blank-line gaps. Rendering those as one <p> with an
+  // internal <br> (the previous approach) meant .banner__text's flex gap
+  // never applied there at all — a <br> doesn't create a second flex
+  // item for `gap` to act between. One <p> per line makes every line
+  // break a real paragraph boundary, so the gap actually applies
+  // everywhere Figma shows spacing. A blank line just becomes an empty
+  // line here and disappears via the filter below, same as before.
   const paragraphs = trimmed
-    .split(/\n\s*\n/)
+    .split('\n')
     .map((p) => p.trim())
     .filter(Boolean)
     .map((p) => {
       // Escape first so **markers** and any HTML-special characters in the
-      // author's text can't collide, then apply bold, then line breaks,
-      // then obfuscate any email address the same way as everywhere else
-      // on the site — order matters here (each step assumes plain text
-      // from the step before it hasn't turned into markup it needs to
-      // avoid re-processing).
+      // author's text can't collide, then apply bold, then obfuscate any
+      // email address the same way as everywhere else on the site — order
+      // matters here (each step assumes plain text from the step before
+      // it hasn't turned into markup it needs to avoid re-processing).
       const escaped = escapeHtml(p);
       const bolded = escaped.replace(BOLD_RE, '<strong>$1</strong>');
-      const withBreaks = bolded.replaceAll('\n', '<br>');
-      return `<p>${obfuscateEmailsInHtml(withBreaks)}</p>`;
+      return `<p>${obfuscateEmailsInHtml(bolded)}</p>`;
     })
     .join('');
   // No .container here: the banner is now a floating card positioned and

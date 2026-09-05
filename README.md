@@ -19,8 +19,9 @@ file: `content/banner.txt`.
 
 - **Empty file → banner is off.** Nothing else to flip — there's no separate
   on/off setting to get wrong.
-- **Any text in the file → banner is on**, showing that text. A blank line
-  starts a new paragraph.
+- **Any text in the file → banner is on**, showing that text. Every line
+  becomes its own paragraph with a small gap before the next one — you
+  don't need a blank line between lines to get that spacing.
 - **`**double asterisks**` → bold/highlighted.** Everything else renders at
   the normal (Medium) weight. Example:
   `**Praxis geschlossen vom 31.8. bis 4.9.**` renders that sentence bold.
