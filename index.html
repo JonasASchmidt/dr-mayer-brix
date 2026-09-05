@@ -215,19 +215,34 @@
       </div>
     </section>
 
-    <section id="buch" class="section section--dark">
-      <div class="content buch-layout">
-        <img src="assets/img/book-cover.webp" alt='Buchcover "Klassische Homöopathie in der HNO-Heilkunde"' width="212" height="300" loading="lazy">
-        <div>
+    <!-- Figma: this section is NOT a dark section — grey (#bdbcbc) page
+         background, but the whole thing is one single white drop-shadow
+         card, with the heading back in ink, not white. -->
+    <section id="buch" class="section buch-section">
+      <div class="content">
+        <div class="buch-card">
           <h2>Unser Buch</h2>
           <p class="uppercase-label">Klassische Homöopathie in der HNO-Heilkunde</p>
-          <p>Die Verbindung von Schulmedizin mit alternativen Heilverfahren ist eine optimale Kombination.</p>
-          <p>In diesem Buch habe ich für jedes HNO-Krankheitsbild den aktuellen schulmedizinischen Wissensstand und die naturheilkundliche Behandlung mit vielen Abbildungen verständlich erläutert und durch Fallbeispiele illustriert.</p>
-          <p>Von Polypen (Adenoiden) bei Kindern, über Paukenergüsse und Allergien bis zu chronischen Nebenhöhlen- und Halsentzündungen finden Sie alle häufigen Erkrankungen ausführlich beschrieben.</p>
-          <p>Interessant für Ärzte, Heilpraktiker und alle von der Homöopathie begeisterten Laien.</p>
-          <p><a href="https://www.narayana-verlag.de/Klassische-Homoeopathie-in-der-HNO-Heilkunde-Joachim-Mayer-Brix/b24327">Eine Leseprobe ist auf der Website des Narayana-Verlags zu finden.</a></p>
-          <p class="price">69,90 €</p>
-          <div id="paypal-button-container"></div>
+          <div class="buch-layout">
+            <img src="assets/img/book-cover.webp" alt='Buchcover "Klassische Homöopathie in der HNO-Heilkunde"' width="245" height="344" loading="lazy">
+            <div>
+              <p>Die Verbindung von Schulmedizin mit alternativen Heilverfahren ist eine optimale Kombination.</p>
+              <p>In diesem Buch habe ich für jedes HNO-Krankheitsbild den aktuellen schulmedizinischen Wissensstand und die naturheilkundliche Behandlung mit vielen Abbildungen verständlich erläutert und durch Fallbeispiele illustriert.</p>
+              <p>Von Polypen (Adenoiden) bei Kindern, über Paukenergüsse und Allergien bis zu chronischen Nebenhöhlen- und Halsentzündungen finden Sie alle häufigen Erkrankungen ausführlich beschrieben.</p>
+              <p>Interessant für Ärzte, Heilpraktiker und alle von der Homöopathie begeisterten Laien.</p>
+              <p><a href="https://www.narayana-verlag.de/Klassische-Homoeopathie-in-der-HNO-Heilkunde-Joachim-Mayer-Brix/b24327">Eine Leseprobe ist auf der Website des Narayana-Verlags zu finden.</a></p>
+              <p class="price">Preis 69,90 €</p>
+              <!--
+                No PayPal button here per Figma's fresh pull — the user asked
+                for it to be replaced with an Amazon link instead. No product
+                URL was given, so this points at an Amazon search for the
+                book's own ISBN (978-3-95582-206-4, from the old PayPal order
+                description) rather than a guessed/fabricated ASIN — replace
+                with the direct product link once you have it.
+              -->
+              <p><a href="https://www.amazon.de/s?k=9783955822064">Bei Amazon bestellen</a></p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -284,74 +299,40 @@
       </div>
     </section>
 
-    <!--
-      KNOWN ISSUE — flagged for the user, not silently fixed:
-      This SDK script uses client-id=sb, PayPal's public SANDBOX id. It is copied
-      verbatim from what is live on dr-mayer-brix.de today, so this button cannot
-      take real payments as configured, on the old site OR here, until it's swapped
-      for a real PayPal REST app client-id. Get one from
-      https://developer.paypal.com/dashboard/applications and replace "sb" below
-      before launch.
-    -->
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=EUR"></script>
-    <script>
-      paypal.Buttons({
-        style: { shape: 'pill', color: 'gold', layout: 'horizontal', label: 'buynow' },
-        createOrder: function (data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              description: 'Buch: "Klassische Homöopathie in der HNO-Heilkunde" von Dr. med. Joachim Mayer-Brix (390 Seiten, geb., ISBN: 978-3-95582-206-4)',
-              amount: {
-                currency_code: 'EUR',
-                value: 69.90,
-                breakdown: {
-                  item_total: { currency_code: 'EUR', value: 65.33 },
-                  shipping: { currency_code: 'EUR', value: 0 },
-                  tax_total: { currency_code: 'EUR', value: 4.57 },
-                },
-              },
-            }],
-          });
-        },
-        onApprove: function (data, actions) {
-          return actions.order.capture().then(function () {
-            document.getElementById('paypal-button-container').innerHTML = '<h3>Vielen Dank für Ihre Bestellung!</h3>';
-          });
-        },
-        onError: function (err) {
-          console.log(err);
-        },
-      }).render('#paypal-button-container');
-    </script>
-
     <section id="kontakt" class="section section--alt">
       <div class="content">
         <h2>Kontakt</h2>
         <div class="kontakt-info-row">
-          <div>
+          <div class="kontakt-info-block">
             <a class="hero__address" href="https://goo.gl/maps/VMeG75iZF5uAmwec9" target="_blank" rel="noopener">Allee am Röthelheimpark 6<br>91052 Erlangen</a>
             <p>Tel. <a href="tel:+499131208899">+49 (0) 91 31 / 20 88 99</a><br>Fax +49 (0) 91 31 / 20 52 45</p>
-            <p class="uppercase-label">Sie erreichen uns am besten über die Online-Rezeption.</p>
+            <p class="uppercase-label">Sie erreichen uns am besten über die <span class="hero__rezeption-link">Online-Rezeption</span>.</p>
           </div>
-          <div>
+          <div class="kontakt-hours kontakt-hours--telefonzeiten">
             <h3>Telefonzeiten</h3>
             <p>Mo, Di, Do<br>8.15 – 11.15 und 14.15 – 16.30</p>
             <p>Mi 10 – 11.15<br>Fr 8.15 – 11.15</p>
           </div>
-          <div>
+          <div class="kontakt-hours kontakt-hours--oeffnungszeiten">
             <h3>Öffnungszeiten</h3>
             <p>Mo, Di, Do<br>8.30 – 12.30 und 14 – 17.30</p>
             <p>Mi 10 – 15.30<br>Fr 8.30 – 13.30</p>
           </div>
         </div>
-        <h3 class="kontakt-map-heading">So finden Sie uns</h3>
-        <div class="embed-frame kontakt-map">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!4v1668604104241!6m8!1m7!1sCAoSLEFGMVFpcE9ab0FHbjFpeklpdFNIMnJiUkd5WUNobUlRekROSW90elRsY1pp!2m2!1d49.591735308831!2d11.025465644748!3f120!4f0!5f0.7820865974627469"
-            title="Standort der HNO-Praxis Dr. Mayer-Brix"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen></iframe>
+        <div class="kontakt-find">
+          <h3 class="kontakt-map-heading">So finden Sie uns</h3>
+          <!-- Real Google Maps embed (no API key), pinned to the practice's
+               address and desaturated to match Figma's greyscale map —
+               replaces the old duplicate of the Einblicke section's 360°
+               indoor Street View tour that was mistakenly reused here. -->
+          <div class="embed-frame kontakt-map">
+            <iframe
+              src="https://maps.google.com/maps?q=HNO-Praxis+Dr.+Mayer-Brix,+Allee+am+R%C3%B6thelheimpark+6,+91052+Erlangen&output=embed"
+              title="Standort der HNO-Praxis Dr. Mayer-Brix"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </div>
         </div>
       </div>
     </section>
@@ -373,9 +354,8 @@
   <script type="module" src="assets/js/main.js"></script>
   <!-- 321med Online-Rezeption widget, provided directly by the practice's vendor
        (321 MED GmbH) on 2026-09-04. No SRI hash: this is a vendor-hosted,
-       server-rendered widget script expected to update without a version bump,
-       same category as the PayPal SDK script elsewhere on this site — pinning
-       a hash would break it on the vendor's next legitimate update. -->
+       server-rendered widget script expected to update without a version bump —
+       pinning a hash would break it on the vendor's next legitimate update. -->
   <script src="https://321med17.com/cdn/server/11cb0eefca4e16e350aca235e8bea2608a35c85f/321med.js"></script>
   <script src="https://321med-cdn.com/321med.js"></script>
 </body>

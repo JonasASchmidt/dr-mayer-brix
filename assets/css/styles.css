@@ -379,6 +379,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .leistungen-group, .schwerpunkte-group { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
 .leistungen-group { gap: var(--space-6); }
 .schwerpunkte-group { gap: var(--space-7); }
+/* The global ".section h2" margin-bottom would otherwise stack on top of
+   this flex container's own gap (h2 is a direct flex child here, unlike
+   most other sections where it's followed by plain document-flow
+   siblings) — double-spacing the heading from what comes after it. */
+.leistungen-group > h2 { margin-bottom: 0; }
 /* Figma: the lede paragraphs are 12px apart within their own intro block —
    not the section-wide 16px default, and not the group's own 32px/48px
    gap (which only separates heading/intro/content at the top level). */
@@ -458,19 +463,35 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .embed-frame iframe { width: 100%; height: 100%; border: 0; }
 .embed-frame__note { margin-top: var(--space-2); font-size: 0.875rem; color: var(--color-ink); text-align: right; }
 
-.buch-layout { display: grid; gap: var(--space-6); align-items: start; margin-top: var(--space-4); }
-.buch-layout img { border-radius: 0.5rem; max-width: 13rem; margin-inline: auto; }
+/* Figma: the whole Buch section is ONE white drop-shadow card (not a dark
+   section with plain text) — grey (#bdbcbc) page background behind it. */
+.buch-section { background: var(--color-grey); }
+.buch-card {
+  background: var(--color-paper);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: 1.75rem 2rem 2rem;
+  width: 100%;
+}
+/* Same fix as .leistungen-group above: h2 is a direct flex child here, so
+   the global ".section h2" margin-bottom would double up with this
+   card's own gap. */
+.buch-card > h2 { margin-bottom: 0; }
+.buch-layout { display: grid; gap: var(--space-6); align-items: start; width: 100%; }
+.buch-layout img { border-radius: 0.5rem; max-width: 15.3125rem; margin-inline: auto; }
 /* Figma: the 4 body paragraphs, the Leseprobe link, and the price line are
    all explicitly 14px (Body text SM) — no larger/bolder emphasis on the
-   price specifically. The tagline (a <p class="uppercase-label"> sharing
-   this same selector) is its own, separately-specified 16px role — the
-   second, more specific rule below wins back its correct size. */
-.buch-layout p, .buch-layout a { font-size: 0.875rem; margin-top: var(--space-3); }
-.buch-layout p.uppercase-label { font-size: 1rem; }
-.price { font-size: 0.875rem; margin-top: var(--space-3); }
+   price specifically, each 8px apart (not the section-wide 16px default). */
+.buch-layout p { font-size: 0.875rem; }
+.buch-layout p + p { margin-top: var(--space-2); }
+.price { font-size: 0.875rem; font-weight: 600; }
 
 @media (min-width: 48rem) {
-  .buch-layout { grid-template-columns: 13rem 1fr; }
+  .buch-layout { grid-template-columns: 15.3125rem 1fr; }
   .buch-layout img { margin-inline: 0; }
 }
 
@@ -513,14 +534,27 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 #kontakt .content { display: flex; flex-direction: column; gap: 2.25rem; }
 .kontakt-info-row { display: grid; gap: 2rem; }
-.kontakt-info-row > div > * + * { margin-top: var(--space-3); }
+/* Figma: address/phone/label are each 16px apart within the first block. */
+.kontakt-info-block > * + * { margin-top: 1rem; }
+.kontakt-hours h3 { margin-bottom: 1rem; }
+/* Figma has the two blocks disagree on their own internal gap here too —
+   12px under Telefonzeiten, 16px under Öffnungszeiten — implemented
+   exactly as specced rather than normalized to one value. */
+.kontakt-hours--telefonzeiten p + p { margin-top: var(--space-3); }
+.kontakt-hours--oeffnungszeiten p + p { margin-top: 1rem; }
 /* Figma: the Kontakt info-row's wrapper sets a mint base color; the
    address link and phone/hours paragraphs have explicit ink overrides,
    but the Telefonzeiten/Öffnungszeiten <h3> headings do not, so they
    inherit mint. */
 .kontakt-info-row h3 { color: var(--color-brand); }
+.kontakt-find { display: flex; flex-direction: column; gap: var(--space-6); width: 100%; }
 .kontakt-map-heading { color: var(--color-brand); }
 .kontakt-map { aspect-ratio: 720 / 289; }
+/* User-requested deviation from Figma's own static screenshot: a live,
+   greyscale Google Maps embed pinned to the practice's address, replacing
+   the placeholder that had mistakenly reused the Einblicke section's 360°
+   indoor tour embed here. */
+.kontakt-map iframe { filter: grayscale(1); }
 
 .zitat { text-align: left; }
 .zitat__quote { font-family: var(--font-heading); font-size: 2rem; line-height: 1.2; color: var(--color-grey); }
