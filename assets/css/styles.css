@@ -334,27 +334,28 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 }
 .hero__welcome h1 { color: var(--color-brand); }
 .hero__welcome p { margin-top: var(--space-3); }
-/* Figma fuses the H1 into the same text node as the paragraphs beneath it
-   (verified live: no paragraphSpacing) — the h1-to-first-paragraph gap is
-   its own line-height only, not the var(--space-3) that .hero__welcome p
-   above adds between every OTHER paragraph pair. */
-.hero__welcome h1 + p { margin-top: 0; }
+/* Figma fuses the H1 into the same text node as the paragraphs beneath it,
+   with an explicit per-paragraph spacing value on the H1's own line — 20px
+   mobile, 24px desktop (getRangeParagraphSpacing on just the H1's line;
+   see the Leistungen comment further down for why the node's overall
+   .paragraphSpacing can't be read directly — it's figma.mixed here too,
+   since the body paragraphs below it use var(--space-3) instead). This
+   overrides the var(--space-3) that .hero__welcome p above would otherwise
+   put here, same as every other paragraph pair. */
+.hero__welcome h1 + p { margin-top: 1.25rem; }
 .hero__signature { font-weight: 600; }
 /* Figma groups the hero's contact column into 3 sub-blocks (Kontakt info,
    Telefonzeiten, Öffnungszeiten) 36px apart — each with its own tighter
    16px-per-line internal spacing, not one flat list of children all
-   spaced alike. */
+   spaced alike. The "Kontakt" heading's own line uses that same 16px
+   value for its paragraph spacing too (verified live), so no override is
+   needed for it specifically — the general rule above already matches. */
 .hero__contact { display: flex; flex-direction: column; gap: 2.25rem; }
 .hero__contact-block > * + * { margin-top: 1rem; }
-/* Figma fuses the "Kontakt" heading into the same text node as the address
-   line right after it — zero extra gap there (verified live: no
-   paragraphSpacing), unlike the address→phone→Online-Rezeption lines below
-   it, which keep the 16px .hero__contact-block rule above. */
-.hero__contact-block > h2 + * { margin-top: 0; }
 /* Same fused-node situation for "Telefonzeiten"/"Öffnungszeiten": each
-   heading and its first hour line are one Figma text node with no
-   paragraphSpacing between them. */
-.hero__hours h3 { margin-bottom: 0; }
+   heading's own paragraph-spacing value (verified live) is 8px, not the
+   16px a previous pass assumed. */
+.hero__hours h3 { margin-bottom: var(--space-2); }
 /* Figma: only the hour-detail paragraphs (the 4 plain, class-less <p>s
    under Telefonzeiten/Öffnungszeiten) in the hero's compact contact column
    are explicitly 14px — .hero__phone and .uppercase-label are their own,
@@ -520,17 +521,17 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    "Schwerpunkte" frame itemSpacing is between exactly those two, so no
    restructuring needed here, only the same mobile/desktop split. */
 .schwerpunkte-group { gap: 2.25rem; }
-/* The global ".section h2" margin-bottom would otherwise stack on top of
-   this flex container's own gap (h2 is a direct flex child here, unlike
-   most other sections where it's followed by plain document-flow
-   siblings) — double-spacing the heading from what comes after it. */
-.leistungen-group > h2 { margin-bottom: 0; }
-/* Same fused-text-node situation as Leistungen above (verified live: no
-   paragraphSpacing) — "Schwerpunkte" and its own tagline/lede paragraphs
-   are one Figma text node, so the heading needs zero margin here too; the
-   sitewide ".section h2" 16px default would otherwise add space Figma
-   doesn't show. */
-.schwerpunkte-intro > h2 { margin-bottom: 0; }
+/* Leistungen/Schwerpunkte fuse their heading into the same Figma text node
+   as the tagline/lede beneath it, with an explicit per-paragraph
+   "paragraph spacing" value on the heading line — NOT zero (an earlier
+   pass in this file misread this as unset because the node's overall
+   .paragraphSpacing reads as figma.mixed, a Symbol that JSON.stringify
+   silently drops; getRangeParagraphSpacing on just the heading's own line
+   gives the real per-paragraph value: 20px mobile, 16px desktop). This
+   replaces the sitewide ".section h2" 16px default (wrong at mobile) with
+   the real measured value, and also overrides the flex `gap` further up
+   this file for Leistungen specifically (h2 is a direct flex child there). */
+.leistungen-group > h2, .schwerpunkte-intro > h2 { margin-bottom: 1.25rem; }
 /* Figma: the lede paragraphs are 12px apart within their own intro block —
    not the section-wide 16px default, and not the group's own 32px/48px
    gap (which only separates heading/intro/content at the top level). */
@@ -591,37 +592,24 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   padding: var(--space-6);
   width: 100%;
 }
-/* The user changed these to <h2> in both Figma and the markup (was h3) —
-   re-verified live: same weight/font as the accordion trigger labels,
-   still mint, no longer needs the ".section h2" 32px size overridden away
-   from a bigger default since the tag/selector here is scoped to just
-   these cards. Same 20px-mobile/24px-desktop split as the accordion
-   labels. */
 /* Direct request, NOT yet reflected in Figma: Figma still shows these
    cards as plain, always-expanded text at every width (re-verified live —
    no accordion/chevron component here in either the mobile or desktop
-   frame). Below the desktop breakpoint the heading becomes a real
-   accordion trigger (mirrors .accordion__trigger's look/behavior);
+   frame). Below the desktop breakpoint the heading + body reuse the exact
+   same .accordion__trigger/.accordion__panel/.accordion__panel-inner
+   classes and markup as the Leistungen accordion — same component, not a
+   parallel look-alike — so they look and animate identically (including
+   the trigger's own vertical-centering fix). Only .schwerpunkte__card's
+   own background/shadow/padding stay its own (verified separately against
+   Figma's card padding, which differs from the Leistungen accordion's).
    accordion.js's generic handler doesn't drive this one because desktop
    must stay non-collapsible, so a dedicated initSchwerpunkteCards() in
    accordion.js disables the trigger and forces the panel open there. */
-.schwerpunkte__card-trigger {
-  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-5);
-  padding: 0; margin-bottom: var(--space-2); background: none; border: none; text-align: left;
-  color: var(--color-brand); font-family: var(--font-heading); font-weight: 500; font-size: 1.25rem; line-height: 1.5;
-}
-.schwerpunkte__card-trigger:not(:disabled) { cursor: pointer; }
+.schwerpunkte__card.is-open .accordion__panel { grid-template-rows: 1fr; margin-top: var(--space-5); }
 /* Disabled only at desktop (see initSchwerpunkteCards) — neutralize the
-   browser's default disabled dimming so it still reads as the plain mint
-   heading Figma shows there. */
-.schwerpunkte__card-trigger:disabled { opacity: 1; }
-.schwerpunkte__card-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.22s ease;
-}
-.schwerpunkte__card.is-open .schwerpunkte__card-panel { grid-template-rows: 1fr; }
-.schwerpunkte__card-panel-inner { overflow: hidden; min-height: 0; }
+   browser's default disabled dimming/cursor so it still reads as the
+   plain mint heading Figma shows there, not a greyed-out control. */
+.schwerpunkte__card .accordion__trigger:disabled { opacity: 1; cursor: default; }
 /* Figma: body text under Chronische Erkrankungen AND under Kinder/AVWS is
    explicitly 14px (Body text SM) throughout — not the site's 16px default.
    Only the section's own intro paragraphs (Schwerpunkte's own 2 lede
@@ -638,8 +626,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
      forces panel.inert = false and disables the trigger — see
      initSchwerpunkteCards) — matches Figma's plain static card. */
   .schwerpunkte__card .accordion__chevron { display: none; }
-  .schwerpunkte__card-panel { grid-template-rows: 1fr; }
-  .schwerpunkte__card-panel-inner { overflow: visible; }
+  /* 16px, verified live against Figma's real per-paragraph spacing for
+     this specific heading→body transition — not the 24px the reused
+     .accordion__panel.is-open rule uses for the mobile-only collapsible
+     state above (that value has no Figma equivalent to match, since this
+     card isn't collapsible there at all). */
+  .schwerpunkte__card .accordion__panel { grid-template-rows: 1fr; margin-top: var(--space-4); }
+  .schwerpunkte__card .accordion__panel-inner { overflow: visible; }
 }
 
 /* .card/.card-grid: unused since Fachartikel switched to its own
@@ -680,12 +673,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    separate 12px. */
 #einblicke .content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-6); }
 .einblicke-tour { display: flex; flex-direction: column; gap: var(--space-3); width: 100%; }
-/* Figma fuses "Einblicke" + its tagline + lede into ONE text node (verified
-   live: no paragraphSpacing) — a previous pass measured this transition as
-   a discrete 24px margin, but that doesn't hold up against the live node:
-   there's no space here beyond the heading's own line-height, same as
-   Leistungen/Schwerpunkte. */
-.einblicke-intro > h2 { margin-bottom: 0; }
+/* Figma fuses "Einblicke" + its tagline + lede into ONE text node with an
+   explicit per-paragraph spacing value on the heading line — 20px mobile,
+   16px desktop (getRangeParagraphSpacing on just the heading's line; the
+   node's overall .paragraphSpacing reads as figma.mixed and silently
+   vanishes under JSON.stringify, which is what led an earlier measurement
+   on this same node astray twice — first to a flat 24px, then to 0). */
+.einblicke-intro > h2 { margin-bottom: 1.25rem; }
 .einblicke-intro > p + p { margin-top: 1rem; }
 
 /* Figma: the whole Buch section is ONE white drop-shadow card (not a dark
@@ -751,10 +745,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    PDF label. */
 .fachartikel-layout { display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-4); }
 /* Figma fuses each article's title into the same text node as its lede
-   paragraph (verified live: no paragraphSpacing) — the sitewide
-   ".section h2" margin-bottom and this section's own p margin-top would
-   otherwise collapse into an extra gap Figma doesn't show below the title. */
-.fachartikel-item > h2 { margin-bottom: 0; }
+   paragraph, with an explicit per-paragraph spacing value on the title
+   line — 20px mobile, 16px desktop (see the Leistungen comment above for
+   why the node's own .paragraphSpacing can't just be read directly: it's
+   figma.mixed here too). h2 carries the real value; the lede's own
+   margin-top is zeroed so the two don't collapse into something bigger. */
+.fachartikel-item > h2 { margin-bottom: 1.25rem; }
 .fachartikel-item h2 + p { margin-top: 0; }
 .fachartikel-item p, .fachartikel-item ul { margin-top: var(--space-3); font-size: 0.875rem; }
 .fachartikel-item p.fachartikel-item__lede { font-size: 0.875rem; }
@@ -905,6 +901,7 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
 @media (min-width: 64rem) {
   .uppercase-label { font-size: 1rem; }
   .leistungen-group > .accordion { margin-top: var(--space-6); }
+  .leistungen-group > h2, .schwerpunkte-intro > h2 { margin-bottom: var(--space-4); }
   .schwerpunkte-group { gap: var(--space-7); }
   .schwerpunkte__layout { gap: var(--space-7); }
   .schwerpunkte__row { gap: var(--space-7); }
@@ -917,4 +914,7 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
   .legal h2 { font-size: 1.5rem; }
   .legal h3 { font-size: 1.125rem; }
   .kontakt-map { aspect-ratio: 720 / 289; }
+  .einblicke-intro > h2 { margin-bottom: var(--space-4); }
+  .fachartikel-item > h2 { margin-bottom: var(--space-4); }
+  .hero__welcome h1 + p { margin-top: var(--space-5); }
 }

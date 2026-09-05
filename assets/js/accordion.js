@@ -52,17 +52,22 @@ export function initSchwerpunkteCards(root) {
     }
 
     trigger.addEventListener('click', () => setOpen(!isOpen));
-    return { trigger, panel, setOpen };
+    return { item, trigger, panel, setOpen };
   });
 
   function applyBreakpoint() {
     const isDesktop = mql.matches;
-    controls.forEach(({ trigger, panel, setOpen }) => {
+    controls.forEach(({ item, trigger, panel, setOpen }) => {
       // Disabling the trigger at desktop removes it from the tab order and
       // blocks clicks natively — no separate "is this desktop" branch
       // needed in the click handler above.
       trigger.disabled = isDesktop;
       if (isDesktop) {
+        // Explicitly drop is-open (not just leave it) — otherwise a card
+        // left open on mobile before a resize/rotation past the
+        // breakpoint would keep the more-specific ".is-open .accordion__
+        // panel" mobile-gap rule winning over the desktop one in CSS.
+        item.classList.remove('is-open');
         panel.inert = false;
         trigger.setAttribute('aria-expanded', 'true');
       } else {

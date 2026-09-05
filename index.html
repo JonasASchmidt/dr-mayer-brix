@@ -11,28 +11,96 @@
   <meta property="og:description" content="HNO-Heilkunde, Phoniatrie-Pädaudiologie und klassische Homöopathie in Erlangen.">
   <meta property="og:url" content="https://pmb.makethings.work/">
   <meta property="og:image" content="https://pmb.makethings.work/assets/img/team.webp">
+  <meta property="og:image:width" content="1600">
+  <meta property="og:image:height" content="1067">
+  <meta property="og:image:alt" content="Das Praxisteam der HNO-Praxis Dr. Mayer-Brix">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:site_name" content="HNO-Praxis Dr. Mayer-Brix">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HNO-Praxis Dr. Mayer-Brix — HNO und Homöopathie in Erlangen">
+  <meta name="twitter:description" content="HNO-Heilkunde, Phoniatrie-Pädaudiologie und klassische Homöopathie in Erlangen.">
+  <meta name="twitter:image" content="https://pmb.makethings.work/assets/img/team.webp">
+  <meta name="twitter:image:alt" content="Das Praxisteam der HNO-Praxis Dr. Mayer-Brix">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "MedicalOrganization",
-  "name": "HNO-Praxis Dr. Mayer-Brix",
-  "medicalSpecialty": "Otolaryngologic",
-  "url": "https://pmb.makethings.work/",
-  "telephone": "+49-9131-208899",
-  "faxNumber": "+49-9131-205245",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Allee am Röthelheimpark 6",
-    "postalCode": "91052",
-    "addressLocality": "Erlangen",
-    "addressCountry": "DE"
-  },
-  "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Thursday"], "opens": "08:15", "closes": "12:30" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Thursday"], "opens": "14:00", "closes": "17:30" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "10:00", "closes": "15:30" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:15", "closes": "13:30" }
+  "@graph": [
+    {
+      "@type": "MedicalOrganization",
+      "@id": "https://pmb.makethings.work/#organization",
+      "name": "HNO-Praxis Dr. Mayer-Brix",
+      "medicalSpecialty": "Otolaryngologic",
+      "url": "https://pmb.makethings.work/",
+      "image": "https://pmb.makethings.work/assets/img/team.webp",
+      "telephone": "+49-9131-208899",
+      "faxNumber": "+49-9131-205245",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Allee am Röthelheimpark 6",
+        "postalCode": "91052",
+        "addressLocality": "Erlangen",
+        "addressCountry": "DE"
+      },
+      "employee": { "@id": "https://pmb.makethings.work/#physician" },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Thursday"], "opens": "08:30", "closes": "12:30" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Thursday"], "opens": "14:00", "closes": "17:30" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "10:00", "closes": "15:30" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:30", "closes": "13:30" }
+      ]
+    },
+    {
+      "@type": "Physician",
+      "@id": "https://pmb.makethings.work/#physician",
+      "name": "Dr. med. Joachim Mayer-Brix",
+      "medicalSpecialty": "Otolaryngologic",
+      "worksFor": { "@id": "https://pmb.makethings.work/#organization" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Leistungen bietet die HNO-Praxis Dr. Mayer-Brix an?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wir bieten die kompletten Leistungen einer modernen HNO ärztlichen und phoniatrischen Praxis an. Darüber hinaus bieten wir die Diagnostik von Allergien mittels normalem Allergietest und von Nahrungsmitteln (IGG3 und 4 Allergien) an, sowie eine Darmfloraanalyse und Darmsanierung, soweit diese im Zusammenhang mit HNO-Erkrankungen steht."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Bietet die Praxis auch klassische Homöopathie an?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja. Wir behandeln bevorzugt mit klassischer Homöopathie und streben die optimale Verbindung von schulmedizinischer und naturheilkundlicher Behandlung an."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie kann ich online einen Termin vereinbaren?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Termine lassen sich direkt über die Online-Rezeption auf dieser Website buchen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wo befindet sich die HNO-Praxis Dr. Mayer-Brix?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Allee am Röthelheimpark 6, 91052 Erlangen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie sind die Öffnungszeiten der Praxis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Montags, dienstags und donnerstags von 8.30 bis 12.30 Uhr und von 14 bis 17.30 Uhr. Mittwochs von 10 bis 15.30 Uhr. Freitags von 8.30 bis 13.30 Uhr."
+          }
+        }
+      ]
+    }
   ]
 }
   </script>
@@ -179,21 +247,42 @@
             <p>Dies kann z.B. bei Asthma, Neurodermitis, Rheuma, Tinnitus, Fibromyalgie und Pfeifferschem Drüsenfieber etc. der Fall sein. Hier finden wir durch eine genaue Erhebung der Krankengeschichte und naturheilkundliche Behandlung Lösungen für Sie.</p>
           </div>
           <div class="schwerpunkte__layout">
-            <div class="schwerpunkte__card schwerpunkte__full">
-              <h2>Chronische Erkrankungen</h2>
-              <p>Viele chronische Erkrankungen wie Nebenhöhlenentzündungen, Polypen, Migräne, Pfeiffersches Drüsenfieber, Mittelohrprobleme, Tinnitus (Ohrgeräusche) lassen sich mit Zeit und Geduld noch behandeln.</p>
-              <p>Hierin haben wir jahrelange Erfahrung und bilden uns ständig weiter.</p>
+            <div class="schwerpunkte__card schwerpunkte__full" data-accordion-item>
+              <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false" aria-controls="schwerpunkte-panel-1">
+                <span>Chronische Erkrankungen</span>
+                <img class="accordion__chevron" data-chevron-closed="assets/img/icons/chevron-closed.svg" data-chevron-open="assets/img/icons/chevron-open.svg" src="assets/img/icons/chevron-closed.svg" width="24" height="24" alt="">
+              </button>
+              <div id="schwerpunkte-panel-1" class="accordion__panel" data-accordion-panel inert>
+                <div class="accordion__panel-inner">
+                  <p>Viele chronische Erkrankungen wie Nebenhöhlenentzündungen, Polypen, Migräne, Pfeiffersches Drüsenfieber, Mittelohrprobleme, Tinnitus (Ohrgeräusche) lassen sich mit Zeit und Geduld noch behandeln.</p>
+                  <p>Hierin haben wir jahrelange Erfahrung und bilden uns ständig weiter.</p>
+                </div>
+              </div>
             </div>
             <div class="schwerpunkte__row">
-              <div class="schwerpunkte__card">
-                <h2>Kinder</h2>
-                <p>Wir sind spezialisiert auf die sanfte und natürliche Behandlung von Kindern mit ständigen Infekten, vergrößerten Adenoiden und Schwerhörigkeiten durch Paukenergüsse (Schleim im Mittelohr).</p>
-                <p>Gerne geben wir Ihnen auch eine Zweitmeinung zur Notwendigkeit einer Operation der "Polypen", Gaumenmandeln oder der Ohren.</p>
+              <div class="schwerpunkte__card" data-accordion-item>
+                <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false" aria-controls="schwerpunkte-panel-2">
+                  <span>Kinder</span>
+                  <img class="accordion__chevron" data-chevron-closed="assets/img/icons/chevron-closed.svg" data-chevron-open="assets/img/icons/chevron-open.svg" src="assets/img/icons/chevron-closed.svg" width="24" height="24" alt="">
+                </button>
+                <div id="schwerpunkte-panel-2" class="accordion__panel" data-accordion-panel inert>
+                  <div class="accordion__panel-inner">
+                    <p>Wir sind spezialisiert auf die sanfte und natürliche Behandlung von Kindern mit ständigen Infekten, vergrößerten Adenoiden und Schwerhörigkeiten durch Paukenergüsse (Schleim im Mittelohr).</p>
+                    <p>Gerne geben wir Ihnen auch eine Zweitmeinung zur Notwendigkeit einer Operation der "Polypen", Gaumenmandeln oder der Ohren.</p>
+                  </div>
+                </div>
               </div>
-              <div class="schwerpunkte__card">
-                <h2>AVWS, ADS/ADHS</h2>
-                <p>Wir führen spezielle Hörtests bei Schwierigkeiten im Hören, Verstehen, bei Lese-/Rechtschreibproblemen und zur Abgrenzung von ADS/ADHS zu auditiven Wahrnehmungsstörungen durch.</p>
-                <p>Bevor starke Medikamente gegeben werden, kann häufig auch eine homöopathische Therapie ein guter Mittelweg sein.</p>
+              <div class="schwerpunkte__card" data-accordion-item>
+                <button type="button" class="accordion__trigger" data-accordion-trigger aria-expanded="false" aria-controls="schwerpunkte-panel-3">
+                  <span>AVWS, ADS/ADHS</span>
+                  <img class="accordion__chevron" data-chevron-closed="assets/img/icons/chevron-closed.svg" data-chevron-open="assets/img/icons/chevron-open.svg" src="assets/img/icons/chevron-closed.svg" width="24" height="24" alt="">
+                </button>
+                <div id="schwerpunkte-panel-3" class="accordion__panel" data-accordion-panel inert>
+                  <div class="accordion__panel-inner">
+                    <p>Wir führen spezielle Hörtests bei Schwierigkeiten im Hören, Verstehen, bei Lese-/Rechtschreibproblemen und zur Abgrenzung von ADS/ADHS zu auditiven Wahrnehmungsstörungen durch.</p>
+                    <p>Bevor starke Medikamente gegeben werden, kann häufig auch eine homöopathische Therapie ein guter Mittelweg sein.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
