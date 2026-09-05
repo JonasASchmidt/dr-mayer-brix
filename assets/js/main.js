@@ -1,7 +1,7 @@
 import { initNav, initScrollSpy } from './nav.js';
 import { initVideoFacades } from './video-facade.js';
-import { initAccordions } from './accordion.js';
-import { loadBanner, dismissBanner } from './banner.js';
+import { initAccordions, initSchwerpunkteCards } from './accordion.js';
+import { loadBanner } from './banner.js';
 import { initEmailLinks } from './email-obfuscate.js';
 import { initOnlineRezeptionButtons } from './online-rezeption.js';
 
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideoFacades(document);
 
   initAccordions(document);
+  initSchwerpunkteCards(document);
 
   initEmailLinks(document);
 
@@ -31,8 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadBanner(bannerSlot).then(() => {
       const dismissBtn = bannerSlot.querySelector('.banner__dismiss');
       if (dismissBtn) {
+        // Hides the banner for this page view only — nothing is persisted,
+        // so a reload always shows it again (per direct request).
         dismissBtn.addEventListener('click', () => {
-          dismissBanner();
           bannerSlot.hidden = true;
         });
       }

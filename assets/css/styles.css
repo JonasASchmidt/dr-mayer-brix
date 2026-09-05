@@ -334,6 +334,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 }
 .hero__welcome h1 { color: var(--color-brand); }
 .hero__welcome p { margin-top: var(--space-3); }
+/* Figma fuses the H1 into the same text node as the paragraphs beneath it
+   (verified live: no paragraphSpacing) — the h1-to-first-paragraph gap is
+   its own line-height only, not the var(--space-3) that .hero__welcome p
+   above adds between every OTHER paragraph pair. */
+.hero__welcome h1 + p { margin-top: 0; }
 .hero__signature { font-weight: 600; }
 /* Figma groups the hero's contact column into 3 sub-blocks (Kontakt info,
    Telefonzeiten, Öffnungszeiten) 36px apart — each with its own tighter
@@ -341,7 +346,15 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    spaced alike. */
 .hero__contact { display: flex; flex-direction: column; gap: 2.25rem; }
 .hero__contact-block > * + * { margin-top: 1rem; }
-.hero__hours h3 { margin-bottom: 1rem; }
+/* Figma fuses the "Kontakt" heading into the same text node as the address
+   line right after it — zero extra gap there (verified live: no
+   paragraphSpacing), unlike the address→phone→Online-Rezeption lines below
+   it, which keep the 16px .hero__contact-block rule above. */
+.hero__contact-block > h2 + * { margin-top: 0; }
+/* Same fused-node situation for "Telefonzeiten"/"Öffnungszeiten": each
+   heading and its first hour line are one Figma text node with no
+   paragraphSpacing between them. */
+.hero__hours h3 { margin-bottom: 0; }
 /* Figma: only the hour-detail paragraphs (the 4 plain, class-less <p>s
    under Telefonzeiten/Öffnungszeiten) in the hero's compact contact column
    are explicitly 14px — .hero__phone and .uppercase-label are their own,
@@ -492,18 +505,32 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    separate sections each with their own .content gap (2.25rem/36px). */
 .leistungen-schwerpunkte .content { display: flex; flex-direction: column; align-items: center; gap: 3.75rem; }
 .leistungen-group, .schwerpunkte-group { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
-/* Mobile-specific: Figma's mobile frame has this at 36px, not the 32px
-   used at desktop — a real breakpoint difference, re-verified live via
-   the Desktop Bridge, not a rounding artifact. */
-.leistungen-group { gap: 2.25rem; }
-/* Same mobile/desktop split as .leistungen-group above: 36px on mobile,
-   48px at desktop. */
+/* Figma fuses "Leistungen" + its tagline + both lede paragraphs into ONE
+   text node (verified live: paragraphSpacing is unset, so the only space
+   between those lines is each line's own line-height) — .leistungen-group
+   has 3 real DOM children (h2, .leistungen-intro, .accordion) though, and
+   a flex `gap` applies between every child alike. Giving the group gap:0
+   and moving the real 36px-mobile/32px-desktop gap onto .accordion's own
+   margin-top (below) reproduces that: zero extra space below the
+   heading/intro block, the real gap only before the accordion. */
+.leistungen-group { gap: 0; }
+.leistungen-group > .accordion { margin-top: 2.25rem; }
+/* .schwerpunkte-group has only 2 real children (.schwerpunkte-intro,
+   .schwerpunkte__layout) sharing this gap correctly already — Figma's
+   "Schwerpunkte" frame itemSpacing is between exactly those two, so no
+   restructuring needed here, only the same mobile/desktop split. */
 .schwerpunkte-group { gap: 2.25rem; }
 /* The global ".section h2" margin-bottom would otherwise stack on top of
    this flex container's own gap (h2 is a direct flex child here, unlike
    most other sections where it's followed by plain document-flow
    siblings) — double-spacing the heading from what comes after it. */
 .leistungen-group > h2 { margin-bottom: 0; }
+/* Same fused-text-node situation as Leistungen above (verified live: no
+   paragraphSpacing) — "Schwerpunkte" and its own tagline/lede paragraphs
+   are one Figma text node, so the heading needs zero margin here too; the
+   sitewide ".section h2" 16px default would otherwise add space Figma
+   doesn't show. */
+.schwerpunkte-intro > h2 { margin-bottom: 0; }
 /* Figma: the lede paragraphs are 12px apart within their own intro block —
    not the section-wide 16px default, and not the group's own 32px/48px
    gap (which only separates heading/intro/content at the top level). */
@@ -570,7 +597,31 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    from a bigger default since the tag/selector here is scoped to just
    these cards. Same 20px-mobile/24px-desktop split as the accordion
    labels. */
-.schwerpunkte__card h2 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.5; }
+/* Direct request, NOT yet reflected in Figma: Figma still shows these
+   cards as plain, always-expanded text at every width (re-verified live —
+   no accordion/chevron component here in either the mobile or desktop
+   frame). Below the desktop breakpoint the heading becomes a real
+   accordion trigger (mirrors .accordion__trigger's look/behavior);
+   accordion.js's generic handler doesn't drive this one because desktop
+   must stay non-collapsible, so a dedicated initSchwerpunkteCards() in
+   accordion.js disables the trigger and forces the panel open there. */
+.schwerpunkte__card-trigger {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-5);
+  padding: 0; margin-bottom: var(--space-2); background: none; border: none; text-align: left;
+  color: var(--color-brand); font-family: var(--font-heading); font-weight: 500; font-size: 1.25rem; line-height: 1.5;
+}
+.schwerpunkte__card-trigger:not(:disabled) { cursor: pointer; }
+/* Disabled only at desktop (see initSchwerpunkteCards) — neutralize the
+   browser's default disabled dimming so it still reads as the plain mint
+   heading Figma shows there. */
+.schwerpunkte__card-trigger:disabled { opacity: 1; }
+.schwerpunkte__card-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.22s ease;
+}
+.schwerpunkte__card.is-open .schwerpunkte__card-panel { grid-template-rows: 1fr; }
+.schwerpunkte__card-panel-inner { overflow: hidden; min-height: 0; }
 /* Figma: body text under Chronische Erkrankungen AND under Kinder/AVWS is
    explicitly 14px (Body text SM) throughout — not the site's 16px default.
    Only the section's own intro paragraphs (Schwerpunkte's own 2 lede
@@ -580,6 +631,15 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 @media (min-width: 48rem) {
   .schwerpunkte__row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 64rem) {
+  /* Desktop: chevron hidden, panel always visually expanded (JS also
+     forces panel.inert = false and disables the trigger — see
+     initSchwerpunkteCards) — matches Figma's plain static card. */
+  .schwerpunkte__card .accordion__chevron { display: none; }
+  .schwerpunkte__card-panel { grid-template-rows: 1fr; }
+  .schwerpunkte__card-panel-inner { overflow: visible; }
 }
 
 /* .card/.card-grid: unused since Fachartikel switched to its own
@@ -617,11 +677,15 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 /* Figma: heading/intro-copy block and image+caption block are each their
    own gap-32 (the section-wide .content default of 36px was too loose for
    this particular gap); the image→caption gap inside is a tighter,
-   separate 12px, and the heading's own margin-bottom is 24px here (not
-   the sitewide 16px default) with 16px between the two intro paragraphs. */
+   separate 12px. */
 #einblicke .content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-6); }
 .einblicke-tour { display: flex; flex-direction: column; gap: var(--space-3); width: 100%; }
-.einblicke-intro > h2 { margin-bottom: var(--space-5); }
+/* Figma fuses "Einblicke" + its tagline + lede into ONE text node (verified
+   live: no paragraphSpacing) — a previous pass measured this transition as
+   a discrete 24px margin, but that doesn't hold up against the live node:
+   there's no space here beyond the heading's own line-height, same as
+   Leistungen/Schwerpunkte. */
+.einblicke-intro > h2 { margin-bottom: 0; }
 .einblicke-intro > p + p { margin-top: 1rem; }
 
 /* Figma: the whole Buch section is ONE white drop-shadow card (not a dark
@@ -686,6 +750,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    can target them specifically despite sharing .uppercase-label with the
    PDF label. */
 .fachartikel-layout { display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-4); }
+/* Figma fuses each article's title into the same text node as its lede
+   paragraph (verified live: no paragraphSpacing) — the sitewide
+   ".section h2" margin-bottom and this section's own p margin-top would
+   otherwise collapse into an extra gap Figma doesn't show below the title. */
+.fachartikel-item > h2 { margin-bottom: 0; }
+.fachartikel-item h2 + p { margin-top: 0; }
 .fachartikel-item p, .fachartikel-item ul { margin-top: var(--space-3); font-size: 0.875rem; }
 .fachartikel-item p.fachartikel-item__lede { font-size: 0.875rem; }
 .fachartikel-item ul { padding-left: 1.25rem; }
@@ -834,13 +904,13 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
    one. Keeping all of them here guarantees they come last. */
 @media (min-width: 64rem) {
   .uppercase-label { font-size: 1rem; }
-  .leistungen-group { gap: var(--space-6); }
+  .leistungen-group > .accordion { margin-top: var(--space-6); }
   .schwerpunkte-group { gap: var(--space-7); }
   .schwerpunkte__layout { gap: var(--space-7); }
   .schwerpunkte__row { gap: var(--space-7); }
   .banner__inner { gap: var(--space-5); padding-block: var(--space-5); }
   .accordion__trigger { font-size: 1.5rem; }
-  .schwerpunkte__card h2 { font-size: 1.5rem; }
+  .schwerpunkte__card-trigger { font-size: 1.5rem; }
   .hero__contact h2 { font-size: 2rem; }
   .team-photo figcaption { font-size: 0.875rem; }
   .embed-frame__note { font-size: 0.875rem; }

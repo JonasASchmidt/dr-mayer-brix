@@ -28,19 +28,11 @@ export function renderBannerHTML(text) {
   return `<div class="banner__inner container"><div class="banner__text">${paragraphs}</div><button type="button" class="banner__dismiss" aria-label="Hinweis schließen">×</button></div>`;
 }
 
-export function isBannerDismissed() {
-  return sessionStorage.getItem('bannerDismissed') === '1';
-}
-
-export function dismissBanner() {
-  sessionStorage.setItem('bannerDismissed', '1');
-}
-
+// Dismissing the banner only hides it for the current page view — nothing
+// is persisted (no sessionStorage/localStorage/cookie). A reload or a fresh
+// visit always shows it again as long as content/banner.txt has content;
+// there is deliberately no "don't show this again" memory.
 export async function loadBanner(slotEl) {
-  if (isBannerDismissed()) {
-    slotEl.hidden = true;
-    return;
-  }
   try {
     const res = await fetch('content/banner.txt', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`banner.txt ${res.status}`);
