@@ -120,11 +120,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   padding-inline: var(--gutter-mobile-content);
 }
 
+/* Re-verified live via the Desktop Bridge across every instance of this
+   role (hero/Kontakt "Sie erreichen...", Praxisteam/Einblicke/Buch
+   taglines, Fachartikel's "PDF per E-Mail" label, Leistungen's intro
+   label): 14px on mobile, 16px at desktop, consistently — not a flat 16px
+   with a couple of scoped mobile exceptions as this had been built. */
 .uppercase-label {
   font-weight: 600;
   text-transform: uppercase;
   color: var(--color-brand);
-  font-size: 1rem;
+  font-size: 0.875rem;
 }
 
 /* Standard clip-based visually-hidden pattern: keeps content in the
@@ -354,7 +359,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    number, and hour-detail paragraphs have an explicit ink override. This
    codebase doesn't replicate Figma's wrapper-inheritance mechanism, so
    each of those inheriting elements needs its own explicit color rule. */
-.hero__contact h2 { color: var(--color-brand); }
+/* 24px on mobile, 32px (the sitewide h2 default) at desktop — was
+   inheriting the 32px default unconditionally. */
+.hero__contact h2 { color: var(--color-brand); font-size: 1.5rem; }
 .hero__hours h3 { color: var(--color-brand); font-size: 1.25rem; line-height: 1.3; }
 .hero__address { display: block; font-weight: 600; text-decoration: underline; }
 /* "Sie erreichen uns am besten über die Online-Rezeption." — only the
@@ -464,14 +471,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .section h2 { margin-bottom: var(--space-4); }
 .section p + p { margin-top: var(--space-4); }
 
+/* This block's own desktop overrides were being immediately re-overridden
+   by later, equal-specificity base rules further down the file (CSS
+   cascade ties break on source order, not on which side is inside a
+   media query) — every value below now lives at the very end of the
+   file instead, guaranteed to come after every base rule it touches. */
 @media (min-width: 64rem) {
   .section { padding-block: 5.625rem; }
-  .leistungen-intro .uppercase-label { font-size: 1rem; }
-  .leistungen-group { gap: var(--space-6); }
-  .schwerpunkte-group { gap: var(--space-7); }
-  .schwerpunkte__layout { gap: var(--space-7); }
-  .schwerpunkte__row { gap: var(--space-7); }
-  .banner__inner { gap: var(--space-5); padding-block: var(--space-5); }
 }
 
 /* Figma models "Leistungen" and "Schwerpunkte" as ONE combined section
@@ -495,10 +501,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    not the section-wide 16px default, and not the group's own 32px/48px
    gap (which only separates heading/intro/content at the top level). */
 .leistungen-intro p + p, .schwerpunkte-intro p + p { margin-top: var(--space-3); }
-/* Figma's mobile frame sizes this specific label 14px, not the sitewide
-   16px .uppercase-label default (which is what the desktop frame uses for
-   this same element — a genuine, scoped breakpoint difference). */
-.leistungen-intro .uppercase-label { font-size: 0.875rem; }
 
 .accordion { display: flex; flex-direction: column; gap: var(--space-5); width: 100%; }
 /* Figma's whole card (label row + body copy) shares ONE padding box, with
@@ -525,12 +527,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-5);
   padding: 0; background: none; border: none; cursor: pointer; text-align: left;
   /* Re-verified live against Figma (the user updated this style directly
-     while this was being built): brand heading font, 24px, original case
-     — no longer the small uppercase Inter label this used to be. Goudy
-     Sans is only self-hosted at weight 500 (Medium), which is also the
-     only weight Figma's own type style uses, so font-weight stays 500
-     rather than 600 to avoid a synthesized fake bold. */
-  color: var(--color-brand); font-family: var(--font-heading); font-weight: 500; text-transform: none; font-size: 1.5rem; line-height: 1.5;
+     while this was being built): brand heading font, original case — no
+     longer the small uppercase Inter label this used to be. Goudy Sans is
+     only self-hosted at weight 500 (Medium), which is also the only
+     weight Figma's own type style uses, so font-weight stays 500 rather
+     than 600 to avoid a synthesized fake bold. Size is 20px on mobile,
+     24px at desktop — a real breakpoint difference, not one shared size. */
+  color: var(--color-brand); font-family: var(--font-heading); font-weight: 500; text-transform: none; font-size: 1.25rem; line-height: 1.5;
 }
 .accordion__chevron { flex-shrink: 0; }
 .accordion__panel {
@@ -554,12 +557,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   padding: var(--space-6);
   width: 100%;
 }
-/* The user changed these to <h2> in both Figma and the markup (was h3 at
-   20px) — re-verified live: now 24px, same weight/font as the accordion
-   trigger labels, still mint, no longer needs the ".section h2" 32px
-   size overridden away from a bigger default since the tag/selector here
-   is scoped to just these cards. */
-.schwerpunkte__card h2 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.5rem; line-height: 1.5; }
+/* The user changed these to <h2> in both Figma and the markup (was h3) —
+   re-verified live: same weight/font as the accordion trigger labels,
+   still mint, no longer needs the ".section h2" 32px size overridden away
+   from a bigger default since the tag/selector here is scoped to just
+   these cards. Same 20px-mobile/24px-desktop split as the accordion
+   labels. */
+.schwerpunkte__card h2 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.5; }
 /* Figma: body text under Chronische Erkrankungen AND under Kinder/AVWS is
    explicitly 14px (Body text SM) throughout — not the site's 16px default.
    Only the section's own intro paragraphs (Schwerpunkte's own 2 lede
@@ -590,7 +594,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 #team .content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
 #team .content > h2 { margin-bottom: 0; }
 .team-photo img { width: 100%; height: auto; }
-.team-photo figcaption { margin-top: var(--space-3); font-size: 0.875rem; color: var(--color-ink); }
+/* 12px on mobile, 14px at desktop. */
+.team-photo figcaption { margin-top: var(--space-3); font-size: 0.75rem; color: var(--color-ink); }
 
 /* --color-border doesn't exist (undefined custom property invalidates the
    whole `border` shorthand at computed-value time — these frames were
@@ -600,7 +605,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    matches the source most literally. */
 .embed-frame { aspect-ratio: 16 / 10; border-radius: 0.75rem; overflow: hidden; }
 .embed-frame iframe { width: 100%; height: 100%; border: 0; }
-.embed-frame__note { font-size: 0.875rem; color: var(--color-ink); text-align: right; }
+/* 12px on mobile, 14px at desktop. */
+.embed-frame__note { font-size: 0.75rem; color: var(--color-ink); text-align: right; }
 /* Figma: heading/intro-copy block and image+caption block are each their
    own gap-32 (the section-wide .content default of 36px was too loose for
    this particular gap); the image→caption gap inside is a tighter,
@@ -661,15 +667,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Figma: the "Auszug aus dem Fachartikel..." lede AND the body paragraphs/
-   list items are all 14px (Body text SM) — but the "PDF per E-Mail..."
-   label (also a <p class="uppercase-label">, otherwise identical styling)
-   is its own, separately-specified 16px role. Both ledes carry an extra
-   .fachartikel-item__lede class so the 14px rule can target them
-   specifically despite sharing .uppercase-label with the 16px PDF label. */
+/* Figma: the "Auszug aus dem Fachartikel..." lede and the body paragraphs/
+   list items are all 14px (Body text SM) at both breakpoints. The
+   "PDF per E-Mail..." label is also a <p class="uppercase-label"> and no
+   longer needs its own override — .uppercase-label's base rule already
+   does the same 14px-mobile/16px-desktop split this needs. Both ledes
+   carry an extra .fachartikel-item__lede class purely so this 14px rule
+   can target them specifically despite sharing .uppercase-label with the
+   PDF label. */
 .fachartikel-layout { display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-4); }
 .fachartikel-item p, .fachartikel-item ul { margin-top: var(--space-3); font-size: 0.875rem; }
-.fachartikel-item p.uppercase-label { font-size: 1rem; }
 .fachartikel-item p.fachartikel-item__lede { font-size: 0.875rem; }
 .fachartikel-item ul { padding-left: 1.25rem; }
 .fachartikel-item li { margin-top: var(--space-2); font-weight: 600; }
@@ -691,7 +698,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .fachartikel-buy__button-long { display: none; }
 
 @media (min-width: 64rem) {
-  .fachartikel-buy__button { text-align: right; }
+  /* Figma: full-width is a mobile-only treatment — the desktop button
+     shrinks to its own content width instead of stretching the row. */
+  .fachartikel-buy__button { width: auto; text-align: right; }
   .fachartikel-buy__button-short { display: none; }
   .fachartikel-buy__button-long { display: inline; }
 }
@@ -727,7 +736,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 /* No rounded corners on this embed — unlike .embed-frame's default
    (used elsewhere for the Einblicke 360°-tour embed), this one is meant
    square-cornered. */
-.kontakt-map { aspect-ratio: 720 / 289; border-radius: 0; }
+/* Figma's mobile map is close to square (279×279, ~1:1) — much taller
+   relative to its width than the wide 720:289 ratio used at desktop. */
+.kontakt-map { aspect-ratio: 1 / 1; border-radius: 0; }
 /* User-requested deviation from Figma's own static screenshot: a live,
    greyscale Google Maps embed pinned to the practice's address, replacing
    the placeholder that had mistakenly reused the Einblicke section's 360°
@@ -743,6 +754,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 }
 
 .legal h1 { margin-bottom: var(--space-5); color: var(--color-brand); }
+/* Impressum/Datenschutz have no dedicated Figma frame, so these sizes
+   were never breakpoint-specific — h2/h3 sat at one fixed size at every
+   viewport, which read as "stuck at the mobile size" on a wide screen.
+   Scaled up at desktop below, following the same kind of mobile→desktop
+   step used for every other heading role on the site (not a literal
+   Figma value, since none exists for this page). */
 .legal h2 { font-size: 1.25rem; margin-top: var(--space-7); margin-bottom: var(--space-3); color: var(--color-brand); }
 .legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand); }
 .legal p { max-width: 42rem; }
@@ -796,4 +813,28 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
 
 @media (min-width: 64rem) {
   .site-footer { padding-block: 5.625rem; }
+}
+
+/* Desktop overrides collected here deliberately, at the very end of the
+   file: every one of these ties in specificity with its own mobile-first
+   base rule declared earlier, and CSS breaks that tie by source order —
+   not by which side is wrapped in a media query. Placing them earlier
+   (as a previous pass did) meant a later, equal-specificity base rule
+   could silently re-override the desktop value right back to the mobile
+   one. Keeping all of them here guarantees they come last. */
+@media (min-width: 64rem) {
+  .uppercase-label { font-size: 1rem; }
+  .leistungen-group { gap: var(--space-6); }
+  .schwerpunkte-group { gap: var(--space-7); }
+  .schwerpunkte__layout { gap: var(--space-7); }
+  .schwerpunkte__row { gap: var(--space-7); }
+  .banner__inner { gap: var(--space-5); padding-block: var(--space-5); }
+  .accordion__trigger { font-size: 1.5rem; }
+  .schwerpunkte__card h2 { font-size: 1.5rem; }
+  .hero__contact h2 { font-size: 2rem; }
+  .team-photo figcaption { font-size: 0.875rem; }
+  .embed-frame__note { font-size: 0.875rem; }
+  .legal h2 { font-size: 1.5rem; }
+  .legal h3 { font-size: 1.125rem; }
+  .kontakt-map { aspect-ratio: 720 / 289; }
 }
