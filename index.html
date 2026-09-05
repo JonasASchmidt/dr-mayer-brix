@@ -47,7 +47,7 @@
           <img src="assets/img/logo.svg" alt="HNO-Praxis Dr. Mayer-Brix" width="180" height="82">
         </a>
         <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menü öffnen">
-          <span></span>
+          <span aria-hidden="true">Menü</span>
         </button>
       </div>
       <nav class="site-nav" id="site-nav">
@@ -276,7 +276,7 @@
             <input type="hidden" name="hosted_button_id" value="ZVE567CQTAPRC">
             <input type="hidden" name="on0" value="Fachartikel: Die Polypen bei meinem Kind sollen operiert werden,">
             <input type="hidden" name="currency_code" value="EUR">
-            <button type="submit" class="fachartikel-buy__button">Kostenpflichtig bestellen (PayPal)</button>
+            <button type="submit" class="fachartikel-buy__button"><span class="fachartikel-buy__button-short">Bestellen (PayPal)</span><span class="fachartikel-buy__button-long">Kostenpflichtig bestellen (PayPal)</span></button>
           </form>
         </article>
         <article class="fachartikel-item">
@@ -297,7 +297,7 @@
             <input type="hidden" name="hosted_button_id" value="QCJGWD4PRCMEC">
             <input type="hidden" name="on0" value="Fachartikel: Hilfe, ich bin ständig krank...">
             <input type="hidden" name="currency_code" value="EUR">
-            <button type="submit" class="fachartikel-buy__button">Kostenpflichtig bestellen (PayPal)</button>
+            <button type="submit" class="fachartikel-buy__button"><span class="fachartikel-buy__button-short">Bestellen (PayPal)</span><span class="fachartikel-buy__button-long">Kostenpflichtig bestellen (PayPal)</span></button>
           </form>
         </article>
       </div>
@@ -352,7 +352,10 @@
   <footer class="site-footer">
     <div class="content site-footer__inner">
       <p class="site-footer__links"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
-      <p class="site-footer__contact">HNO-Praxis Dr. Mayer-Brix, Allee am Röthelheimpark 6, 91052 Erlangen, Germany<br>+49 (0) 91 31 / 20 88 99 &nbsp; <a class="js-email" data-user="mbpraxis" data-domain="duck.com" href="#">mbpraxis (at) duck (dot) com</a></p>
+      <div class="site-footer__credit-block">
+        <p class="site-footer__contact">HNO-Praxis Dr. Mayer-Brix, Allee am Röthelheimpark 6, 91052 Erlangen, Germany<br>+49 (0) 91 31 / 20 88 99 &nbsp; <a class="js-email" data-user="mbpraxis" data-domain="duck.com" href="#">mbpraxis (at) duck (dot) com</a></p>
+        <p class="site-footer__credit">Made with ♥️ in Hamburg by Jonas A. Schmidt</p>
+      </div>
     </div>
   </footer>
   <script type="module" src="assets/js/main.js"></script>
