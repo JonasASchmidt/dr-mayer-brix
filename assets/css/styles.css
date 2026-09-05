@@ -519,7 +519,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    row's even 20px top/bottom) per Figma's two distinct component variants. */
 .accordion__item.is-open { padding: 1.75rem 1.75rem 2rem 2rem; }
 .accordion__trigger {
-  width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-5);
+  /* Centered (not flex-start) so the 24px chevron sits centered against
+     the label's own 36px line-box instead of pinned to its top, which
+     left the chevron looking off-center with extra space below it. */
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-5);
   padding: 0; background: none; border: none; cursor: pointer; text-align: left;
   /* Re-verified live against Figma (the user updated this style directly
      while this was being built): brand heading font, 24px, original case
