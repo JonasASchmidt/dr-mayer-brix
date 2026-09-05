@@ -42,23 +42,25 @@
 <body>
   <div id="site-banner" class="banner" hidden></div>
   <header class="site-header">
-    <div class="container site-header__bar">
-      <a class="site-header__logo" href="#willkommen">
-        <img src="assets/img/logo.svg" alt="HNO-Praxis Dr. Mayer-Brix" width="180" height="82">
-      </a>
-      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menü öffnen">
-        <span></span>
-      </button>
+    <div class="site-header__inner">
+      <div class="site-header__bar">
+        <a class="site-header__logo" href="#willkommen">
+          <img src="assets/img/logo.svg" alt="HNO-Praxis Dr. Mayer-Brix" width="180" height="82">
+        </a>
+        <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menü öffnen">
+          <span></span>
+        </button>
+      </div>
+      <nav class="site-nav" id="site-nav">
+        <a href="#willkommen">Willkommen</a>
+        <a href="#leistungen">Leistungen</a>
+        <a href="#team">Team</a>
+        <a href="#einblicke">Einblicke</a>
+        <a href="#buch">Unser Buch</a>
+        <a href="#fachartikel">Fachartikel</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
     </div>
-    <nav class="site-nav container" id="site-nav">
-      <a class="is-current" href="#willkommen">Willkommen</a>
-      <a href="#leistungen">Leistungen</a>
-      <a href="#team">Team</a>
-      <a href="#einblicke">Einblicke</a>
-      <a href="#buch">Unser Buch</a>
-      <a href="#fachartikel">Fachartikel</a>
-      <a href="#kontakt">Kontakt</a>
-    </nav>
   </header>
   <main>
     <section id="willkommen" class="hero">
