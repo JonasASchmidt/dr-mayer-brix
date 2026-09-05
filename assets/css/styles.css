@@ -285,6 +285,22 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
 }
 
+.fachartikel-layout { display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-4); }
+.fachartikel-item p, .fachartikel-item ul { margin-top: var(--space-3); }
+.fachartikel-item ul { padding-left: 1.25rem; }
+.fachartikel-item li { margin-top: var(--space-2); font-weight: 600; }
+.fachartikel-buy { margin-top: var(--space-5); }
+.fachartikel-buy__button {
+  width: 100%; background: var(--color-brand); color: #fff; border: none; border-radius: 0.5rem;
+  padding: var(--space-5); font-family: var(--font-body); font-weight: 600; font-size: 1rem; text-align: right; cursor: pointer;
+}
+.fachartikel-buy__button:hover { opacity: 0.9; }
+
+@media (min-width: 64rem) {
+  .fachartikel-layout { flex-direction: row; gap: var(--gutter-desktop); align-items: flex-start; }
+  .fachartikel-item { flex: 1 1 0; }
+}
+
 .kontakt-layout { display: grid; gap: var(--space-7); margin-top: var(--space-4); }
 .kontakt-form { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
 .kontakt-form label { font-size: 0.85rem; font-weight: 600; }
