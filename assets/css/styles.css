@@ -36,14 +36,6 @@ input, button, textarea, select { font: inherit; }
 
 :root {
   --color-brand: #00a2b5;
-  /* Darkened, same-hue variant of --color-brand for brand-colored TEXT on
-     light backgrounds. --color-brand itself measures only 3.07:1 on white
-     and 2.82:1 on --color-bg-light, both failing the 4.5:1 normal-text
-     minimum (WCAG 1.4.3) — this token passes against both (5.05:1 on
-     white, 4.63:1 on #f5f5f5) while preserving the brand hue for the
-     site's teal text accents. Use --color-brand unchanged for
-     backgrounds/buttons/banner/decorative accents. */
-  --color-brand-text: #007a8c;
   --color-ink: #231f20;
   --color-grey: #bdbcbc;
   --color-bg-light: #f5f5f5;
@@ -80,6 +72,7 @@ h1, h2, h3, h4 {
   line-height: 1.2;
   color: var(--color-ink);
 }
+h1 { font-size: 2.5rem; }
 h2 { font-size: 2rem; }
 h3 { font-size: 1.5rem; line-height: 1.5; }
 h4 { font-size: 1.25rem; line-height: 1.3; }
@@ -104,7 +97,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .uppercase-label {
   font-weight: 600;
   text-transform: uppercase;
-  color: var(--color-brand-text);
+  color: var(--color-brand);
   font-size: 1rem;
 }
 
@@ -178,7 +171,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   font-family: var(--font-heading);
   font-size: 1rem;
 }
-.site-nav a:hover, .site-nav a.is-current { color: var(--color-brand-text); }
+.site-nav a:hover, .site-nav a.is-current { color: var(--color-brand); }
 
 @media (min-width: 64rem) {
   .site-header {
@@ -234,14 +227,19 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   gap: var(--space-6);
   padding-block: var(--space-7);
 }
+.hero__welcome h1 { color: var(--color-brand); }
 .hero__welcome p, .hero__contact p { margin-top: var(--space-3); }
 .hero__signature { font-weight: 600; }
-/* Heading-hierarchy fix (final review): these were <h3>/<h4> (skipping h2
-   after the hero's own <h1>). Promoted to <h2>/<h3> in the markup; these
-   overrides keep their original visual sizes (24px / 20px) instead of
-   growing to the default h2 (32px) / h3 (24px) sizes. */
-.hero__contact h2 { margin-bottom: var(--space-3); font-size: 1.5rem; line-height: 1.5; }
-.hero__contact h3 { margin-top: var(--space-4); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
+/* Figma's Willkommen "Content" wrapper sets a mint (--color-brand) base
+   text color inherited by every child that has no more specific color
+   class — the H1, the "Kontakt" heading, the "Sie erreichen uns..." label,
+   and the Telefonzeiten/Öffnungszeiten headings all inherit it (verified
+   against the get_design_context capture); only the address link, phone
+   number, and hour-detail paragraphs have an explicit ink override. This
+   codebase doesn't replicate Figma's wrapper-inheritance mechanism, so
+   each of those inheriting elements needs its own explicit color rule. */
+.hero__contact h2 { color: var(--color-brand); margin-bottom: 1rem; }
+.hero__contact h3 { color: var(--color-brand); margin-top: var(--space-4); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
 .hero__address { display: block; font-weight: 600; text-decoration: underline; }
 
 @media (min-width: 64rem) {
@@ -254,8 +252,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   display: inline-block; width: fit-content; padding: var(--space-3) var(--space-6);
   border-radius: 999px; text-decoration: none; font-weight: 700;
 }
-.button--primary { background: var(--color-brand); color: var(--color-ink); }
-.button--primary:hover { background: var(--color-brand-text); color: var(--color-paper); }
+.button--primary { background: var(--color-brand); color: #fff; }
+.button--primary:hover { opacity: 0.9; }
 
 /* Final-review Fix 1: .banner used to be position:absolute, floating over
    the hero image with a top offset tuned only against index.html's tall
@@ -269,11 +267,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    down by its own rendered height, on every page, at every width. */
 .banner {
   background: var(--color-brand);
-  /* White text on --color-brand measures 3.07:1 (fails the 4.5:1 text
-     minimum; the banner's 1rem/16px copy doesn't qualify as "large text").
-     --color-ink on --color-brand measures 5.31:1 and passes, matching the
-     ink-on-brand pattern already used for the Fachartikel buy button. */
-  color: var(--color-ink);
+  /* Figma specifies literal white text on this mint background — see the
+     accessibility flag list for this pairing's contrast ratio. */
+  color: #fff;
 }
 .banner__inner {
   display: flex;
@@ -281,11 +277,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   align-items: flex-start;
   padding-block: var(--space-4);
 }
-.banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1rem; font-weight: 700; }
+.banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1.125rem; font-weight: 700; }
 .banner__text p:not(:first-child) { font-weight: 500; }
-.banner__link { color: var(--color-ink); font-weight: 600; text-decoration: underline; width: fit-content; }
+.banner__link { color: #fff; font-weight: 600; text-decoration: underline; width: fit-content; }
 .banner__dismiss {
-  background: none; border: none; color: var(--color-ink); font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 var(--space-2);
+  background: none; border: none; color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 var(--space-2);
 }
 /* The global a/button focus-visible outline is --color-brand, which is
    invisible (1:1) against this banner's own brand-colored background.
@@ -297,7 +293,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .section--dark { background: var(--color-bg-dark); color: #fff; }
 .section--dark h2, .section--dark h3, .section--dark h4 { color: #fff; }
 .section--dark a { color: #fff; }
-.section--dark .uppercase-label { color: #8fe0ea; }
+/* Figma's Buch "Content" wrapper sets a mint (--color-brand) base color;
+   the tagline paragraph has no more specific override so it inherits mint
+   — same value as .uppercase-label's own default, so no override is
+   needed here at all (this rule intentionally left removed, not just
+   emptied) to let the base rule apply. See the accessibility flag list
+   for this pairing's contrast ratio. */
 /* The global a/button focus-visible outline (--color-brand) measures only
    2.82:1 on --color-bg-light and 2.74:1 on --color-bg-dark, both under the
    3:1 minimum for non-text UI contrast (SC 1.4.11), which would make the
@@ -306,7 +307,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    (14.95:1) and paper/white on bg-dark (8.43:1). */
 .section--alt a:focus-visible, .section--alt button:focus-visible { outline-color: var(--color-ink); }
 .section--dark a:focus-visible, .section--dark button:focus-visible { outline-color: var(--color-paper); }
-.section h2 { font-size: 1.75rem; margin-bottom: var(--space-4); }
+.section h2 { margin-bottom: var(--space-4); }
 .section p + p { margin-top: var(--space-4); }
 
 @media (min-width: 64rem) {
@@ -317,7 +318,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .accordion__trigger {
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
   padding-block: var(--space-5); background: none; border: none; cursor: pointer; text-align: left;
-  color: var(--color-brand-text); font-family: var(--font-body); font-weight: 600; text-transform: uppercase; font-size: 1rem;
+  color: var(--color-brand); font-family: var(--font-body); font-weight: 600; text-transform: uppercase; font-size: 1rem;
 }
 .accordion__chevron { transition: transform 0.2s ease; flex-shrink: 0; color: var(--color-ink); }
 .accordion__item.is-open .accordion__chevron { transform: rotate(90deg); }
@@ -329,15 +330,24 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    after the section's own <h2>. Promoted to <h3> in the markup; this
    override keeps their original 20px visual size instead of growing to the
    default h3 (24px) size. */
-.schwerpunkte__row h3, .schwerpunkte__full h3 { color: var(--color-brand-text); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
+.schwerpunkte__row h3, .schwerpunkte__full h3 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
+/* Figma: body text under Kinder/AVWS is explicitly 14px (Body text SM),
+   not the site's 16px default — the Chronische Erkrankungen blurb above
+   them, by contrast, IS explicitly 16px, so this override is scoped to
+   just the two-column row, not .schwerpunkte__full. */
+.schwerpunkte__row p { font-size: 0.875rem; }
 
 @media (min-width: 48rem) {
   .schwerpunkte__row { grid-template-columns: 1fr 1fr; }
 }
 
+/* .card/.card-grid: unused since Fachartikel switched to its own
+   .fachartikel-buy__button (Task 6) — kept for potential reuse, fixed
+   here (undefined --color-border was invalidating the whole border
+   shorthand) rather than left broken-but-dormant. */
 .card-grid { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
-.card { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 0.75rem; padding: var(--space-5); }
-.card h3 { font-size: 1.1rem; margin-bottom: var(--space-3); color: var(--color-brand-text); }
+.card { background: var(--color-paper); border: 1px solid var(--color-grey); border-radius: 0.75rem; padding: var(--space-5); }
+.card h3 { font-size: 1.1rem; margin-bottom: var(--space-3); color: var(--color-brand); }
 
 @media (min-width: 48rem) {
   .card-grid { grid-template-columns: repeat(3, 1fr); }
@@ -345,16 +355,24 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .team-photo { margin-top: var(--space-6); }
 .team-photo img { border-radius: 0.75rem; width: 100%; height: auto; }
-.team-photo figcaption { margin-top: var(--space-3); font-size: 0.85rem; color: var(--color-ink-soft); }
+.team-photo figcaption { margin-top: var(--space-3); font-size: 0.875rem; color: var(--color-ink); }
 
-.embed-frame { margin-top: var(--space-6); aspect-ratio: 16 / 10; border-radius: 0.75rem; overflow: hidden; border: 1px solid var(--color-border); }
+/* --color-border doesn't exist (undefined custom property invalidates the
+   whole `border` shorthand at computed-value time — these frames were
+   rendering with NO border at all). Figma's mockup shows these as plain
+   rounded-rectangle placeholders with no visible border in the provided
+   frame, so removing the border entirely (rather than inventing a color)
+   matches the source most literally. */
+.embed-frame { margin-top: var(--space-6); aspect-ratio: 16 / 10; border-radius: 0.75rem; overflow: hidden; }
 .embed-frame iframe { width: 100%; height: 100%; border: 0; }
-.embed-frame__note { margin-top: var(--space-2); font-size: 0.8rem; color: var(--color-ink-soft); text-align: right; }
+.embed-frame__note { margin-top: var(--space-2); font-size: 0.875rem; color: var(--color-ink); text-align: right; }
 
 .buch-layout { display: grid; gap: var(--space-6); align-items: start; margin-top: var(--space-4); }
 .buch-layout img { border-radius: 0.5rem; max-width: 13rem; margin-inline: auto; }
-.buch-layout p { margin-top: var(--space-3); }
-.price { font-size: 1.5rem; font-weight: 700; margin-block: var(--space-4); }
+/* Figma: every paragraph and the price line in this section are explicitly
+   14px (Body text SM) — no larger/bolder emphasis on the price specifically. */
+.buch-layout p, .buch-layout a { font-size: 0.875rem; margin-top: var(--space-3); }
+.price { font-size: 0.875rem; margin-top: var(--space-3); }
 
 @media (min-width: 48rem) {
   .buch-layout { grid-template-columns: 13rem 1fr; }
@@ -367,13 +385,22 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* Figma: all Fachartikel body text (paragraphs and list items) is 14px
+   (Body text SM), not the site's 16px default. */
 .fachartikel-layout { display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-4); }
-.fachartikel-item p, .fachartikel-item ul { margin-top: var(--space-3); }
+.fachartikel-item p, .fachartikel-item ul { margin-top: var(--space-3); font-size: 0.875rem; }
 .fachartikel-item ul { padding-left: 1.25rem; }
 .fachartikel-item li { margin-top: var(--space-2); font-weight: 600; }
+/* Figma: the "Hilfe, ich bin ständig krank..." pull-quote paragraph is
+   explicitly colored --color-bg-dark (#4f4d49) reused as a text color for
+   visual de-emphasis against the white article background — every other
+   paragraph in this section is plain --color-ink. */
+.fachartikel-item__quote { color: var(--color-bg-dark); }
 .fachartikel-buy { margin-top: var(--space-5); }
 .fachartikel-buy__button {
-  width: 100%; background: var(--color-brand); color: var(--color-ink); border: none; border-radius: 0.5rem;
+  /* Figma specifies literal white text on the mint background — see the
+     accessibility flag list for this pairing's contrast ratio. */
+  width: 100%; background: var(--color-brand); color: #fff; border: none; border-radius: 0.5rem;
   padding: var(--space-5); font-family: var(--font-body); font-weight: 600; font-size: 1rem; text-align: right; cursor: pointer;
 }
 .fachartikel-buy__button:hover { opacity: 0.9; }
@@ -386,7 +413,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 #kontakt .content { display: flex; flex-direction: column; gap: 2.25rem; }
 .kontakt-info-row { display: grid; gap: 2rem; }
 .kontakt-info-row > div > * + * { margin-top: var(--space-3); }
-.kontakt-map-heading { color: var(--color-brand-text); }
+/* Figma: the Kontakt info-row's wrapper sets a mint base color; the
+   address link and phone/hours paragraphs have explicit ink overrides,
+   but the Telefonzeiten/Öffnungszeiten <h3> headings do not, so they
+   inherit mint. */
+.kontakt-info-row h3 { color: var(--color-brand); }
+.kontakt-map-heading { color: var(--color-brand); }
 .kontakt-map { aspect-ratio: 720 / 289; }
 
 .zitat { text-align: left; }
@@ -399,7 +431,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .legal h1 { margin-bottom: var(--space-5); }
 .legal h2 { font-size: 1.25rem; margin-top: var(--space-7); margin-bottom: var(--space-3); }
-.legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand-text); }
+.legal h3 { font-size: 1rem; margin-top: var(--space-5); margin-bottom: var(--space-2); color: var(--color-brand); }
 .legal p { max-width: 42rem; }
 .legal p + p { margin-top: var(--space-3); }
 
@@ -419,7 +451,13 @@ section[id] { scroll-margin-top: 6.75rem; }
   padding-block: 3rem;
   text-align: center;
 }
-.site-footer a { color: var(--color-bg-light); text-decoration: underline; }
+/* Figma: the Impressum/Datenschutz link line explicitly colors each link
+   #f5f5f5 and underlines it — but the mailto link in the contact line has
+   NO color or underline override, so it inherits the line's own grey base
+   color and renders as plain (non-underlined) text, unlike the nav links
+   above it. Two different, deliberate treatments in the source. */
+.site-footer__links a { color: var(--color-bg-light); text-decoration: underline; }
+.site-footer__contact a { color: inherit; text-decoration: none; }
 .site-footer__inner { display: flex; flex-direction: column; gap: 2.25rem; }
 .site-footer__links { font-family: var(--font-heading); font-size: 1.25rem; }
 .site-footer__contact { font-size: 0.875rem; }
