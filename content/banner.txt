@@ -1,2 +1,5 @@
+# Diese Datei sorgt dafür dass ein Ankündigungs-Banner auf der Website der Praxis Dr. Mayer-Brix erscheint.
+# Sobald hier drin Inhalte ist dessen Zeilen kein # voran stehen haben, wird der Inhalt im banner angezeigt.
+
 **Dies ist eine Nachricht wie z.B.: Liebe Patienten und Patientinnen, unsere Praxis wird vom 31.8. bis zum 4.9.2026 geschlossen bleiben.**
 Dies ist der reguläre text in diesem Banner. Löschen Sie ihn einfach komplett oder kommentieren Sie alle Zeilen mit # aus, um das Banner auszublenden.
