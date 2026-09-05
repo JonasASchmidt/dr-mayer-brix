@@ -36,6 +36,14 @@ input, button, textarea, select { font: inherit; }
 
 :root {
   --color-brand: #00a2b5;
+  /* Darkened, same-hue variant of --color-brand for brand-colored TEXT on
+     light backgrounds. --color-brand itself measures only 3.07:1 on white
+     and 2.82:1 on --color-bg-light, both failing the 4.5:1 normal-text
+     minimum (WCAG 1.4.3) — this token passes against both (5.05:1 on
+     white, 4.63:1 on #f5f5f5) while preserving the brand hue for the
+     site's teal text accents. Use --color-brand unchanged for
+     backgrounds/buttons/banner/decorative accents. */
+  --color-brand-text: #007a8c;
   --color-ink: #231f20;
   --color-grey: #bdbcbc;
   --color-bg-light: #f5f5f5;
@@ -96,7 +104,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .uppercase-label {
   font-weight: 600;
   text-transform: uppercase;
-  color: var(--color-brand);
+  color: var(--color-brand-text);
   font-size: 1rem;
 }
 
@@ -154,7 +162,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   font-family: var(--font-heading);
   font-size: 1rem;
 }
-.site-nav a:hover, .site-nav a.is-current { color: var(--color-brand); }
+.site-nav a:hover, .site-nav a.is-current { color: var(--color-brand-text); }
 
 @media (min-width: 64rem) {
   .site-header__bar { padding-top: 2.25rem; padding-bottom: 1.5rem; }
@@ -275,7 +283,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .accordion__trigger {
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
   padding-block: var(--space-5); background: none; border: none; cursor: pointer; text-align: left;
-  color: var(--color-brand); font-family: var(--font-body); font-weight: 600; text-transform: uppercase; font-size: 1rem;
+  color: var(--color-brand-text); font-family: var(--font-body); font-weight: 600; text-transform: uppercase; font-size: 1rem;
 }
 .accordion__chevron { transition: transform 0.2s ease; flex-shrink: 0; color: var(--color-ink); }
 .accordion__item.is-open .accordion__chevron { transform: rotate(90deg); }
@@ -283,7 +291,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 
 .schwerpunkte__full, .schwerpunkte__row > div { margin-top: var(--space-6); }
 .schwerpunkte__row { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
-.schwerpunkte__row h4, .schwerpunkte__full h4 { color: var(--color-brand); margin-bottom: var(--space-2); }
+.schwerpunkte__row h4, .schwerpunkte__full h4 { color: var(--color-brand-text); margin-bottom: var(--space-2); }
 
 @media (min-width: 48rem) {
   .schwerpunkte__row { grid-template-columns: 1fr 1fr; }
@@ -340,7 +348,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 #kontakt .content { display: flex; flex-direction: column; gap: 2.25rem; }
 .kontakt-info-row { display: grid; gap: 2rem; }
 .kontakt-info-row > div > * + * { margin-top: var(--space-3); }
-.kontakt-map-heading { color: var(--color-brand); }
+.kontakt-map-heading { color: var(--color-brand-text); }
 .kontakt-map { aspect-ratio: 720 / 289; }
 
 .zitat { text-align: left; }
