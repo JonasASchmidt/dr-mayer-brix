@@ -337,6 +337,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    section's own (larger, later) copy of the hour paragraphs is a separate,
    explicitly-16px treatment; the two are not meant to match. */
 .hero__hours p { font-size: 0.875rem; }
+/* Figma: the day-abbreviation ("Mo, Di, Do" / "Mi" / "Fr") is semibold,
+   the time range next to it is regular — shared by the hero's compact
+   copy of the hours and the Kontakt section's own larger copy. */
+.hours__day { font-weight: 600; }
 /* Figma has the two blocks disagree on their own internal gap — 12px
    between Telefonzeiten's two lines, 8px between Öffnungszeiten's —
    flagged as a likely inconsistency, but implemented exactly as specced. */
@@ -406,11 +410,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
      Schwerpunkte cards, the Buch card) — the banner overlay carries it too. */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
 }
+/* Figma's floating card version of this banner uses 16px/20px top/bottom
+   padding and a 16px gap on mobile, 24px/24px and a 24px gap at desktop —
+   re-verified live. This is a full-width in-flow bar rather than that
+   floating card (see the box-shadow comment above for why), but the same
+   vertical rhythm still applies. */
 .banner__inner {
   display: flex;
   gap: var(--space-4);
   align-items: flex-start;
-  padding-block: var(--space-4);
+  padding-block: 1rem 1.25rem;
 }
 .banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 1.125rem; font-weight: 700; }
 .banner__text p:not(:first-child) { font-weight: 500; }
@@ -458,6 +467,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 @media (min-width: 64rem) {
   .section { padding-block: 5.625rem; }
   .leistungen-intro .uppercase-label { font-size: 1rem; }
+  .leistungen-group { gap: var(--space-6); }
+  .schwerpunkte-group { gap: var(--space-7); }
+  .schwerpunkte__layout { gap: var(--space-7); }
+  .schwerpunkte__row { gap: var(--space-7); }
+  .banner__inner { gap: var(--space-5); padding-block: var(--space-5); }
 }
 
 /* Figma models "Leistungen" and "Schwerpunkte" as ONE combined section
@@ -465,8 +479,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    separate sections each with their own .content gap (2.25rem/36px). */
 .leistungen-schwerpunkte .content { display: flex; flex-direction: column; align-items: center; gap: 3.75rem; }
 .leistungen-group, .schwerpunkte-group { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
-.leistungen-group { gap: var(--space-6); }
-.schwerpunkte-group { gap: var(--space-7); }
+/* Mobile-specific: Figma's mobile frame has this at 36px, not the 32px
+   used at desktop — a real breakpoint difference, re-verified live via
+   the Desktop Bridge, not a rounding artifact. */
+.leistungen-group { gap: 2.25rem; }
+/* Same mobile/desktop split as .leistungen-group above: 36px on mobile,
+   48px at desktop. */
+.schwerpunkte-group { gap: 2.25rem; }
 /* The global ".section h2" margin-bottom would otherwise stack on top of
    this flex container's own gap (h2 is a direct flex child here, unlike
    most other sections where it's followed by plain document-flow
@@ -500,13 +519,15 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    row's even 20px top/bottom) per Figma's two distinct component variants. */
 .accordion__item.is-open { padding: 1.75rem 1.75rem 2rem 2rem; }
 .accordion__trigger {
-  width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6);
+  width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-5);
   padding: 0; background: none; border: none; cursor: pointer; text-align: left;
-  /* Goudy Sans is only self-hosted at weight 500 (Medium) — the only
-     weight this font family ships in Figma's own type styles too — so
-     font-weight stays 500 here rather than 600, to avoid the browser
-     synthesizing a fake bold from the one real weight available. */
-  color: var(--color-brand); font-family: var(--font-heading); font-weight: 500; text-transform: uppercase; font-size: 1rem;
+  /* Re-verified live against Figma (the user updated this style directly
+     while this was being built): brand heading font, 24px, original case
+     — no longer the small uppercase Inter label this used to be. Goudy
+     Sans is only self-hosted at weight 500 (Medium), which is also the
+     only weight Figma's own type style uses, so font-weight stays 500
+     rather than 600 to avoid a synthesized fake bold. */
+  color: var(--color-brand); font-family: var(--font-heading); font-weight: 500; text-transform: none; font-size: 1.5rem; line-height: 1.5;
 }
 .accordion__chevron { flex-shrink: 0; }
 .accordion__panel {
@@ -519,8 +540,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .accordion__panel-inner { overflow: hidden; min-height: 0; font-size: 0.875rem; }
 .accordion__panel-inner p + p { margin-top: var(--space-2); }
 
-.schwerpunkte__layout { display: flex; flex-direction: column; gap: var(--space-7); width: 100%; }
-.schwerpunkte__row { display: grid; gap: var(--space-7); }
+/* Same 36px-mobile/48px-desktop split confirmed live for this wrapper and
+   the two-card row inside it. */
+.schwerpunkte__layout { display: flex; flex-direction: column; gap: 2.25rem; width: 100%; }
+.schwerpunkte__row { display: grid; gap: 2.25rem; }
 .schwerpunkte__card {
   background: var(--color-paper);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
@@ -528,7 +551,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   padding: var(--space-6);
   width: 100%;
 }
-.schwerpunkte__card h3 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.25rem; line-height: 1.3; }
+/* The user changed these to <h2> in both Figma and the markup (was h3 at
+   20px) — re-verified live: now 24px, same weight/font as the accordion
+   trigger labels, still mint, no longer needs the ".section h2" 32px
+   size overridden away from a bigger default since the tag/selector here
+   is scoped to just these cards. */
+.schwerpunkte__card h2 { color: var(--color-brand); margin-bottom: var(--space-2); font-size: 1.5rem; line-height: 1.5; }
 /* Figma: body text under Chronische Erkrankungen AND under Kinder/AVWS is
    explicitly 14px (Body text SM) throughout — not the site's 16px default.
    Only the section's own intro paragraphs (Schwerpunkte's own 2 lede
@@ -558,7 +586,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    its own explicit flex+gap rather than relying on a shared base rule. */
 #team .content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
 #team .content > h2 { margin-bottom: 0; }
-.team-photo img { border-radius: 0.75rem; width: 100%; height: auto; }
+.team-photo img { width: 100%; height: auto; }
 .team-photo figcaption { margin-top: var(--space-3); font-size: 0.875rem; color: var(--color-ink); }
 
 /* --color-border doesn't exist (undefined custom property invalidates the
@@ -589,7 +617,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   border-radius: 0.75rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* Figma: every direct child here (h2, tagline, the image+text row) is
+     set to FILL/STRETCH, not centered-while-hugging-content — align-items
+     defaults to stretch once this isn't overridden, which is what makes
+     the heading/tagline/row actually span and left-align instead of
+     shrink-wrapping to their own width and centering as a block. */
   gap: var(--space-5);
   padding: 1.75rem 2rem 2rem;
   width: 100%;
@@ -599,7 +631,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    card's own gap. */
 .buch-card > h2 { margin-bottom: 0; }
 .buch-layout { display: grid; gap: var(--space-6); align-items: start; width: 100%; }
-.buch-layout img { border-radius: 0.5rem; max-width: 15.3125rem; margin-inline: auto; }
+.buch-layout img { max-width: 15.3125rem; margin-inline: auto; }
 /* Figma: the 4 body paragraphs, the Leseprobe link, and the price line are
    all explicitly 14px (Body text SM) — no larger/bolder emphasis on the
    price specifically, each 8px apart (not the section-wide 16px default). */
@@ -689,7 +721,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    Kontakt/Telefonzeiten/Öffnungszeiten headings above it — was wrongly
    set to brand-mint. */
 .kontakt-map-heading { color: var(--color-ink); }
-.kontakt-map { aspect-ratio: 720 / 289; }
+/* No rounded corners on this embed — unlike .embed-frame's default
+   (used elsewhere for the Einblicke 360°-tour embed), this one is meant
+   square-cornered. */
+.kontakt-map { aspect-ratio: 720 / 289; border-radius: 0; }
 /* User-requested deviation from Figma's own static screenshot: a live,
    greyscale Google Maps embed pinned to the practice's address, replacing
    the placeholder that had mistakenly reused the Einblicke section's 360°
