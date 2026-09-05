@@ -57,7 +57,7 @@ input, button, textarea, select { font: inherit; }
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4rem;
-  --container-width: 71rem;
+  --container-width: 80rem;
   --content-width: 45rem;
   --gutter-mobile: 1.25rem;
   --gutter-desktop: 5rem;
@@ -181,18 +181,39 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .site-nav a:hover, .site-nav a.is-current { color: var(--color-brand-text); }
 
 @media (min-width: 64rem) {
-  .site-header__bar { padding-top: 2.25rem; padding-bottom: 1.5rem; }
+  .site-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+    padding-block: 2.25rem 1.5rem;
+    padding-inline: var(--gutter-desktop);
+    max-width: var(--container-width);
+    margin-inline: auto;
+  }
+  .site-header__bar,
+  .site-nav {
+    width: auto;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  .site-header__bar {
+    padding-block: 0;
+    flex-shrink: 0;
+  }
   .site-header__logo img { height: 5.125rem; }
   .nav-toggle { display: none; }
   .site-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: flex-end;
+    flex: 1 1 0;
     gap: 2.5rem;
     border-top: none;
-    padding-block: 0;
+    padding-block: 1rem 0;
   }
-  .site-nav a { padding: 0; font-size: 1.125rem; }
+  .site-nav a { padding: 0; font-size: 1.125rem; line-height: 1.25; }
 }
 
 .hero { position: relative; }
