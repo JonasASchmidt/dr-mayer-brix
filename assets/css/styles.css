@@ -276,10 +276,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
     align-items: flex-start;
     gap: 3rem;
     padding-block: 2.25rem 1.5rem;
-    /* Asymmetric per Figma (just corrected there): 24px left, 80px right —
-       not one shared desktop gutter value on both sides. */
-    padding-left: 1.5rem;
-    padding-right: var(--gutter-desktop);
+    /* Symmetric 80px both sides — re-verified fresh via the Desktop Bridge.
+       An earlier pass found this asymmetric (24px left / 80px right) and
+       documented it as such; the user has since made it symmetric in
+       Figma, matching the standard desktop gutter on both sides. */
+    padding-inline: var(--gutter-desktop);
   }
   .site-header__bar,
   .site-nav {
@@ -624,8 +625,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .einblicke-intro > p + p { margin-top: 1rem; }
 
 /* Figma: the whole Buch section is ONE white drop-shadow card (not a dark
-   section with plain text) — grey (#bdbcbc) page background behind it. */
-.buch-section { background: var(--color-grey); }
+   section with plain text) sitting on a colored page background — verified
+   fresh via the Desktop Bridge (both the desktop and mobile "Unser Buch"
+   frames), this is now brand mint (--color-brand), not the grey it used to
+   be — the user changed it in Figma since this was last implemented. */
+.buch-section { background: var(--color-brand); }
 .buch-card {
   background: var(--color-paper);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
