@@ -21,8 +21,26 @@ export function escapeHtml(str) {
 //   Vertretung: Praxis Dr. Mayr, Tel. 09131 / 888080
 const BOLD_RE = /\*\*(.+?)\*\*/g;
 
+// A line whose first non-whitespace character is "#" is a comment — never
+// shown on the site, so you can leave notes for the next editor ("remove
+// after 4.9."), or keep old/draft wording around without deleting it, or
+// switch the banner off (blank the real lines below the comment) while
+// still seeing what it used to say. Blanked in place rather than removed
+// outright so a comment sitting between two paragraphs doesn't
+// accidentally merge them into one. A line that needs a literal leading
+// "#" (a hashtag, "# 1." as a list marker, ...) isn't supported — indent
+// it with a space first if that ever comes up.
+const COMMENT_LINE_RE = /^[ \t]*#/;
+
+function stripComments(raw) {
+  return raw
+    .split('\n')
+    .map((line) => (COMMENT_LINE_RE.test(line) ? '' : line))
+    .join('\n');
+}
+
 export function renderBannerHTML(text) {
-  const trimmed = (text || '').trim();
+  const trimmed = stripComments(text || '').trim();
   if (!trimmed) return '';
   const paragraphs = trimmed
     .split(/\n\s*\n/)

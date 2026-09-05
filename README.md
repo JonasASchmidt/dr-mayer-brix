@@ -21,6 +21,14 @@ file: `content/banner.txt`.
   on/off setting to get wrong.
 - **Any text in the file → banner is on**, showing that text. A blank line
   starts a new paragraph.
+- **`**double asterisks**` → bold/highlighted.** Everything else renders at
+  the normal (Medium) weight. Example:
+  `**Praxis geschlossen vom 31.8. bis 4.9.**` renders that sentence bold.
+- **A line starting with `#` → a comment, never shown on the site.** Use it
+  to leave a note for the next person editing the file ("remove after
+  4.9."), or to keep old/draft wording around without deleting it — just
+  put `#` in front of lines you don't want live yet. If every real line is
+  commented out, the banner is off, same as an empty file.
 
 To change it (no coding needed):
 
