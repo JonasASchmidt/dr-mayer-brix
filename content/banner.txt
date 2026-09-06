@@ -6,3 +6,5 @@
 
 # **Dies ist eine besondere Nachricht wie z.B. dass unsere Praxis vom 31.8. bis zum 4.9.2026 geschlossen war.**
 # Dies ist der reguläre text in diesem Banner für weitere Hinweise. Sie erreichen uns dennoch am besten über die [Online-Rezeption](online-rezeption). Löschen Sie ihn oder kommentieren Sie alle Zeilen mit # aus, um das Banner auszublenden.
+
+**Sollten Sie uns telefonisch nicht erreichen, benutzen Sie bitte die Online-Rezeption rechts unten auf unserer Website.**
