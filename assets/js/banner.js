@@ -22,6 +22,26 @@ export function escapeHtml(str) {
 //   Vertretung: Praxis Dr. Mayr, Tel. 09131 / 888080
 const BOLD_RE = /\*\*(.+?)\*\*/g;
 
+// Markdown-style links: [label](target). A normal target ("https://...",
+// "tel:...", "mailto:...", a relative path, ...) becomes a real link,
+// styled to match the site's brand-mint-background link treatment. The
+// special target "online-rezeption" instead renders the exact same
+// Online-Rezeption trigger button used in the hero — a <button>, not a
+// link, since it opens the 321med widget via JS rather than navigating
+// anywhere (main.js re-runs initOnlineRezeptionButtons() on the banner
+// once this is injected, so it's wired up the same way). E.g.:
+//   Sie erreichen uns am besten über die [Online-Rezeption](online-rezeption).
+//   Mehr dazu auf [unserer Website](https://pmb.makethings.work/).
+const LINK_RE = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+function renderLink(label, target) {
+  const trimmedTarget = target.trim();
+  if (trimmedTarget.toLowerCase() === 'online-rezeption') {
+    return `<button type="button" class="hero__rezeption-link js-open-321med">${label}</button>`;
+  }
+  return `<a href="${trimmedTarget}" class="banner__link">${label}</a>`;
+}
+
 // A line whose first non-whitespace character is "#" is a comment — never
 // shown on the site, so you can leave notes for the next editor ("remove
 // after 4.9."), or keep old/draft wording around without deleting it, or
@@ -59,14 +79,16 @@ export function renderBannerHTML(text) {
     .map((p) => p.trim())
     .filter(Boolean)
     .map((p) => {
-      // Escape first so **markers** and any HTML-special characters in the
-      // author's text can't collide, then apply bold, then obfuscate any
-      // email address the same way as everywhere else on the site — order
-      // matters here (each step assumes plain text from the step before
-      // it hasn't turned into markup it needs to avoid re-processing).
+      // Escape first so **markers**, [links](...) and any HTML-special
+      // characters in the author's text can't collide, then apply bold,
+      // then links, then obfuscate any email address the same way as
+      // everywhere else on the site — order matters here (each step
+      // assumes plain text from the step before it hasn't turned into
+      // markup it needs to avoid re-processing).
       const escaped = escapeHtml(p);
       const bolded = escaped.replace(BOLD_RE, '<strong>$1</strong>');
-      return `<p>${obfuscateEmailsInHtml(bolded)}</p>`;
+      const linked = bolded.replace(LINK_RE, (match, label, target) => renderLink(label, target));
+      return `<p>${obfuscateEmailsInHtml(linked)}</p>`;
     })
     .join('');
   // No .container here: the banner is now a floating card positioned and

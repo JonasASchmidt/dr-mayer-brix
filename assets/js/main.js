@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // into .js-email markup by renderBannerHTML); it's injected after
       // the page's initial initEmailLinks() pass, so resolve it here too.
       initEmailLinks(bannerSlot);
+      // Same reasoning for a [label](online-rezeption) link in the banner
+      // text: initOnlineRezeptionButtons(document) above already ran
+      // before this async content existed, so a .js-open-321med button
+      // injected here would otherwise never get its click listener.
+      initOnlineRezeptionButtons(bannerSlot);
     });
   }
 });

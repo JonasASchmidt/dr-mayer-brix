@@ -455,6 +455,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   z-index: -1;
   background: var(--color-brand);
   border-radius: 0.5rem;
+  /* Figma's "Layout Wrapper" inset around the text (see .banner__text
+     below) used to carry its own top/left/bottom padding; direct request
+     moved just the left component up here onto the card itself instead —
+     .banner__text keeps only its flex/gap role now, no padding of its
+     own, so it lines up with the dismiss icon at the top instead of
+     sitting lower. Stacks with .banner__inner's own left padding below. */
+  padding-left: 0.25rem;
   /* Figma specifies literal white text on this mint background — see the
      accessibility flag list for this pairing's contrast ratio. */
   color: #fff;
@@ -479,6 +486,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
     left: auto;
     right: calc(max(0rem, (100vw - var(--container-width)) / 2) + var(--gutter-desktop));
     max-width: var(--content-width);
+    padding-left: 0.375rem;
   }
 }
 /* Figma's floating card uses 16px/20px top/bottom padding (16px left/right)
@@ -498,13 +506,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    more automatic "first paragraph is bold" behavior. */
 .banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-3); font-size: 1rem; font-weight: 500; }
 .banner__text strong { font-weight: 700; }
-/* Figma's "Layout Wrapper" frame insets the text 4px (top/left/bottom,
-   not right) on mobile, 6px at desktop — a second, smaller padding layer
-   nested inside the card's own 16px/24px padding, not folded into it. */
-.banner__text { padding: 0.25rem 0 0.25rem 0.25rem; }
-@media (min-width: 64rem) {
-  .banner__text { padding: 0.375rem 0 0.375rem 0.375rem; }
-}
 .banner__link { color: #fff; font-weight: 600; text-decoration: underline; width: fit-content; }
 /* Exception to the site-wide "links turn mint on hover" policy: this link
    sits ON the brand-mint banner background, so a mint hover color would

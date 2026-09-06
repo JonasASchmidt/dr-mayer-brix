@@ -30,6 +30,11 @@ file: `content/banner.txt`.
   4.9."), or to keep old/draft wording around without deleting it — just
   put `#` in front of lines you don't want live yet. If every real line is
   commented out, the banner is off, same as an empty file.
+- **`[Text](Linkziel)` → a clickable link.** Example:
+  `[Praxis-Website](https://pmb.makethings.work/)`. Use the special target
+  `online-rezeption` instead of a URL to insert the same Online-Rezeption
+  button used elsewhere on the site (opens the booking widget, doesn't
+  navigate anywhere): `[Online-Rezeption](online-rezeption)`.
 
 To change it (no coding needed):
 
