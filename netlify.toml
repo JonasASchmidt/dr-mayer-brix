@@ -44,3 +44,9 @@
   for = "/assets/img/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+  from = "/test-rewrite-path/*"
+  to = "/test-rewrite-target/:splat"
+  status = 200
+  force = true
