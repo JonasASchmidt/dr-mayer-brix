@@ -1,6 +1,23 @@
 [build]
   publish = "."
 
+# mayer-brix.de is a second domain for the same practice, pointed at this
+# site via DNS (A/CNAME) — it must also be added as a domain on this site
+# in the Netlify dashboard (Domain management > Add a domain) for these
+# rules and its SSL certificate to take effect. Redirects to the primary
+# domain rather than serving duplicate content on two hostnames.
+[[redirects]]
+  from = "https://mayer-brix.de/*"
+  to = "https://dr-mayer-brix.de/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.mayer-brix.de/*"
+  to = "https://dr-mayer-brix.de/:splat"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
