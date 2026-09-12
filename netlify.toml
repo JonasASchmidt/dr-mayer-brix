@@ -1,16 +1,6 @@
 [build]
   publish = "."
 
-# Netlify doesn't deploy dotfiles/dot-folders (like .well-known) by default,
-# which breaks ACME HTTP-01 domain validation (Let's Encrypt, certbot, etc.
-# fetch http://<domain>/.well-known/acme-challenge/<token>). This rewrites
-# that path to a normal, deployable folder instead. Temporary/ops-only rule.
-[[redirects]]
-  from = "/.well-known/acme-challenge/*"
-  to = "/_acme-challenges/:splat"
-  status = 200
-  force = true
-
 # mayer-brix.de is a second domain for the same practice, pointed at this
 # site via DNS (A/CNAME) — it must also be added as a domain on this site
 # in the Netlify dashboard (Domain management > Add a domain) for these
@@ -44,9 +34,3 @@
   for = "/assets/img/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-[[redirects]]
-  from = "/test-rewrite-path/*"
-  to = "/test-rewrite-target/:splat"
-  status = 200
-  force = true
