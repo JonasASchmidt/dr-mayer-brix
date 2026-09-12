@@ -1,1 +1,0 @@
-The website of HNO Praxis Dr. Joachim Mayer-Brix (my father) who practices in Erlangen, Germany. Old version reachable under https://www.dr-mayer-brix.de until the new one we develop here, overrides it.
