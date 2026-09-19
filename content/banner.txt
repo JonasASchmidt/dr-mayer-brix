@@ -5,4 +5,4 @@
 # Schreibe [Text](Linkziel), um einen Link einzufügen, z.B. [Praxis-Website](https://pmb.makethings.work/).
 # Schreibe stattdessen [Text](online-rezeption), um damit den Online-Rezeption-Button einzufügen.
 
-**Liebe Patienten, nutzen Sie bitte für Ihre Anliegen die neue Online-Rezeption rechts unten auf unserer Website.**
+**Liebe Patient,liebe Patientin nutzen Sie bitte für Ihre Anliegen die neue Online-Rezeption rechts unten auf unserer Website.**
