@@ -506,12 +506,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    more automatic "first paragraph is bold" behavior. */
 .banner__text { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-3); font-size: 1rem; font-weight: 500; }
 .banner__text strong { font-weight: 700; }
-.banner__link { color: #fff; font-weight: 600; text-decoration: underline; width: fit-content; }
-/* Exception to the site-wide "links turn mint on hover" policy: this link
-   sits ON the brand-mint banner background, so a mint hover color would
-   be effectively invisible against it (see flagged accessibility list).
-   Keep it white on hover/focus instead — same as its resting state. */
-.banner__link:hover, .banner__link:focus-visible { color: #fff; }
+/* Every link in the banner — [Text](Ziel) links as well as auto-detected
+   email addresses and phone numbers (see renderLine in banner.js) — is
+   white like the surrounding text and turns ink on hover/focus (direct
+   request). Exception to the site-wide "links turn mint on hover" policy:
+   they sit ON the brand-mint banner background, where the global ink
+   resting color / mint hover would read as a stray black word and then
+   vanish entirely. Ink on brand measures 5.31:1. Weight is inherited, so
+   a link inside **bold** text stays bold. */
+.banner__text a { color: #fff; text-decoration: underline; }
+.banner__text a:hover, .banner__text a:focus-visible { color: var(--color-ink); }
 /* Figma's close icon (a real 24×24 "lucide/x" component, same one the nav
    uses — see renderBannerHTML) sits flush against the card's own padding,
    with no extra padding of its own around it — the icon itself stays put. */
