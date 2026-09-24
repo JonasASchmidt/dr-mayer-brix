@@ -5,4 +5,6 @@
 # Schreibe [Text](Linkziel), um einen Link einzufügen, z.B. [Praxis-Website](https://pmb.makethings.work/).
 # Schreibe stattdessen [Text](online-rezeption), um damit den Online-Rezeption-Button einzufügen.
 
-**Liebe Patientinnen und Patienten, nutzen Sie bitte für Ihre Anliegen die neue Online-Rezeption rechts unten auf unserer Website.**
+#**Liebe Patientinnen und Patienten, nutzen Sie bitte für Ihre Anliegen die neue Online-Rezeption rechts unten auf unserer Website.**
+
+#Liebe Patientinnen und Patienten, **aktuell erreichen Sie uns telefonisch [09131/208899](09131/208899) oder per Mail unter [mbpraxis@duck.com](mbpraxis@duck.com), wir klären gerade eine technische Störung der Online-Rezeption.
