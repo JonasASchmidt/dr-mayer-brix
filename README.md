@@ -30,11 +30,18 @@ file: `content/banner.txt`.
   4.9."), or to keep old/draft wording around without deleting it — just
   put `#` in front of lines you don't want live yet. If every real line is
   commented out, the banner is off, same as an empty file.
-- **`[Text](Linkziel)` → a clickable link.** Example:
-  `[Praxis-Website](https://pmb.makethings.work/)`. Use the special target
-  `online-rezeption` instead of a URL to insert the same Online-Rezeption
-  button used elsewhere on the site (opens the booking widget, doesn't
-  navigate anywhere): `[Online-Rezeption](online-rezeption)`.
+- **Email addresses and phone numbers become links automatically.** Just
+  write them as plain text — `mbpraxis@duck.com` or `09131/208899` (also
+  `09131 208899`, `+49 9131 208899`, `+49 (0) 91 31 / 20 88 99`). No
+  special syntax needed.
+- **`[Text](Linkziel)` → a link with its own text.** The target can be a
+  web address, an email address or a phone number, e.g.
+  `[unsere Website](https://dr-mayer-brix.de/)`,
+  `[Schreiben Sie uns](mbpraxis@duck.com)`, `[Rufen Sie an](09131/208899)`.
+  Use the special target `online-rezeption` to insert the same
+  Online-Rezeption button used elsewhere on the site (opens the booking
+  widget, doesn't navigate anywhere): `[Online-Rezeption](online-rezeption)`.
+- All banner links are white like the text and turn dark on hover.
 
 To change it (no coding needed):
 

@@ -2,8 +2,9 @@
 # Sobald in dieser Datei Zeilen stehen denen kein # voran steht, werden diese im Banner angezeigt.
 
 # Wenn Text mit **und** umschlossen ist, wird er im Banner fett hervorgehoben.
-# Schreibe [Text](Linkziel), um einen Link einzufügen, z.B. [Praxis-Website](https://pmb.makethings.work/).
-# Schreibe stattdessen [Text](online-rezeption), um damit den Online-Rezeption-Button einzufügen.
+# E-Mail-Adressen und Telefonnummern werden automatisch zu Links, einfach normal hinschreiben: mbpraxis@duck.com oder 09131/208899
+# Für einen Link mit eigenem Text schreibe [Text](Linkziel), z.B. [unsere Website](https://dr-mayer-brix.de/), [Schreiben Sie uns](mbpraxis@duck.com) oder [Rufen Sie an](09131/208899).
+# Schreibe [Text](online-rezeption), um damit den Online-Rezeption-Button einzufügen.
 
 #**Liebe Patientinnen und Patienten, nutzen Sie bitte für Ihre Anliegen die neue Online-Rezeption rechts unten auf unserer Website.**
 
