@@ -367,10 +367,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    the time range next to it is regular — shared by the hero's compact
    copy of the hours and the Kontakt section's own larger copy. */
 .hours__day { font-weight: 600; }
-/* Figma has the two blocks disagree on their own internal gap — 12px
-   between Telefonzeiten's two lines, 8px between Öffnungszeiten's —
-   flagged as a likely inconsistency, but implemented exactly as specced. */
-.hero__hours--telefonzeiten p + p { margin-top: var(--space-3); }
+/* Figma: 8px between the Öffnungszeiten lines. (The Telefonzeiten block
+   was removed on request — the practice no longer has phone hours.) */
 .hero__hours--oeffnungszeiten p + p { margin-top: var(--space-2); }
 /* Figma's Willkommen "Content" wrapper sets a mint (--color-brand) base
    text color inherited by every child that has no more specific color
@@ -885,10 +883,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 /* Figma: address/phone/label are each 16px apart within the first block. */
 .kontakt-info-block > * + * { margin-top: 1rem; }
 .kontakt-hours h3 { margin-bottom: 1rem; }
-/* Figma has the two blocks disagree on their own internal gap here too —
-   12px under Telefonzeiten, 16px under Öffnungszeiten — implemented
-   exactly as specced rather than normalized to one value. */
-.kontakt-hours--telefonzeiten p + p { margin-top: var(--space-3); }
+/* Figma: 16px between the Öffnungszeiten lines. */
 .kontakt-hours--oeffnungszeiten p + p { margin-top: 1rem; }
 /* Figma: the Kontakt info-row's wrapper sets a mint base color; the
    address link and phone/hours paragraphs have explicit ink overrides,
@@ -917,7 +912,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .zitat__attribution { margin-top: 1rem; font-family: var(--font-heading); font-size: 1.25rem; line-height: 1.3; color: var(--color-bg-light); }
 
 @media (min-width: 48rem) {
-  .kontakt-info-row { grid-template-columns: 1fr 11.25rem 11.25rem; }
+  .kontakt-info-row { grid-template-columns: 1fr 11.25rem; }
 }
 
 .legal h1 { margin-bottom: var(--space-5); color: var(--color-brand); }

@@ -43,10 +43,8 @@
       },
       "employee": { "@id": "https://pmb.makethings.work/#physician" },
       "openingHoursSpecification": [
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Thursday"], "opens": "08:30", "closes": "12:30" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Thursday"], "opens": "14:00", "closes": "17:30" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "10:00", "closes": "15:30" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:30", "closes": "13:30" }
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "08:30", "closes": "12:30" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "14:00", "closes": "17:30" }
       ]
     },
     {
@@ -96,7 +94,7 @@
           "name": "Wie sind die Öffnungszeiten der Praxis?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Montags, dienstags und donnerstags von 8.30 bis 12.30 Uhr und von 14 bis 17.30 Uhr. Mittwochs von 10 bis 15.30 Uhr. Freitags von 8.30 bis 13.30 Uhr."
+            "text": "Montags bis donnerstags von 8.30 bis 12.30 Uhr und von 14 bis 17.30 Uhr. Freitags ist die Praxis geschlossen."
           }
         }
       ]
@@ -163,15 +161,10 @@
            its own floating button opens to. Wired in main.js. -->
       <p class="uppercase-label">Sie erreichen uns am besten über die <button type="button" class="hero__rezeption-link js-open-321med">Online-Rezeption</button>.</p>
     </div>
-    <div class="hero__hours hero__hours--telefonzeiten">
-      <h3>Telefonzeiten</h3>
-      <p><span class="hours__day">Mo, Di, Do</span><br>8.15 – 11.15 und 14.15 – 16.30</p>
-      <p><span class="hours__day">Mi</span> 10 – 11.15<br><span class="hours__day">Fr</span> 8.15 – 11.15</p>
-    </div>
     <div class="hero__hours hero__hours--oeffnungszeiten">
       <h3>Öffnungszeiten</h3>
-      <p><span class="hours__day">Mo, Di, Do</span><br>8.30 – 12.30 und 14 – 17.30</p>
-      <p><span class="hours__day">Mi</span> 10 – 15.30<br><span class="hours__day">Fr</span> 8.30 – 13.30</p>
+      <p><span class="hours__day">Mo – Do</span><br>8.30 – 12.30 und 14 – 17.30</p>
+      <p><span class="hours__day">Fr</span> geschlossen</p>
     </div>
   </div>
 </div>
@@ -427,15 +420,10 @@
             <p>Tel. <a href="tel:+499131208899">+49 (0) 91 31 / 20 88 99</a><br>Fax +49 (0) 91 31 / 20 52 45</p>
             <p class="uppercase-label">Sie erreichen uns am besten über die <button type="button" class="hero__rezeption-link js-open-321med">Online-Rezeption</button>.</p>
           </div>
-          <div class="kontakt-hours kontakt-hours--telefonzeiten">
-            <h3>Telefonzeiten</h3>
-            <p><span class="hours__day">Mo, Di, Do</span><br>8.15 – 11.15 und 14.15 – 16.30</p>
-            <p><span class="hours__day">Mi</span> 10 – 11.15<br><span class="hours__day">Fr</span> 8.15 – 11.15</p>
-          </div>
           <div class="kontakt-hours kontakt-hours--oeffnungszeiten">
             <h3>Öffnungszeiten</h3>
-            <p><span class="hours__day">Mo, Di, Do</span><br>8.30 – 12.30 und 14 – 17.30</p>
-            <p><span class="hours__day">Mi</span> 10 – 15.30<br><span class="hours__day">Fr</span> 8.30 – 13.30</p>
+            <p><span class="hours__day">Mo – Do</span><br>8.30 – 12.30 und 14 – 17.30</p>
+            <p><span class="hours__day">Fr</span> geschlossen</p>
           </div>
         </div>
         <div class="kontakt-find">
