@@ -912,7 +912,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .zitat__attribution { margin-top: 1rem; font-family: var(--font-heading); font-size: 1.25rem; line-height: 1.3; color: var(--color-bg-light); }
 
 @media (min-width: 48rem) {
-  .kontakt-info-row { grid-template-columns: 1fr 11.25rem; }
+  /* Address column keeps its original width from the three-column layout;
+     with the Telefonzeiten column gone, Öffnungszeiten spans both of the
+     remaining columns so it starts where Telefonzeiten used to. */
+  .kontakt-info-row { grid-template-columns: 1fr 11.25rem 11.25rem; }
+  .kontakt-hours--oeffnungszeiten { grid-column: 2 / -1; }
 }
 
 .legal h1 { margin-bottom: var(--space-5); color: var(--color-brand); }
