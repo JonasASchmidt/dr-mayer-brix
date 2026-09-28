@@ -6,7 +6,6 @@
 # Für einen Link mit eigenem Text schreibe [Text](Linkziel), z.B. [unsere Website](https://dr-mayer-brix.de/), [Schreiben Sie uns](mbpraxis@duck.com) oder [Rufen Sie an](09131/208899).
 # Schreibe [Text](online-rezeption), um damit den Online-Rezeption-Button einzufügen.
 
-**Liebe Patientinnen und Patienten, ab 1.10. wird die Praxis freitags geschlossen sein.** 
-Dafür öffnen wir Mittwochs früh und haben auch Nachmittags Sprechstunde. 
+**Liebe Patientinnen und Patienten, ab 1.10. wird die Praxis freitags geschlossen sein.** Dafür öffnen wir Mittwochs früh und haben auch Nachmittags Sprechstunde. 
 
 Nutzen Sie bitte für Ihre Anliegen die [Online-Rezeption](online-rezeption).
