@@ -539,6 +539,39 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    Override to ink here, which measures 5.31:1 against the brand background. */
 .banner a:focus-visible, .banner button:focus-visible { outline-color: var(--color-ink); }
 
+/* Cookie notice: full-width bar fixed to the bottom viewport edge, sharp
+   corners, above everything (incl. the 321med widget, which uses the max
+   z-index too — this one wins by coming later in the DOM, appended on
+   DOMContentLoaded after the vendor scripts are parsed). Same mint/white
+   as the announcement banner. The button is white-on-ink for contrast,
+   since white text on the mint background is only ~3:1. */
+.cookie-banner {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 2147483647;
+  background: var(--color-brand);
+  color: #fff;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.cookie-banner__inner {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4);
+  max-width: var(--container-width); margin-inline: auto;
+  padding: var(--space-4) var(--gutter-mobile);
+}
+.cookie-banner__text { margin: 0; font-size: 1rem; font-weight: 500; }
+.cookie-banner__text a { color: #fff; text-decoration: underline; }
+.cookie-banner__text a:hover, .cookie-banner__text a:focus-visible { color: var(--color-ink); }
+.cookie-banner__accept {
+  flex-shrink: 0; padding: var(--space-3) var(--space-6); border: none; border-radius: 999px;
+  background: #fff; color: var(--color-ink); font: inherit; font-weight: 700; cursor: pointer;
+}
+.cookie-banner__accept:hover { background: var(--color-ink); color: #fff; }
+.cookie-banner a:focus-visible, .cookie-banner button:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+.cookie-banner__accept:focus-visible { outline-color: #fff; }
+@media (min-width: 48rem) {
+  .cookie-banner__inner { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-5); padding-inline: var(--gutter-desktop); }
+}
+
 .section { padding-block: 3.75rem; }
 .section--alt { background: var(--color-bg-light); }
 .section--dark { background: var(--color-bg-dark); color: #fff; }
