@@ -4,6 +4,7 @@ import { initAccordions, initSchwerpunkteCards } from './accordion.js';
 import { loadBanner } from './banner.js';
 import { initEmailLinks } from './email-obfuscate.js';
 import { initOnlineRezeptionButtons } from './online-rezeption.js';
+import { initCookieBanner } from './cookie-banner.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('nav-toggle');
@@ -24,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initSchwerpunkteCards(document);
 
   initEmailLinks(document);
+
+  initCookieBanner(document);
 
   initOnlineRezeptionButtons(document);
 

@@ -99,11 +99,12 @@
         <p>Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-E-Mails, vor.</p>
 
         <h2>3. Datenerfassung auf unserer Website</h2>
-        <h3>Cookies</h3>
+        <h3 id="cookies">Cookies</h3>
         <p>Die Internetseiten verwenden teilweise so genannte Cookies. Cookies richten auf Ihrem Rechner keinen Schaden an und enthalten keine Viren. Cookies dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert.</p>
         <p>Die meisten der von uns verwendeten Cookies sind so genannte "Session-Cookies". Sie werden nach Ende Ihres Besuchs automatisch gelöscht. Andere Cookies bleiben auf Ihrem Endgerät gespeichert, bis Sie diese löschen. Diese Cookies ermöglichen es uns, Ihren Browser beim nächsten Besuch wiederzuerkennen.</p>
         <p>Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben, die Annahme von Cookies für bestimmte Fälle oder generell ausschließen sowie das automatische Löschen der Cookies beim Schließen des Browsers aktivieren. Bei der Deaktivierung von Cookies kann die Funktionalität dieser Website eingeschränkt sein.</p>
         <p>Cookies, die zur Durchführung des elektronischen Kommunikationsvorgangs oder zur Bereitstellung bestimmter, von Ihnen erwünschter Funktionen (z.B. Warenkorbfunktion) erforderlich sind, werden auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO gespeichert. Der Websitebetreiber hat ein berechtigtes Interesse an der Speicherung von Cookies zur technisch fehlerfreien und optimierten Bereitstellung seiner Dienste.</p>
+        <p>Diese Website setzt selbst keine Cookies. Die Online-Rezeption von 321med, unsere Hauptkontaktmöglichkeit, wird beim Aufruf der Website geladen. Google Maps wird nur geladen, wenn Sie im Cookie-Hinweis „Alle zulassen“ wählen oder im Platzhalter „Google Maps laden“ anklicken; Rechtsgrundlage ist dafür Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Sie können Ihre Auswahl und damit auch eine erteilte Einwilligung jederzeit über den Cookie-Button links unten auf jeder Seite ändern oder widerrufen.</p>
 
         <h3>Server-Log-Dateien</h3>
         <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind: Browsertyp und Browserversion, verwendetes Betriebssystem, Referrer URL, Hostname des zugreifenden Rechners, Uhrzeit der Serveranfrage, IP-Adresse.</p>
@@ -134,6 +135,7 @@
         <h3>Google Maps</h3>
         <p>Diese Seite nutzt über eine eingebettete iFrame-Ansicht den Kartendienst Google Maps, unter anderem für den virtuellen 360°-Rundgang durch die Praxis. Anbieter ist die Google Inc., 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA.</p>
         <p>Zur Nutzung der Funktionen von Google Maps ist es notwendig, Ihre IP-Adresse zu speichern. Diese Informationen werden in der Regel an einen Server von Google in den USA übertragen und dort gespeichert. Der Anbieter dieser Seite hat keinen Einfluss auf diese Datenübertragung.</p>
+        <p>Google Maps wird nur geladen, wenn Sie „Alle zulassen“ wählen oder im Platzhalter „Google Maps laden“ anklicken (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Sie können Ihre Auswahl und damit auch eine erteilte Einwilligung jederzeit über den Cookie-Button links unten auf jeder Seite ändern oder widerrufen.</p>
         <p>Mehr Informationen zum Umgang mit Nutzerdaten finden Sie in der Datenschutzerklärung von Google: <a href="https://www.google.de/intl/de/policies/privacy/">google.de/intl/de/policies/privacy</a>.</p>
 
         <!-- ACCURACY NOTE: a Google Analytics section previously stood here, describing
@@ -150,6 +152,7 @@
         <h3>321med Online-Rezeption</h3>
         <p>Für die Terminvereinbarung nutzen wir den Dienst "321med Online-Rezeption" der 321 MED GmbH, Ohmstraße 1a, D-93055 Regensburg. Der Dienst wird als eingebettetes Widget auf unserer Website bereitgestellt und ermöglicht es Ihnen, direkt online Termine zu vereinbaren und Anliegen zu übermitteln.</p>
         <p>Bei Nutzung des Widgets werden die von Ihnen eingegebenen Daten (z.B. Name, Kontaktdaten, Terminwunsch) an 321 MED übermittelt und dort zur Bearbeitung Ihres Anliegens verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Erfüllung eines Vertrags bzw. vorvertraglicher Maßnahmen) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer reibungslosen Terminorganisation).</p>
+        <p>Das Widget ist unsere Hauptkontaktmöglichkeit und wird beim Aufruf der Website geladen, wobei Ihre IP-Adresse an 321 MED übertragen wird (berechtigtes Interesse, Art. 6 Abs. 1 lit. f DSGVO). Die Einwilligung in die Verarbeitung der von Ihnen im Widget eingegebenen Daten holt das Widget selbst ein.</p>
         <p>Weitere Informationen zum Umgang mit Ihren Daten durch 321 MED erhalten Sie direkt von 321 MED GmbH.</p>
 
         <!-- ACCURACY NOTE: a "jameda Siegel und Widget" section previously stood here,
@@ -171,13 +174,7 @@
       </div>
     </div>
   </footer>
+  <script src="assets/js/rezeption-loader.js"></script>
   <script type="module" src="assets/js/main.js"></script>
-  <!-- 321med Online-Rezeption widget, provided directly by the practice's vendor
-       (321 MED GmbH) on 2026-09-04. No SRI hash: this is a vendor-hosted,
-       server-rendered widget script expected to update without a version bump,
-       same category as the PayPal SDK script elsewhere on this site — pinning
-       a hash would break it on the vendor's next legitimate update. -->
-  <script src="https://321med17.com/cdn/server/11cb0eefca4e16e350aca235e8bea2608a35c85f/321med.js"></script>
-  <script src="https://321med-cdn.com/321med.js"></script>
 </body>
 </html>

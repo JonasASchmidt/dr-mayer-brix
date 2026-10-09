@@ -539,6 +539,58 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    Override to ink here, which measures 5.31:1 against the brand background. */
 .banner a:focus-visible, .banner button:focus-visible { outline-color: var(--color-ink); }
 
+/* Cookie notice: full-width bar fixed to the bottom viewport edge, sharp
+   corners, above everything (incl. the 321med widget, which uses the max
+   z-index too — this one wins by coming later in the DOM, appended on
+   DOMContentLoaded after the vendor scripts are parsed). Same mint/white
+   as the announcement banner. The button is white-on-ink for contrast,
+   since white text on the mint background is only ~3:1. */
+.cookie-banner {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 2147483647;
+  background: var(--color-brand);
+  color: #fff;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.cookie-banner__inner {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4);
+  max-width: var(--container-width); margin-inline: auto;
+  padding: var(--space-4) var(--gutter-mobile);
+}
+.cookie-banner__text { margin: 0; font-size: 1rem; font-weight: 500; }
+.cookie-banner__text a { color: #fff; text-decoration: underline; }
+.cookie-banner__text a:hover, .cookie-banner__text a:focus-visible { color: var(--color-ink); }
+.cookie-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); flex-shrink: 0; }
+.cookie-banner__btn {
+  padding: var(--space-3) var(--space-5); border: none; border-radius: 999px;
+  background: #fff; color: var(--color-ink); font: inherit; font-weight: 700; cursor: pointer;
+}
+.cookie-banner__btn:hover { background: var(--color-ink); color: #fff; }
+.cookie-banner a:focus-visible, .cookie-banner button:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+.cookie-banner__btn:focus-visible { outline-color: #fff; }
+@media (min-width: 48rem) {
+  .cookie-banner__inner { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-5); padding-inline: var(--gutter-desktop); }
+}
+
+/* Floating cookie button, bottom left (the 321med widget floats bottom
+   right): reopens the consent bar. 48px circle, the site's card shadow.
+   Below the bar's z-index; hidden while the bar is open. */
+.cookie-fab {
+  position: fixed;
+  left: var(--space-4);
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+  z-index: 2147483646;
+  width: 3rem; height: 3rem;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; border: none; border-radius: 50%;
+  background: var(--color-brand); color: #fff; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+.cookie-fab[hidden] { display: none; }
+.cookie-fab:hover { background: var(--color-ink); }
+.cookie-fab:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+
 .section { padding-block: 3.75rem; }
 .section--alt { background: var(--color-bg-light); }
 .section--dark { background: var(--color-bg-dark); color: #fff; }
@@ -754,6 +806,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    matches the source most literally. */
 .embed-frame { aspect-ratio: 16 / 10; border-radius: 0.75rem; overflow: hidden; }
 .embed-frame iframe { width: 100%; height: 100%; border: 0; }
+/* Shown instead of the iframe until the visitor allows external services. */
+.embed-consent {
+  height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--space-4); padding: var(--space-5); text-align: center;
+  background: var(--color-paper); color: var(--color-ink); font-size: 0.875rem;
+}
+.embed-consent p { margin: 0; max-width: 28rem; }
+.embed-consent .button { border: none; font: inherit; font-weight: 700; cursor: pointer; }
 /* 12px on mobile, 14px at desktop. */
 .embed-frame__note { font-size: 0.75rem; color: var(--color-ink); text-align: right; }
 /* Figma: heading/intro-copy block and image+caption block are each their
