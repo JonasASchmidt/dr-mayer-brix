@@ -44,16 +44,15 @@ test('banner offers Nur Notwendige and Alle zulassen and links to the cookie sec
   assert.match(html, /href="datenschutz\.html#cookies"/);
 });
 
-test('the widget loader runs at every consent level, not just "all"', () => {
+test('the widget loader is unconditional: the Online-Rezeption is not behind the consent', () => {
   const loader = readFileSync(new URL('../assets/js/rezeption-loader.js', import.meta.url), 'utf8');
-  for (const level of ['essential', 'all', 'granted']) assert.ok(loader.includes(`'${level}'`), level);
+  assert.doesNotMatch(loader, /localStorage|CONSENT/);
 });
 
-test('no page loads Google Maps or 321med before consent', () => {
+test('no page loads Google Maps before consent; 321med only via the loader', () => {
   const loader = readFileSync(new URL('../assets/js/rezeption-loader.js', import.meta.url), 'utf8');
   const vendorSrcs = [...loader.matchAll(/'(https:\/\/321med[^']+)'/g)].map((m) => m[1]);
   assert.equal(vendorSrcs.length, 2);
-  assert.ok(loader.includes(CONSENT_KEY), 'loader must check the consent key');
   for (const page of ['index.html', 'impressum.html', 'datenschutz.html']) {
     const html = readFileSync(new URL(`../${page}`, import.meta.url), 'utf8');
     assert.doesNotMatch(html, /<iframe/i, `${page} has a static iframe`);

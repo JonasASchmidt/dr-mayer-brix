@@ -15,12 +15,10 @@ export function openOnlineRezeption() {
   return false;
 }
 
-// `whenUnavailable(open)` is called instead if the widget isn't loaded yet
-// (no consent so far); it gets `open` to run once the widget is available.
-export function initOnlineRezeptionButtons(root, whenUnavailable) {
+export function initOnlineRezeptionButtons(root) {
   root.querySelectorAll('.js-open-321med').forEach((el) => {
     el.addEventListener('click', () => {
-      if (!openOnlineRezeption() && whenUnavailable) whenUnavailable(openOnlineRezeption);
+      openOnlineRezeption();
     });
   });
 }
