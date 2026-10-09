@@ -561,13 +561,15 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .cookie-banner__text { margin: 0; font-size: 1rem; font-weight: 500; }
 .cookie-banner__text a { color: #fff; text-decoration: underline; }
 .cookie-banner__text a:hover, .cookie-banner__text a:focus-visible { color: var(--color-ink); }
-.cookie-banner__accept {
-  flex-shrink: 0; padding: var(--space-3) var(--space-6); border: none; border-radius: 999px;
+/* Both choices identical in weight (GDPR: declining must be as easy as accepting). */
+.cookie-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); flex-shrink: 0; }
+.cookie-banner__btn {
+  padding: var(--space-3) var(--space-5); border: none; border-radius: 999px;
   background: #fff; color: var(--color-ink); font: inherit; font-weight: 700; cursor: pointer;
 }
-.cookie-banner__accept:hover { background: var(--color-ink); color: #fff; }
+.cookie-banner__btn:hover { background: var(--color-ink); color: #fff; }
 .cookie-banner a:focus-visible, .cookie-banner button:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
-.cookie-banner__accept:focus-visible { outline-color: #fff; }
+.cookie-banner__btn:focus-visible { outline-color: #fff; }
 @media (min-width: 48rem) {
   .cookie-banner__inner { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-5); padding-inline: var(--gutter-desktop); }
 }
@@ -787,6 +789,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    matches the source most literally. */
 .embed-frame { aspect-ratio: 16 / 10; border-radius: 0.75rem; overflow: hidden; }
 .embed-frame iframe { width: 100%; height: 100%; border: 0; }
+/* Shown instead of the iframe until the visitor allows external services. */
+.embed-consent {
+  height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--space-4); padding: var(--space-5); text-align: center;
+  background: var(--color-paper); color: var(--color-ink); font-size: 0.875rem;
+}
+.embed-consent p { margin: 0; max-width: 28rem; }
+.embed-consent .button { border: none; font: inherit; font-weight: 700; cursor: pointer; }
 /* 12px on mobile, 14px at desktop. */
 .embed-frame__note { font-size: 0.75rem; color: var(--color-ink); text-align: right; }
 /* Figma: heading/intro-copy block and image+caption block are each their
@@ -992,8 +1002,11 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
    hover, no exceptions — so the contact mailto link is deliberately
    brought in line with that policy rather than left at its literal
    Figma treatment. */
-.site-footer__links a { color: var(--color-bg-light); text-decoration: underline; }
-.site-footer__links a:hover, .site-footer__links a:focus-visible { color: var(--color-brand); }
+.site-footer__links a, .site-footer__links button { color: var(--color-bg-light); text-decoration: underline; }
+.site-footer__links a:hover, .site-footer__links a:focus-visible,
+.site-footer__links button:hover, .site-footer__links button:focus-visible { color: var(--color-brand); }
+/* The Cookie-Einstellungen button looks like its sibling links. */
+.site-footer__links button { background: none; border: none; padding: 0; font: inherit; cursor: pointer; }
 .site-footer__contact a { color: inherit; text-decoration: underline; }
 .site-footer__contact a:hover, .site-footer__contact a:focus-visible { color: var(--color-brand); }
 .site-footer__inner { display: flex; flex-direction: column; align-items: center; gap: 2.25rem; }

@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { COOKIE_NOTICE_KEY, isAcknowledged, acknowledge, renderCookieBannerHTML } from '../assets/js/cookie-banner.js';
+import { CONSENT_KEY, REZEPTION_SCRIPTS, getConsent, setConsent } from '../assets/js/consent.js';
+import { renderCookieBannerHTML } from '../assets/js/cookie-banner.js';
+import { readFileSync } from 'node:fs';
 
 function fakeStorage(initial = {}) {
   const data = { ...initial };
@@ -11,21 +13,36 @@ const brokenStorage = {
   setItem() { throw new Error('blocked'); },
 };
 
-test('not acknowledged until the key is set', () => {
+test('consent is undecided until set, then round-trips', () => {
   const s = fakeStorage();
-  assert.equal(isAcknowledged(s), false);
-  acknowledge(s);
-  assert.equal(isAcknowledged(s), true);
-  assert.equal(s.getItem(COOKIE_NOTICE_KEY), '1');
+  assert.equal(getConsent(s), null);
+  setConsent(s, 'granted');
+  assert.equal(getConsent(s), 'granted');
+  setConsent(s, 'denied');
+  assert.equal(getConsent(s), 'denied');
 });
 
-test('blocked storage never throws and counts as not acknowledged', () => {
-  assert.equal(isAcknowledged(brokenStorage), false);
-  assert.doesNotThrow(() => acknowledge(brokenStorage));
+test('unknown stored values count as undecided', () => {
+  assert.equal(getConsent(fakeStorage({ [CONSENT_KEY]: 'yes' })), null);
 });
 
-test('markup links to the cookie section of the Datenschutzerklärung and has an accept button', () => {
+test('blocked storage never throws and counts as undecided', () => {
+  assert.equal(getConsent(brokenStorage), null);
+  assert.doesNotThrow(() => setConsent(brokenStorage, 'granted'));
+});
+
+test('banner offers both choices and links to the cookie section', () => {
   const html = renderCookieBannerHTML();
+  assert.match(html, /data-consent="denied"/);
+  assert.match(html, /data-consent="granted"/);
   assert.match(html, /href="datenschutz\.html#cookies"/);
-  assert.match(html, /<button type="button" class="cookie-banner__accept">/);
+});
+
+test('no page loads Google Maps or 321med before consent', () => {
+  for (const page of ['index.html', 'impressum.html', 'datenschutz.html']) {
+    const html = readFileSync(new URL(`../${page}`, import.meta.url), 'utf8');
+    assert.doesNotMatch(html, /<iframe/i, `${page} has a static iframe`);
+    assert.doesNotMatch(html, /<script[^>]+src="https?:\/\/(?!cdn)/i, `${page} has a static external script`);
+    for (const src of REZEPTION_SCRIPTS) assert.ok(!html.includes(src), `${page} still references ${src}`);
+  }
 });

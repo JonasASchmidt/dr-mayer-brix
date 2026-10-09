@@ -307,13 +307,11 @@
           <p>Ansicht mit Klicken und Halten im Bild, um 360 Grad drehbar.</p>
         </div>
         <div class="einblicke-tour">
-          <div class="embed-frame">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!4v1668604104241!6m8!1m7!1sCAoSLEFGMVFpcE9ab0FHbjFpeklpdFNIMnJiUkd5WUNobUlRekROSW90elRsY1pp!2m2!1d49.591735308831!2d11.025465644748!3f120!4f0!5f0.7820865974627469"
-              title="360° Rundgang durch die HNO-Praxis Dr. Mayer-Brix"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen></iframe>
+          <div class="embed-frame" data-embed-src="https://www.google.com/maps/embed?pb=!4v1668604104241!6m8!1m7!1sCAoSLEFGMVFpcE9ab0FHbjFpeklpdFNIMnJiUkd5WUNobUlRekROSW90elRsY1pp!2m2!1d49.591735308831!2d11.025465644748!3f120!4f0!5f0.7820865974627469" data-embed-title="360° Rundgang durch die HNO-Praxis Dr. Mayer-Brix">
+            <div class="embed-consent">
+              <p>Zum Anzeigen des 360°-Rundgangs wird Google Maps geladen. Beim Laden werden Daten (z.&nbsp;B. Ihre IP-Adresse) an Google übertragen. Mit dem Klick lassen Sie externe Dienste zu (Google Maps und die Online-Rezeption von 321med).</p>
+              <button type="button" class="button button--primary js-embed-consent">Externe Dienste zulassen</button>
+            </div>
           </div>
           <p class="embed-frame__note">Buttons am rechten Rand: Rundgang 1 – Flur / Rundgang 2 – Arztzimmer und Hörtestraum</p>
         </div>
@@ -432,13 +430,11 @@
                address and desaturated to match Figma's greyscale map —
                replaces the old duplicate of the Einblicke section's 360°
                indoor Street View tour that was mistakenly reused here. -->
-          <div class="embed-frame kontakt-map">
-            <iframe
-              src="https://maps.google.com/maps?q=HNO-Praxis+Dr.+Mayer-Brix,+Allee+am+R%C3%B6thelheimpark+6,+91052+Erlangen&z=13&output=embed"
-              title="Standort der HNO-Praxis Dr. Mayer-Brix"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen></iframe>
+          <div class="embed-frame kontakt-map" data-embed-src="https://maps.google.com/maps?q=HNO-Praxis+Dr.+Mayer-Brix,+Allee+am+R%C3%B6thelheimpark+6,+91052+Erlangen&amp;z=13&amp;output=embed" data-embed-title="Standort der HNO-Praxis Dr. Mayer-Brix">
+            <div class="embed-consent">
+              <p>Zum Anzeigen der Karte wird Google Maps geladen. Beim Laden werden Daten (z.&nbsp;B. Ihre IP-Adresse) an Google übertragen. Mit dem Klick lassen Sie externe Dienste zu (Google Maps und die Online-Rezeption von 321med).</p>
+              <button type="button" class="button button--primary js-embed-consent">Externe Dienste zulassen</button>
+            </div>
           </div>
         </div>
       </div>
@@ -454,7 +450,7 @@
   </main>
   <footer class="site-footer">
     <div class="content site-footer__inner">
-      <p class="site-footer__links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></p>
+      <p class="site-footer__links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><button type="button" class="js-cookie-settings">Cookie-Einstellungen</button></p>
       <div class="site-footer__credit-block">
         <p class="site-footer__contact">HNO-Praxis Dr. Mayer-Brix, Allee am Röthelheimpark 6, 91052 Erlangen, Germany<br>+49 (0) 91 31 / 20 88 99 &nbsp; <a class="js-email" data-user="mbpraxis" data-domain="duck.com" href="#">mbpraxis (at) duck (dot) com</a></p>
         <p class="site-footer__credit">Made with ♥️ in Hamburg by Jonas A. Schmidt</p>
@@ -462,11 +458,5 @@
     </div>
   </footer>
   <script type="module" src="assets/js/main.js"></script>
-  <!-- 321med Online-Rezeption widget, provided directly by the practice's vendor
-       (321 MED GmbH) on 2026-09-04. No SRI hash: this is a vendor-hosted,
-       server-rendered widget script expected to update without a version bump —
-       pinning a hash would break it on the vendor's next legitimate update. -->
-  <script src="https://321med17.com/cdn/server/11cb0eefca4e16e350aca235e8bea2608a35c85f/321med.js"></script>
-  <script src="https://321med-cdn.com/321med.js"></script>
 </body>
 </html>

@@ -26,9 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initEmailLinks(document);
 
-  initOnlineRezeptionButtons(document);
+  const consent = initCookieBanner(document);
+  const askConsent = (open) => consent.request(open);
 
-  initCookieBanner(document);
+  initOnlineRezeptionButtons(document, askConsent);
 
   const bannerSlot = document.getElementById('site-banner');
   if (bannerSlot) {
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // text: initOnlineRezeptionButtons(document) above already ran
       // before this async content existed, so a .js-open-321med button
       // injected here would otherwise never get its click listener.
-      initOnlineRezeptionButtons(bannerSlot);
+      initOnlineRezeptionButtons(bannerSlot, askConsent);
     });
   }
 });
