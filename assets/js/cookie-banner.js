@@ -1,20 +1,23 @@
 // assets/js/cookie-banner.js
 //
-// Sticky bottom consent bar for external services (see consent.js). Both
-// choices are equally prominent. "Cookie-Einstellungen" in the footer
-// (.js-cookie-settings) reopens it, so the choice can be changed any time.
+// Sticky bottom consent bar for external services (see consent.js).
+// "Cookie-Einstellungen" in the footer (.js-cookie-settings) reopens it.
 import { getConsent, setConsent, loadExternalServices } from './consent.js';
 
-export function renderCookieBannerHTML() {
+// First visit: one button (consent). Reopened via the footer after consent was
+// given: one button to withdraw it, so revoking stays as easy as giving it.
+export function renderCookieBannerHTML(granted = false) {
+  const text = granted
+    ? 'Sie haben der Nutzung externer Dienste (Google Maps, Online-Rezeption von 321med) zugestimmt. '
+    : 'Diese Website setzt selbst keine Cookies. Für Karten (Google Maps) und die Online-Rezeption (321med) '
+      + 'werden Inhalte externer Anbieter geladen. Dabei werden Daten an diese übertragen und möglicherweise '
+      + 'Cookies gesetzt. ';
+  const button = granted
+    ? '<button type="button" class="cookie-banner__btn" data-consent="denied">Zustimmung widerrufen</button>'
+    : '<button type="button" class="cookie-banner__btn" data-consent="granted">Zustimmen</button>';
   return '<div class="cookie-banner__inner">'
-    + '<p class="cookie-banner__text">Diese Website setzt selbst keine Cookies. Für Karten (Google Maps) und die '
-    + 'Online-Rezeption (321med) werden Inhalte externer Anbieter geladen. Dabei werden Daten an diese '
-    + 'übertragen und möglicherweise Cookies gesetzt. '
-    + '<a href="datenschutz.html#cookies">Mehr in der Datenschutzerklärung</a></p>'
-    + '<div class="cookie-banner__actions">'
-    + '<button type="button" class="cookie-banner__btn" data-consent="denied">Nur notwendige</button>'
-    + '<button type="button" class="cookie-banner__btn" data-consent="granted">Externe Dienste zulassen</button>'
-    + '</div></div>';
+    + `<p class="cookie-banner__text">${text}<a href="datenschutz.html#cookies">Mehr in der Datenschutzerklärung</a></p>`
+    + `<div class="cookie-banner__actions">${button}</div></div>`;
 }
 
 // Returns { request(afterGrant) }: shows the bar (if undecided) and runs
@@ -48,7 +51,7 @@ export function initCookieBanner(doc = document, storage = window.localStorage) 
     bar.className = 'cookie-banner';
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', 'Einwilligung zu externen Diensten');
-    bar.innerHTML = renderCookieBannerHTML();
+    bar.innerHTML = renderCookieBannerHTML(state.consent === 'granted');
     bar.addEventListener('click', (event) => {
       const choice = event.target.closest('[data-consent]')?.dataset.consent;
       if (!choice) return;
@@ -65,7 +68,7 @@ export function initCookieBanner(doc = document, storage = window.localStorage) 
       }
     });
     doc.body.appendChild(bar);
-    bar.querySelector('[data-consent="granted"]').focus();
+    bar.querySelector('[data-consent]').focus();
   }
 
   // The "Karte laden" buttons inside the embed placeholders.
