@@ -1,18 +1,20 @@
 // assets/js/consent.js
 //
-// Consent for external services (Google Maps iframes, 321med
-// Online-Rezeption widget). Nothing from these providers is requested
-// before the visitor opts in, so no data (IP address etc.) reaches them
-// beforehand. Consent is stored in localStorage (one key, no cookie);
-// 'granted' or absent.
+// Consent for Google Maps (360° tour, map iframes), stored in localStorage
+// (one key, no cookie):
+//   'essential' - "Nur Notwendige": no Google Maps
+//   'all'       - "Alle zulassen": Google Maps
+//   absent      - not decided yet: no Google Maps
+// The 321med Online-Rezeption is not part of this: it always loads (see
+// rezeption-loader.js). ('granted' is the value of earlier previews and
+// counts as 'all'.)
 export const CONSENT_KEY = 'external-services-consent';
-
-// The 321med widget scripts are emitted by rezeption-loader.js (synchronously,
-// during parsing, when consent is stored).
 
 export function getConsent(storage) {
   try {
-    return storage.getItem(CONSENT_KEY) === 'granted' ? 'granted' : null;
+    const value = storage.getItem(CONSENT_KEY);
+    if (value === 'essential') return 'essential';
+    return value === 'all' || value === 'granted' ? 'all' : null;
   } catch {
     return null;
   }
@@ -38,10 +40,4 @@ export function activateEmbeds(root) {
     frame.removeAttribute('data-embed-src');
     frame.replaceChildren(iframe);
   });
-}
-
-// Everything that talks to external providers starts here (the widget is
-// handled by rezeption-loader.js on the next page load).
-export function loadExternalServices(doc) {
-  activateEmbeds(doc);
 }

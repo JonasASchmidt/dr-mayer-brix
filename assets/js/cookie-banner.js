@@ -1,44 +1,54 @@
 // assets/js/cookie-banner.js
 //
-// Sticky bottom consent bar for external services (see consent.js). Single
-// "Zustimmen" button on purpose: the Online-Rezeption is the practice's main
-// way to be reached, asks for its own data-processing consent inside the
-// widget, and must never be blocked by a decline.
-import { getConsent, setConsent, loadExternalServices } from './consent.js';
-import { openOnlineRezeption } from './online-rezeption.js';
-
-// Survives the reload after first consent so the click that asked for the
-// Online-Rezeption still ends up opening it.
-const OPEN_AFTER_RELOAD_KEY = 'open-rezeption-after-consent';
+// Sticky bottom consent bar (see consent.js). The Online-Rezeption is the
+// practice's main way to be reached and asks for its own data-processing
+// consent inside the widget, so it always loads (rezeption-loader.js); the
+// bar only decides about Google Maps ("Alle zulassen" vs. "Nur Notwendige").
+// The floating cookie button (bottom left) reopens the bar at any time, e.g.
+// to withdraw the Maps consent.
+import { getConsent, setConsent, activateEmbeds } from './consent.js';
 
 export function renderCookieBannerHTML() {
   return '<div class="cookie-banner__inner">'
-    + '<p class="cookie-banner__text">Diese Website setzt selbst keine Cookies. Für Karten (Google Maps) und die '
-    + 'Online-Rezeption (321med) werden Inhalte externer Anbieter geladen. Dabei werden Daten an diese '
-    + 'übertragen und möglicherweise Cookies gesetzt. '
+    + '<p class="cookie-banner__text">Diese Website setzt selbst keine Cookies. Die Online-Rezeption (321med), '
+    + 'über die Sie uns erreichen, wird immer geladen. Optional sind Karten und der 360°-Rundgang '
+    + '(Google Maps). Beim Laden werden Daten an diese Anbieter übertragen und möglicherweise Cookies gesetzt. '
     + '<a href="datenschutz.html#cookies">Mehr in der Datenschutzerklärung</a></p>'
     + '<div class="cookie-banner__actions">'
-    + '<button type="button" class="cookie-banner__btn">Zustimmen</button></div></div>';
+    + '<button type="button" class="cookie-banner__btn" data-consent="essential">Nur Notwendige</button>'
+    + '<button type="button" class="cookie-banner__btn" data-consent="all">Alle zulassen</button>'
+    + '</div></div>';
 }
 
-// Returns { request(afterGrant) }: runs afterGrant right away if consent is
-// already given, otherwise shows the bar and opens the Online-Rezeption once
-// the visitor agrees. The page reloads after the first consent so the vendor
-// widget gets loaded the same way as before (see rezeption-loader.js).
+// Lucide "cookie" icon (same icon family as the site's other 24px icons).
+const COOKIE_ICON = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" '
+  + 'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+  + '<path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/>'
+  + '<path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>';
+
+// Shows the bar until a choice exists; "Alle zulassen" activates the Maps
+// embeds. Taking Maps back needs a reload (loaded iframes can't be unloaded).
 export function initCookieBanner(doc = document, storage = window.localStorage) {
-  const win = doc.defaultView;
   const state = { consent: getConsent(storage) };
   let bar = null;
-  let openAfter = false;
 
-  function grant() {
-    setConsent(storage, 'granted');
-    try {
-      if (openAfter) win.sessionStorage.setItem(OPEN_AFTER_RELOAD_KEY, '1');
-    } catch {
-      // No sessionStorage: the visitor just clicks the link again after the reload.
-    }
-    win.location.reload();
+  const fab = doc.createElement('button');
+  fab.type = 'button';
+  fab.className = 'cookie-fab';
+  fab.setAttribute('aria-label', 'Cookie-Einstellungen');
+  fab.title = 'Cookie-Einstellungen';
+  fab.innerHTML = COOKIE_ICON;
+  doc.body.appendChild(fab);
+
+  function choose(level) {
+    const before = state.consent;
+    setConsent(storage, level);
+    state.consent = level;
+    if (bar) bar.remove();
+    bar = null;
+    fab.hidden = false;
+    if (level === 'all') activateEmbeds(doc);
+    else if (before === 'all') doc.defaultView.location.reload();
   }
 
   function show() {
@@ -48,39 +58,17 @@ export function initCookieBanner(doc = document, storage = window.localStorage) 
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', 'Einwilligung zu externen Diensten');
     bar.innerHTML = renderCookieBannerHTML();
-    bar.querySelector('.cookie-banner__btn').addEventListener('click', grant);
+    bar.querySelectorAll('[data-consent]').forEach((btn) => {
+      btn.addEventListener('click', () => choose(btn.dataset.consent));
+    });
     doc.body.appendChild(bar);
-    bar.querySelector('.cookie-banner__btn').focus();
+    fab.hidden = true;
   }
 
-  // The "Externe Dienste zulassen" buttons inside the embed placeholders.
-  doc.querySelectorAll('.js-embed-consent').forEach((btn) => btn.addEventListener('click', grant));
+  // The "Google Maps laden" buttons inside the embed placeholders.
+  doc.querySelectorAll('.js-embed-consent').forEach((btn) => btn.addEventListener('click', () => choose('all')));
+  fab.addEventListener('click', show);
 
-  if (state.consent === 'granted') {
-    loadExternalServices(doc);
-    let reopen = false;
-    try {
-      reopen = win.sessionStorage.getItem(OPEN_AFTER_RELOAD_KEY) === '1';
-      win.sessionStorage.removeItem(OPEN_AFTER_RELOAD_KEY);
-    } catch {
-      // see above
-    }
-    if (reopen) {
-      if (doc.readyState === 'complete') openOnlineRezeption();
-      else win.addEventListener('load', () => openOnlineRezeption());
-    }
-  } else {
-    show();
-  }
-
-  return {
-    request(afterGrant) {
-      if (state.consent === 'granted') {
-        afterGrant();
-        return;
-      }
-      openAfter = true;
-      show();
-    },
-  };
+  if (state.consent === null) show();
+  else if (state.consent === 'all') activateEmbeds(doc);
 }

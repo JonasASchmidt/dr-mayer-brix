@@ -58,6 +58,17 @@ later if this ever needs more than one text field, but needs Netlify
 Identity turned on in the dashboard first; this plain-text approach needs
 nothing extra to work today.)
 
+## Cookie notice / external services
+
+The site sets no cookies of its own. A sticky bar at the bottom (plus the
+floating cookie button bottom left, which reopens it) asks about Google Maps
+only: "Alle zulassen" loads the map iframes, "Nur Notwendige" keeps
+placeholders. The 321med Online-Rezeption always loads (it is the main contact
+channel and asks for its own consent). The choice lives in `localStorage`
+(`external-services-consent`); to see the bar again, run
+`localStorage.removeItem('external-services-consent')` in the browser console
+and reload. Vimeo only loads after clicking play.
+
 ## Deployment
 
 Connected to Netlify, auto-deploys `main`. There is no contact form on the
