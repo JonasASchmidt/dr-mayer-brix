@@ -573,6 +573,24 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   .cookie-banner__inner { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-5); padding-inline: var(--gutter-desktop); }
 }
 
+/* Floating cookie button, bottom left (the 321med widget floats bottom
+   right): reopens the consent bar. 48px circle, the site's card shadow.
+   Below the bar's z-index; hidden while the bar is open. */
+.cookie-fab {
+  position: fixed;
+  left: var(--space-4);
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+  z-index: 2147483646;
+  width: 3rem; height: 3rem;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; border: none; border-radius: 50%;
+  background: var(--color-brand); color: #fff; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+.cookie-fab[hidden] { display: none; }
+.cookie-fab:hover { background: var(--color-ink); }
+.cookie-fab:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+
 .section { padding-block: 3.75rem; }
 .section--alt { background: var(--color-bg-light); }
 .section--dark { background: var(--color-bg-dark); color: #fff; }

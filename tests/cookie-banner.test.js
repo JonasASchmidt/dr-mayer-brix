@@ -16,8 +16,15 @@ const brokenStorage = {
 test('consent is undecided until set, then round-trips', () => {
   const s = fakeStorage();
   assert.equal(getConsent(s), null);
-  setConsent(s, 'granted');
-  assert.equal(getConsent(s), 'granted');
+  setConsent(s, 'essential');
+  assert.equal(getConsent(s), 'essential');
+  setConsent(s, 'all');
+  assert.equal(getConsent(s), 'all');
+});
+
+test('values from earlier previews: granted counts as all, denied as undecided', () => {
+  assert.equal(getConsent(fakeStorage({ [CONSENT_KEY]: 'granted' })), 'all');
+  assert.equal(getConsent(fakeStorage({ [CONSENT_KEY]: 'denied' })), null);
 });
 
 test('unknown stored values count as undecided', () => {
@@ -29,11 +36,17 @@ test('blocked storage never throws and counts as undecided', () => {
   assert.doesNotThrow(() => setConsent(brokenStorage, 'granted'));
 });
 
-test('banner has exactly one button (consent, no decline) and links to the cookie section', () => {
+test('banner offers Nur Notwendige and Alle zulassen and links to the cookie section', () => {
   const html = renderCookieBannerHTML();
-  assert.equal(html.match(/<button/g).length, 1);
-  assert.match(html, />Zustimmen</);
+  assert.equal(html.match(/<button/g).length, 2);
+  assert.match(html, /data-consent="essential">Nur Notwendige</);
+  assert.match(html, /data-consent="all">Alle zulassen</);
   assert.match(html, /href="datenschutz\.html#cookies"/);
+});
+
+test('the widget loader runs at every consent level, not just "all"', () => {
+  const loader = readFileSync(new URL('../assets/js/rezeption-loader.js', import.meta.url), 'utf8');
+  for (const level of ['essential', 'all', 'granted']) assert.ok(loader.includes(`'${level}'`), level);
 });
 
 test('no page loads Google Maps or 321med before consent', () => {
