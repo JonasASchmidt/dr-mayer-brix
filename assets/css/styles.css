@@ -561,7 +561,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .cookie-banner__text { margin: 0; font-size: 1rem; font-weight: 500; }
 .cookie-banner__text a { color: #fff; text-decoration: underline; }
 .cookie-banner__text a:hover, .cookie-banner__text a:focus-visible { color: var(--color-ink); }
-/* Both choices identical in weight (GDPR: declining must be as easy as accepting). */
 .cookie-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); flex-shrink: 0; }
 .cookie-banner__btn {
   padding: var(--space-3) var(--space-5); border: none; border-radius: 999px;
@@ -1002,11 +1001,8 @@ section[id], #schwerpunkte { scroll-margin-top: 5.9167rem; }
    hover, no exceptions — so the contact mailto link is deliberately
    brought in line with that policy rather than left at its literal
    Figma treatment. */
-.site-footer__links a, .site-footer__links button { color: var(--color-bg-light); text-decoration: underline; }
-.site-footer__links a:hover, .site-footer__links a:focus-visible,
-.site-footer__links button:hover, .site-footer__links button:focus-visible { color: var(--color-brand); }
-/* The Cookie-Einstellungen button looks like its sibling links. */
-.site-footer__links button { background: none; border: none; padding: 0; font: inherit; cursor: pointer; }
+.site-footer__links a { color: var(--color-bg-light); text-decoration: underline; }
+.site-footer__links a:hover, .site-footer__links a:focus-visible { color: var(--color-brand); }
 .site-footer__contact a { color: inherit; text-decoration: underline; }
 .site-footer__contact a:hover, .site-footer__contact a:focus-visible { color: var(--color-brand); }
 .site-footer__inner { display: flex; flex-direction: column; align-items: center; gap: 2.25rem; }

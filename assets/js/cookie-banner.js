@@ -1,48 +1,44 @@
 // assets/js/cookie-banner.js
 //
-// Sticky bottom consent bar for external services (see consent.js).
-// "Cookie-Einstellungen" in the footer (.js-cookie-settings) reopens it.
+// Sticky bottom consent bar for external services (see consent.js). Single
+// "Zustimmen" button on purpose: the Online-Rezeption is the practice's main
+// way to be reached, asks for its own data-processing consent inside the
+// widget, and must never be blocked by a decline.
 import { getConsent, setConsent, loadExternalServices } from './consent.js';
+import { openOnlineRezeption } from './online-rezeption.js';
 
-// First visit: one button (consent). Reopened via the footer after consent was
-// given: one button to withdraw it, so revoking stays as easy as giving it.
-export function renderCookieBannerHTML(granted = false) {
-  const text = granted
-    ? 'Sie haben der Nutzung externer Dienste (Google Maps, Online-Rezeption von 321med) zugestimmt. '
-    : 'Diese Website setzt selbst keine Cookies. Für Karten (Google Maps) und die Online-Rezeption (321med) '
-      + 'werden Inhalte externer Anbieter geladen. Dabei werden Daten an diese übertragen und möglicherweise '
-      + 'Cookies gesetzt. ';
-  const button = granted
-    ? '<button type="button" class="cookie-banner__btn" data-consent="denied">Zustimmung widerrufen</button>'
-    : '<button type="button" class="cookie-banner__btn" data-consent="granted">Zustimmen</button>';
+// Survives the reload after first consent so the click that asked for the
+// Online-Rezeption still ends up opening it.
+const OPEN_AFTER_RELOAD_KEY = 'open-rezeption-after-consent';
+
+export function renderCookieBannerHTML() {
   return '<div class="cookie-banner__inner">'
-    + `<p class="cookie-banner__text">${text}<a href="datenschutz.html#cookies">Mehr in der Datenschutzerklärung</a></p>`
-    + `<div class="cookie-banner__actions">${button}</div></div>`;
+    + '<p class="cookie-banner__text">Diese Website setzt selbst keine Cookies. Für Karten (Google Maps) und die '
+    + 'Online-Rezeption (321med) werden Inhalte externer Anbieter geladen. Dabei werden Daten an diese '
+    + 'übertragen und möglicherweise Cookies gesetzt. '
+    + '<a href="datenschutz.html#cookies">Mehr in der Datenschutzerklärung</a></p>'
+    + '<div class="cookie-banner__actions">'
+    + '<button type="button" class="cookie-banner__btn">Zustimmen</button></div></div>';
 }
 
-// Returns { request(afterGrant) }: shows the bar (if undecided) and runs
-// afterGrant once external services are allowed — used by the Online-Rezeption
-// buttons, which can't do anything before the widget script is loaded.
+// Returns { request(afterGrant) }: runs afterGrant right away if consent is
+// already given, otherwise shows the bar and opens the Online-Rezeption once
+// the visitor agrees. The page reloads after the first consent so the vendor
+// widget gets loaded the same way as before (see rezeption-loader.js).
 export function initCookieBanner(doc = document, storage = window.localStorage) {
-  let bar = null;
-  let pending = null;
+  const win = doc.defaultView;
   const state = { consent: getConsent(storage) };
+  let bar = null;
+  let openAfter = false;
 
   function grant() {
-    close();
-    state.consent = 'granted';
     setConsent(storage, 'granted');
-    const done = loadExternalServices(doc);
-    if (pending) {
-      const run = pending;
-      pending = null;
-      done.then(run);
+    try {
+      if (openAfter) win.sessionStorage.setItem(OPEN_AFTER_RELOAD_KEY, '1');
+    } catch {
+      // No sessionStorage: the visitor just clicks the link again after the reload.
     }
-  }
-
-  function close() {
-    if (bar) bar.remove();
-    bar = null;
+    win.location.reload();
   }
 
   function show() {
@@ -51,41 +47,39 @@ export function initCookieBanner(doc = document, storage = window.localStorage) 
     bar.className = 'cookie-banner';
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', 'Einwilligung zu externen Diensten');
-    bar.innerHTML = renderCookieBannerHTML(state.consent === 'granted');
-    bar.addEventListener('click', (event) => {
-      const choice = event.target.closest('[data-consent]')?.dataset.consent;
-      if (!choice) return;
-      if (choice === 'granted') {
-        grant();
-      } else {
-        close();
-        pending = null;
-        const wasGranted = state.consent === 'granted';
-        state.consent = 'denied';
-        setConsent(storage, 'denied');
-        // Already-loaded provider scripts can't be unloaded; a reload does.
-        if (wasGranted) doc.defaultView.location.reload();
-      }
-    });
+    bar.innerHTML = renderCookieBannerHTML();
+    bar.querySelector('.cookie-banner__btn').addEventListener('click', grant);
     doc.body.appendChild(bar);
-    bar.querySelector('[data-consent]').focus();
+    bar.querySelector('.cookie-banner__btn').focus();
   }
 
-  // The "Karte laden" buttons inside the embed placeholders.
+  // The "Externe Dienste zulassen" buttons inside the embed placeholders.
   doc.querySelectorAll('.js-embed-consent').forEach((btn) => btn.addEventListener('click', grant));
-  doc.querySelectorAll('.js-cookie-settings').forEach((btn) => btn.addEventListener('click', show));
 
-  if (state.consent === 'granted') loadExternalServices(doc);
-  else if (state.consent === null) show();
+  if (state.consent === 'granted') {
+    loadExternalServices(doc);
+    let reopen = false;
+    try {
+      reopen = win.sessionStorage.getItem(OPEN_AFTER_RELOAD_KEY) === '1';
+      win.sessionStorage.removeItem(OPEN_AFTER_RELOAD_KEY);
+    } catch {
+      // see above
+    }
+    if (reopen) {
+      if (doc.readyState === 'complete') openOnlineRezeption();
+      else win.addEventListener('load', () => openOnlineRezeption());
+    }
+  } else {
+    show();
+  }
 
   return {
-    isGranted: () => state.consent === 'granted',
     request(afterGrant) {
       if (state.consent === 'granted') {
-        loadExternalServices(doc).then(afterGrant);
+        afterGrant();
         return;
       }
-      pending = afterGrant;
+      openAfter = true;
       show();
     },
   };
