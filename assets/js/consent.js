@@ -10,6 +10,24 @@
 // counts as 'all'.)
 export const CONSENT_KEY = 'external-services-consent';
 
+// window.localStorage itself can throw (Safari with all cookies blocked, some
+// in-app browsers) — reading the property is enough. Falls back to a
+// per-page-view memory, so the choice still works until the next reload and
+// nothing else on the page is affected.
+export function safeStorage(win = window) {
+  try {
+    const storage = win.localStorage;
+    storage.getItem(CONSENT_KEY);
+    return storage;
+  } catch {
+    const memory = new Map();
+    return {
+      getItem: (key) => (memory.has(key) ? memory.get(key) : null),
+      setItem: (key, value) => { memory.set(key, String(value)); },
+    };
+  }
+}
+
 export function getConsent(storage) {
   try {
     const value = storage.getItem(CONSENT_KEY);
@@ -34,7 +52,6 @@ export function activateEmbeds(root) {
     const iframe = (root.ownerDocument || root).createElement('iframe');
     iframe.src = frame.dataset.embedSrc;
     iframe.title = frame.dataset.embedTitle || '';
-    iframe.loading = 'lazy';
     iframe.referrerPolicy = 'no-referrer-when-downgrade';
     iframe.allowFullscreen = true;
     frame.removeAttribute('data-embed-src');

@@ -6,32 +6,48 @@ import { initEmailLinks } from './email-obfuscate.js';
 import { initOnlineRezeptionButtons } from './online-rezeption.js';
 import { initCookieBanner } from './cookie-banner.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.getElementById('nav-toggle');
-  const nav = document.getElementById('site-nav');
-  if (toggle && nav) initNav(toggle, nav);
+let booted = false;
 
-  // Scroll-spy only applies on the homepage, which is the only page with
-  // in-page anchor sections; Impressum/Datenschutz link back to
-  // index.html#... instead and have no local sections to observe.
-  if (nav) {
-    const sections = [...document.querySelectorAll('main > section[id]')];
-    if (sections.length) initScrollSpy(nav, sections, document.querySelector('.site-header'));
+// Every step runs on its own: if one throws (a blocked storage, a missing
+// element, ...) the others — video, Online-Rezeption links, nav — still work.
+function step(name, fn) {
+  try {
+    fn();
+  } catch (err) {
+    console.error(`[pmb] ${name} failed`, err);
   }
+}
 
-  initVideoFacades(document);
+// Called by start.js once main.js is loaded. The script tag sits at the end
+// of <body>, so the whole page is in the DOM by then.
+export function boot(doc = document) {
+  if (booted) return;
+  booted = true;
 
-  initAccordions(document);
-  initSchwerpunkteCards(document);
+  step('nav', () => {
+    const toggle = doc.getElementById('nav-toggle');
+    const nav = doc.getElementById('site-nav');
+    if (toggle && nav) initNav(toggle, nav);
 
-  initEmailLinks(document);
+    // Scroll-spy only applies on the homepage, which is the only page with
+    // in-page anchor sections; Impressum/Datenschutz link back to
+    // index.html#... instead and have no local sections to observe.
+    if (nav) {
+      const sections = [...doc.querySelectorAll('main > section[id]')];
+      if (sections.length) initScrollSpy(nav, sections, doc.querySelector('.site-header'));
+    }
+  });
 
-  initCookieBanner(document);
+  step('video', () => initVideoFacades(doc));
+  step('accordions', () => initAccordions(doc));
+  step('schwerpunkte', () => initSchwerpunkteCards(doc));
+  step('email links', () => initEmailLinks(doc));
+  step('online-rezeption', () => initOnlineRezeptionButtons(doc));
+  step('cookie banner', () => initCookieBanner(doc));
 
-  initOnlineRezeptionButtons(document);
-
-  const bannerSlot = document.getElementById('site-banner');
-  if (bannerSlot) {
+  step('announcement banner', () => {
+    const bannerSlot = doc.getElementById('site-banner');
+    if (!bannerSlot) return;
     loadBanner(bannerSlot).then(() => {
       const dismissBtn = bannerSlot.querySelector('.banner__dismiss');
       if (dismissBtn) {
@@ -44,12 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // The banner's own message can contain an email address (obfuscated
       // into .js-email markup by renderBannerHTML); it's injected after
       // the page's initial initEmailLinks() pass, so resolve it here too.
+      // (A [label](online-rezeption) link needs nothing: the Rezeption
+      // click handler is delegated on the document.)
       initEmailLinks(bannerSlot);
-      // Same reasoning for a [label](online-rezeption) link in the banner
-      // text: initOnlineRezeptionButtons(document) above already ran
-      // before this async content existed, so a .js-open-321med button
-      // injected here would otherwise never get its click listener.
-      initOnlineRezeptionButtons(bannerSlot);
-    });
-  }
-});
+    }).catch((err) => console.error('[pmb] announcement banner failed', err));
+  });
+}

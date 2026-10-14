@@ -1,5 +1,5 @@
 export function vimeoEmbedSrc(id) {
-  return `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0`;
+  return `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&dnt=1`;
 }
 
 export function initVideoFacades(root) {

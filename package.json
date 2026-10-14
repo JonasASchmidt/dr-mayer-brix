@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/*.js"
+    "test": "node --test tests/*.js",
+    "test:e2e": "node tests/e2e/mobile.e2e.mjs"
   }
 }

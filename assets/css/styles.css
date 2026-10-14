@@ -317,8 +317,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .hero { position: relative; }
 .hero__media { position: relative; aspect-ratio: 16 / 9; background: var(--color-ink); overflow: hidden; }
 .hero__media img { width: 100%; height: 100%; object-fit: cover; opacity: 0.75; }
+/* The whole poster is the button (not just the 64px play icon): a tap
+   anywhere on the video starts it. */
 .hero__media button {
-  position: absolute; inset: 0; margin: auto; width: 4rem; height: 4rem;
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
   background: none; border: none; cursor: pointer; padding: 0;
 }
 .hero__video-frame { width: 100%; aspect-ratio: 16 / 9; border: 0; }
@@ -416,74 +419,30 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .button--primary { background: var(--color-brand); color: #fff; }
 .button--primary:hover { opacity: 0.9; }
 
-/* Direct request: match Figma's literal floating-card positioning
-   (including overlapping the header), not an in-flow bar. A previous pass
-   ("Final-review Fix 1") deliberately moved this into normal document flow
-   instead, because an absolute overlay covered the page's own <h1> whenever
-   the CMS message got long — that failure mode is real and is being
-   reintroduced knowingly here, flagged per the standing rule: on
-   impressum.html/datenschutz.html (no tall hero under it) and on index.html
-   at narrow widths, a long enough banner message WILL cover page content
-   beneath it again.
-
-   Positioned against .site-header (its nearest sticky/positioned ancestor,
-   same mechanism as .site-nav above) at Figma's own canvas y — 75px mobile,
-   106px desktop — both BEFORE the header's own bottom edge, i.e. genuinely
-   overlapping it. z-index: -1 (scoped to .site-header's own stacking
-   context, which position:sticky + z-index establish) paints the banner
-   UNDER .site-header's own opaque background, matching Figma's layer order
-   (Announcement Bar sits below Header in the layer list) — only the part
-   of the card that extends past the header's own box (which has no
-   background beyond its own height) stays visible, giving the "peeking out
-   from under the header" look.
-
-   FLAGGED FINDING: the dismiss (×) button sits inside the overlapped
-   region at both breakpoints — Figma's own layout puts roughly the top
-   half of that 24×24 icon behind the header (measured: ~12px of it on
-   desktop, ~8px on mobile), which is genuinely unclickable there since
-   the header's opaque background sits in front of it at those pixels.
-   This is a real usability gap in the source design, not an
-   implementation shortcut — flagging rather than silently moving the
-   icon down to "fix" it. */
+/* The announcement card sits in the normal page flow, directly under the
+   header. It used to float over the header and the hero (Figma's literal
+   overlay), which on phones covered the video's play button and made the
+   dismiss (x) half-unreachable behind the header: a tap on the video hit the
+   banner instead. In flow, nothing is ever covered at any width, however
+   long the message gets (it is edited by the practice in content/banner.txt). */
 .banner {
-  position: absolute;
-  top: 4.6875rem; /* 75px */
-  left: var(--gutter-mobile);
-  right: var(--gutter-mobile);
-  z-index: -1;
+  margin: var(--space-3) var(--gutter-mobile) 0;
   background: var(--color-brand);
   border-radius: 0.5rem;
-  /* Figma's "Layout Wrapper" inset around the text (see .banner__text
-     below) used to carry its own top/left/bottom padding; direct request
-     moved just the left component up here onto the card itself instead —
-     .banner__text keeps only its flex/gap role now, no padding of its
-     own, so it lines up with the dismiss icon at the top instead of
-     sitting lower. Stacks with .banner__inner's own left padding below. */
   padding-left: 0.25rem;
-  /* Figma specifies literal white text on this mint background — see the
-     accessibility flag list for this pairing's contrast ratio. */
+  /* Figma specifies literal white text on this mint background. */
   color: #fff;
-  /* Figma's one named drop-shadow style ("PMB Drop Shadow v01"), reused
-     identically on every card in this design (accordion items,
-     Schwerpunkte cards, the Buch card) — the banner overlay carries it too. */
+  /* Figma's one named drop-shadow style ("PMB Drop Shadow v01"). */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
 }
 @media (min-width: 64rem) {
-  /* Figma: 720px wide (== --content-width exactly), right-aligned with
-     the standard desktop gutter — not full-width, not centered. Direct
-     request: aligned to the same right edge as the last nav link
-     ("Kontakt"), not the raw viewport edge — .site-header itself spans
-     the full viewport, but .site-header__inner (which the nav sits in)
-     is centered and capped at --container-width, so past that width a
-     plain `right: var(--gutter-desktop)` on .banner drifts away from the
-     nav's actual right edge. This reproduces .site-header__inner's own
-     centering math (half the leftover space beyond --container-width)
-     so the two stay aligned at any viewport width. */
+  /* Figma: 720px wide (== --content-width), right-aligned to the same edge
+     as the last nav link ("Kontakt"): .site-header__inner is centered and
+     capped at --container-width, so the right margin reproduces its
+     centering math. */
   .banner {
-    top: 6.625rem; /* 106px */
-    left: auto;
-    right: calc(max(0rem, (100vw - var(--container-width)) / 2) + var(--gutter-desktop));
     max-width: var(--content-width);
+    margin: var(--space-4) calc(max(0rem, (100vw - var(--container-width)) / 2) + var(--gutter-desktop)) 0 auto;
     padding-left: 0.375rem;
   }
 }
@@ -554,16 +513,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
   padding-bottom: env(safe-area-inset-bottom);
 }
 .cookie-banner__inner {
-  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4);
+  display: flex; flex-direction: column; align-items: stretch; gap: var(--space-3);
   max-width: var(--container-width); margin-inline: auto;
-  padding: var(--space-4) var(--gutter-mobile);
+  padding: var(--space-3) var(--gutter-mobile);
 }
-.cookie-banner__text { margin: 0; font-size: 1rem; font-weight: 500; }
+.cookie-banner__text { margin: 0; font-size: 0.875rem; line-height: 1.4; font-weight: 500; }
 .cookie-banner__text a { color: #fff; text-decoration: underline; }
 .cookie-banner__text a:hover, .cookie-banner__text a:focus-visible { color: var(--color-ink); }
-.cookie-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); flex-shrink: 0; }
+.cookie-banner__actions { display: flex; gap: var(--space-3); flex-shrink: 0; }
 .cookie-banner__btn {
-  padding: var(--space-3) var(--space-5); border: none; border-radius: 999px;
+  flex: 1; padding: var(--space-3) var(--space-4); border: none; border-radius: 999px;
   background: #fff; color: var(--color-ink); font: inherit; font-weight: 700; cursor: pointer;
 }
 .cookie-banner__btn:hover { background: var(--color-ink); color: #fff; }
@@ -571,6 +530,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .cookie-banner__btn:focus-visible { outline-color: #fff; }
 @media (min-width: 48rem) {
   .cookie-banner__inner { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-5); padding-inline: var(--gutter-desktop); }
+  .cookie-banner__text { font-size: 1rem; line-height: 1.5; }
+  .cookie-banner__btn { flex: none; padding-inline: var(--space-5); }
 }
 
 /* Floating cookie button, bottom left (the 321med widget floats bottom

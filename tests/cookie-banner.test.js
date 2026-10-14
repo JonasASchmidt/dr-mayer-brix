@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CONSENT_KEY, getConsent, setConsent } from '../assets/js/consent.js';
+import { CONSENT_KEY, getConsent, setConsent, safeStorage } from '../assets/js/consent.js';
 import { renderCookieBannerHTML } from '../assets/js/cookie-banner.js';
 import { readFileSync } from 'node:fs';
 
@@ -49,15 +49,55 @@ test('the widget loader is unconditional: the Online-Rezeption is not behind the
   assert.doesNotMatch(loader, /localStorage|CONSENT/);
 });
 
+test('safeStorage falls back to memory when window.localStorage throws', () => {
+  const win = { get localStorage() { throw new Error('SecurityError'); } };
+  const storage = safeStorage(win);
+  assert.equal(getConsent(storage), null);
+  setConsent(storage, 'all');
+  assert.equal(getConsent(storage), 'all');
+});
+
+test('safeStorage returns the real storage when it works', () => {
+  const real = fakeStorage();
+  assert.equal(safeStorage({ localStorage: real }), real);
+});
+
+const PAGES = ['index.html', 'impressum.html', 'datenschutz.html'];
+const read = (file) => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
+
 test('no page loads Google Maps before consent; 321med only via the loader', () => {
-  const loader = readFileSync(new URL('../assets/js/rezeption-loader.js', import.meta.url), 'utf8');
+  const loader = read('assets/js/rezeption-loader.js');
   const vendorSrcs = [...loader.matchAll(/'(https:\/\/321med[^']+)'/g)].map((m) => m[1]);
   assert.equal(vendorSrcs.length, 2);
-  for (const page of ['index.html', 'impressum.html', 'datenschutz.html']) {
-    const html = readFileSync(new URL(`../${page}`, import.meta.url), 'utf8');
+  for (const page of PAGES) {
+    const html = read(page);
     assert.doesNotMatch(html, /<iframe/i, `${page} has a static iframe`);
     assert.doesNotMatch(html, /<script[^>]+src="https?:\/\//i, `${page} has a static external script`);
     for (const src of vendorSrcs) assert.ok(!html.includes(src), `${page} still references ${src}`);
     assert.ok(html.includes('assets/js/rezeption-loader.js'), `${page} is missing the loader`);
   }
+});
+
+test('the site code starts before the synchronous vendor scripts and never waits for them', () => {
+  for (const page of PAGES) {
+    const html = read(page);
+    const start = html.indexOf('assets/js/start.js');
+    const loader = html.indexOf('assets/js/rezeption-loader.js');
+    assert.ok(start > -1 && loader > start, `${page}: start.js must come before rezeption-loader.js`);
+    // a deferred module tag would wait for the vendor scripts to finish
+    assert.doesNotMatch(html, /<script[^>]+type="module"/i, `${page} has a deferred module script`);
+  }
+  assert.match(read('assets/js/start.js'), /import\(/);
+});
+
+test('the announcement banner is in the page flow, outside the sticky header', () => {
+  for (const page of PAGES) {
+    const html = read(page);
+    assert.ok(html.indexOf('</header>') < html.indexOf('id="site-banner"'), `${page}: banner is inside the header`);
+  }
+  assert.doesNotMatch(read('assets/css/styles.css'), /\.banner \{[^}]*position:\s*absolute/);
+});
+
+test('images are not lazy-loaded (team photo must show without a tap)', () => {
+  assert.doesNotMatch(read('index.html'), /loading="lazy"/);
 });

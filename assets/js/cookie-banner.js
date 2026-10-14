@@ -6,14 +6,13 @@
 // bar only decides about Google Maps ("Alle zulassen" vs. "Nur Notwendige").
 // The floating cookie button (bottom left) reopens the bar at any time, e.g.
 // to withdraw the Maps consent.
-import { getConsent, setConsent, activateEmbeds } from './consent.js';
+import { getConsent, setConsent, activateEmbeds, safeStorage } from './consent.js';
 
 export function renderCookieBannerHTML() {
   return '<div class="cookie-banner__inner">'
-    + '<p class="cookie-banner__text">Diese Website setzt selbst keine Cookies. Die Online-Rezeption (321med), '
-    + 'über die Sie uns erreichen, wird immer geladen. Optional sind Karten und der 360°-Rundgang '
-    + '(Google Maps). Beim Laden werden Daten an diese Anbieter übertragen und möglicherweise Cookies gesetzt. '
-    + '<a href="datenschutz.html#cookies">Mehr in der Datenschutzerklärung</a></p>'
+    + '<p class="cookie-banner__text">Karten und der 360°-Rundgang laden von Google Maps und übertragen dabei Daten. '
+    + 'Die Online-Rezeption (321med) lädt immer. '
+    + '<a href="datenschutz.html#cookies">Datenschutz</a></p>'
     + '<div class="cookie-banner__actions">'
     + '<button type="button" class="cookie-banner__btn" data-consent="essential">Nur Notwendige</button>'
     + '<button type="button" class="cookie-banner__btn" data-consent="all">Alle zulassen</button>'
@@ -28,7 +27,7 @@ const COOKIE_ICON = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none"
 
 // Shows the bar until a choice exists; "Alle zulassen" activates the Maps
 // embeds. Taking Maps back needs a reload (loaded iframes can't be unloaded).
-export function initCookieBanner(doc = document, storage = window.localStorage) {
+export function initCookieBanner(doc = document, storage = safeStorage(doc.defaultView || window)) {
   const state = { consent: getConsent(storage) };
   let bar = null;
 
