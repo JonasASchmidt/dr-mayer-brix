@@ -1,55 +1,74 @@
-import { initNav, initScrollSpy } from './nav.js';
-import { initVideoFacades } from './video-facade.js';
-import { initAccordions, initSchwerpunkteCards } from './accordion.js';
-import { loadBanner } from './banner.js';
-import { initEmailLinks } from './email-obfuscate.js';
-import { initOnlineRezeptionButtons } from './online-rezeption.js';
-import { initCookieBanner } from './cookie-banner.js';
+// Each feature lives in its own module and is loaded on its own, so a module
+// that a content blocker (ad / popup / cookie-notice blockers match on file
+// names), a flaky connection or a bug takes out only that one feature — the
+// menu, the accordions, the video and the Online-Rezeption links keep
+// working. With static imports a single blocked file would have stopped
+// the whole page script.
 
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.getElementById('nav-toggle');
-  const nav = document.getElementById('site-nav');
-  if (toggle && nav) initNav(toggle, nav);
+let booted = false;
 
-  // Scroll-spy only applies on the homepage, which is the only page with
-  // in-page anchor sections; Impressum/Datenschutz link back to
-  // index.html#... instead and have no local sections to observe.
-  if (nav) {
-    const sections = [...document.querySelectorAll('main > section[id]')];
-    if (sections.length) initScrollSpy(nav, sections, document.querySelector('.site-header'));
+// Status for the ?debug overlay (debug.js): what ran, what failed.
+const status = { booted: false, failed: [] };
+window.__pmb = status;
+
+async function feature(name, path, run) {
+  try {
+    const mod = await import(path);
+    run(mod);
+  } catch (err) {
+    status.failed.push(`${name} (${path}): ${err && err.message}`);
+    console.error(`[pmb] ${name} failed`, err);
   }
+}
 
-  initVideoFacades(document);
+export function boot(doc = document) {
+  if (booted) return;
+  booted = true;
+  status.booted = true;
 
-  initAccordions(document);
-  initSchwerpunkteCards(document);
+  feature('nav', './nav.js', ({ initNav, initScrollSpy }) => {
+    const toggle = doc.getElementById('nav-toggle');
+    const nav = doc.getElementById('site-nav');
+    if (toggle && nav) initNav(toggle, nav);
 
-  initEmailLinks(document);
+    // Scroll-spy only applies on the homepage, which is the only page with
+    // in-page anchor sections; Impressum/Datenschutz link back to
+    // index.html#... instead and have no local sections to observe.
+    if (nav) {
+      const sections = [...doc.querySelectorAll('main > section[id]')];
+      if (sections.length) initScrollSpy(nav, sections, doc.querySelector('.site-header'));
+    }
+  });
 
-  initCookieBanner(document);
+  feature('video', './video-facade.js', ({ initVideoFacades }) => initVideoFacades(doc));
+  feature('accordions', './accordion.js', ({ initAccordions, initSchwerpunkteCards }) => {
+    initAccordions(doc);
+    initSchwerpunkteCards(doc);
+  });
+  feature('email links', './email-obfuscate.js', ({ initEmailLinks }) => initEmailLinks(doc));
+  feature('online-rezeption', './online-rezeption.js', ({ initOnlineRezeptionButtons }) => initOnlineRezeptionButtons(doc));
+  feature('externe dienste', './dienste-leiste.js', ({ initCookieBanner }) => initCookieBanner(doc));
 
-  initOnlineRezeptionButtons(document);
+  feature('mitteilung', './mitteilung.js', async ({ loadBanner }) => {
+    const slot = doc.getElementById('site-mitteilung');
+    if (!slot) return;
+    await loadBanner(slot);
+    const dismissBtn = slot.querySelector('.mitteilung__dismiss');
+    if (dismissBtn) {
+      // Hides the message for this page view only — nothing is persisted,
+      // so a reload always shows it again (per direct request).
+      dismissBtn.addEventListener('click', () => { slot.hidden = true; });
+    }
+    // The message can contain an email address (obfuscated into .js-email
+    // markup by renderBannerHTML); it arrives after the page's own pass.
+    // (A [label](online-rezeption) link needs nothing: the Rezeption click
+    // handler is delegated on the document.)
+    const { initEmailLinks } = await import('./email-obfuscate.js');
+    initEmailLinks(slot);
+  });
+}
 
-  const bannerSlot = document.getElementById('site-banner');
-  if (bannerSlot) {
-    loadBanner(bannerSlot).then(() => {
-      const dismissBtn = bannerSlot.querySelector('.banner__dismiss');
-      if (dismissBtn) {
-        // Hides the banner for this page view only — nothing is persisted,
-        // so a reload always shows it again (per direct request).
-        dismissBtn.addEventListener('click', () => {
-          bannerSlot.hidden = true;
-        });
-      }
-      // The banner's own message can contain an email address (obfuscated
-      // into .js-email markup by renderBannerHTML); it's injected after
-      // the page's initial initEmailLinks() pass, so resolve it here too.
-      initEmailLinks(bannerSlot);
-      // Same reasoning for a [label](online-rezeption) link in the banner
-      // text: initOnlineRezeptionButtons(document) above already ran
-      // before this async content existed, so a .js-open-321med button
-      // injected here would otherwise never get its click listener.
-      initOnlineRezeptionButtons(bannerSlot);
-    });
-  }
-});
+// main.js is a module script (deferred): by the time it runs the page is
+// parsed, so readyState is already past 'loading' — boot right away.
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => boot());
+else boot();

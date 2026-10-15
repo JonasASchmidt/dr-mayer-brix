@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderBannerHTML, escapeHtml } from '../assets/js/banner.js';
+import { renderBannerHTML, escapeHtml } from '../assets/js/mitteilung.js';
 
 // Every <a>/<button> the renderer emits must be closed, and never nested
 // inside another one — the old renderer turned [x@y.de](mailto:x@y.de)
@@ -120,11 +120,11 @@ test('[label](online-rezeption) renders the Online-Rezeption button', () => {
 
 test('links inside **bold** stay bold and well-formed', () => {
   const html = renderBannerHTML('**Mail an mbpraxis@duck.com oder 09131/208899**');
-  assert.match(html, /^<div class="banner__inner"><div class="banner__text"><p><strong>.*<\/strong><\/p>/);
+  assert.match(html, /^<div class="mitteilung__inner"><div class="mitteilung__text"><p><strong>.*<\/strong><\/p>/);
   assertWellFormedLinks(html);
 });
 
-test('the live banner.txt message renders both contact links cleanly', () => {
+test('the live mitteilung.txt message renders both contact links cleanly', () => {
   const html = renderBannerHTML(
     'Liebe Patientinnen und Patienten, aktuell erreichen Sie uns telefonisch 09131/208899 oder per Mail unter mbpraxis@duck.com, wir klären gerade eine technische Störung der Online-Rezeption.'
   );

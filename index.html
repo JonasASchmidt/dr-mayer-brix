@@ -103,6 +103,7 @@
 }
   </script>
   <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/debug.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -129,11 +130,11 @@
     </div>
     <!-- Positioned against .site-header itself (its nearest sticky/
          positioned ancestor), same mechanism as .site-nav above — a
-         floating card per Figma, not an in-flow bar. See the .banner CSS
+         floating card per Figma, not an in-flow bar. See the .mitteilung CSS
          comment for the accepted tradeoff (can cover page content below
          it if the message is long, on pages with no tall hero). -->
-    <div id="site-banner" class="banner" hidden></div>
   </header>
+    <div id="site-mitteilung" class="mitteilung" hidden></div>
   <main>
     <section id="willkommen" class="hero">
       <div class="hero__media" data-video-facade="109794949" data-video-title="Praxisvideo Dr. Joachim Mayer-Brix">
@@ -293,7 +294,7 @@
         <h2>Praxisteam</h2>
         <p class="uppercase-label">Wir heißen Sie herzlich willkommen und freuen uns auf Sie.</p>
         <figure class="team-photo">
-          <img src="assets/img/team-800.webp" srcset="assets/img/team-800.webp 800w, assets/img/team.webp 1600w" sizes="(min-width: 48rem) 60rem, 100vw" alt="Das Praxisteam der HNO-Praxis Dr. Mayer-Brix" width="800" height="533" loading="lazy">
+          <img src="assets/img/team-800.webp" srcset="assets/img/team-800.webp 800w, assets/img/team.webp 1600w" sizes="(min-width: 48rem) 60rem, 100vw" alt="Das Praxisteam der HNO-Praxis Dr. Mayer-Brix" width="800" height="533">
           <figcaption>V.l.n.r.: Frau Kube, Frau Modschiedler, Frau Laube, Dr. J. Mayer-Brix, Frau Mohr und Frau Aalai</figcaption>
         </figure>
       </div>
@@ -308,9 +309,10 @@
         </div>
         <div class="einblicke-tour">
           <div class="embed-frame" data-embed-src="https://www.google.com/maps/embed?pb=!4v1668604104241!6m8!1m7!1sCAoSLEFGMVFpcE9ab0FHbjFpeklpdFNIMnJiUkd5WUNobUlRekROSW90elRsY1pp!2m2!1d49.591735308831!2d11.025465644748!3f120!4f0!5f0.7820865974627469" data-embed-title="360° Rundgang durch die HNO-Praxis Dr. Mayer-Brix">
-            <div class="embed-consent">
+            <div class="embed-platzhalter">
               <p>Zum Anzeigen des 360°-Rundgangs wird Google Maps geladen. Beim Laden werden Daten (z.&nbsp;B. Ihre IP-Adresse) an Google übertragen. Mit dem Klick erlauben Sie das Laden von Google Maps.</p>
-              <button type="button" class="button button--primary js-embed-consent">Google Maps laden</button>
+              <button type="button" class="button button--primary js-embed-laden">Google Maps laden</button>
+              <a class="embed-platzhalter__link" href="https://www.google.com/maps/search/?api=1&amp;query=HNO-Praxis+Dr.+Mayer-Brix%2C+Allee+am+R%C3%B6thelheimpark+6%2C+91052+Erlangen" target="_blank" rel="noopener">Auf Google Maps ansehen</a>
             </div>
           </div>
           <p class="embed-frame__note">Buttons am rechten Rand: Rundgang 1 – Flur / Rundgang 2 – Arztzimmer und Hörtestraum</p>
@@ -327,7 +329,7 @@
           <h2>Unser Buch</h2>
           <p class="uppercase-label">Klassische Homöopathie in der HNO-Heilkunde</p>
           <div class="buch-layout">
-            <img src="assets/img/book-cover.webp" alt='Buchcover "Klassische Homöopathie in der HNO-Heilkunde"' width="245" height="344" loading="lazy">
+            <img src="assets/img/book-cover.webp" alt='Buchcover "Klassische Homöopathie in der HNO-Heilkunde"' width="245" height="344">
             <div>
               <p>Die Verbindung von Schulmedizin mit alternativen Heilverfahren ist eine optimale Kombination.</p>
               <p>In diesem Buch habe ich für jedes HNO-Krankheitsbild den aktuellen schulmedizinischen Wissensstand und die naturheilkundliche Behandlung mit vielen Abbildungen verständlich erläutert und durch Fallbeispiele illustriert.</p>
@@ -431,9 +433,10 @@
                replaces the old duplicate of the Einblicke section's 360°
                indoor Street View tour that was mistakenly reused here. -->
           <div class="embed-frame kontakt-map" data-embed-src="https://maps.google.com/maps?q=HNO-Praxis+Dr.+Mayer-Brix,+Allee+am+R%C3%B6thelheimpark+6,+91052+Erlangen&amp;z=13&amp;output=embed" data-embed-title="Standort der HNO-Praxis Dr. Mayer-Brix">
-            <div class="embed-consent">
+            <div class="embed-platzhalter">
               <p>Zum Anzeigen der Karte wird Google Maps geladen. Beim Laden werden Daten (z.&nbsp;B. Ihre IP-Adresse) an Google übertragen. Mit dem Klick erlauben Sie das Laden von Google Maps.</p>
-              <button type="button" class="button button--primary js-embed-consent">Google Maps laden</button>
+              <button type="button" class="button button--primary js-embed-laden">Google Maps laden</button>
+              <a class="embed-platzhalter__link" href="https://www.google.com/maps/search/?api=1&amp;query=HNO-Praxis+Dr.+Mayer-Brix%2C+Allee+am+R%C3%B6thelheimpark+6%2C+91052+Erlangen" target="_blank" rel="noopener">Auf Google Maps ansehen</a>
             </div>
           </div>
         </div>
