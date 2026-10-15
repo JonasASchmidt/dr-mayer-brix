@@ -69,12 +69,14 @@ channel and asks for its own consent). The choice lives in `localStorage`
 `localStorage.removeItem('external-services-consent')` in the browser console
 and reload. Vimeo only loads after clicking play.
 
-The site's own code (`assets/js/main.js`) is started by the classic script
-`assets/js/start.js`, which sits *before* the synchronous 321med vendor
-scripts (`rezeption-loader.js`): taps on the video, the Online-Rezeption
-links and the map must never wait for a third-party host. The announcement
+Every init step in `assets/js/main.js` runs on its own (one failing step
+can't take the others down), and storage access never throws. The announcement
 banner (`content/banner.txt`) is in the page flow under the header, not an
 overlay, so it can't cover the video's play button on phones.
+
+Diagnosis on a phone: open any page with `?debug` (e.g. `index.html?debug`);
+a box lists whether main.js started, failed steps, script errors, widget and
+storage status.
 
 Mobile tap check (Chromium emulation of phones, tablet and desktop, incl.
 blocked storage and a hanging/failing vendor script; WebKit is not covered):

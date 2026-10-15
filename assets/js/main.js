@@ -8,21 +8,25 @@ import { initCookieBanner } from './cookie-banner.js';
 
 let booted = false;
 
+// Status for the ?debug overlay (debug.js): which steps ran, which failed.
+const status = { booted: false, failed: [] };
+window.__pmb = status;
+
 // Every step runs on its own: if one throws (a blocked storage, a missing
 // element, ...) the others — video, Online-Rezeption links, nav — still work.
 function step(name, fn) {
   try {
     fn();
   } catch (err) {
+    status.failed.push(`${name}: ${err && err.message}`);
     console.error(`[pmb] ${name} failed`, err);
   }
 }
 
-// Called by start.js once main.js is loaded. The script tag sits at the end
-// of <body>, so the whole page is in the DOM by then.
 export function boot(doc = document) {
   if (booted) return;
   booted = true;
+  status.booted = true;
 
   step('nav', () => {
     const toggle = doc.getElementById('nav-toggle');
@@ -66,3 +70,8 @@ export function boot(doc = document) {
     }).catch((err) => console.error('[pmb] announcement banner failed', err));
   });
 }
+
+// main.js is a module script (deferred): by the time it runs the page is
+// parsed, so readyState is already past 'loading' — boot right away.
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => boot());
+else boot();

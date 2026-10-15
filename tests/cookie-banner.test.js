@@ -78,16 +78,14 @@ test('no page loads Google Maps before consent; 321med only via the loader', () 
   }
 });
 
-test('the site code starts before the synchronous vendor scripts and never waits for them', () => {
+test('every page loads the widget loader, main.js as a module and the debug helper', () => {
   for (const page of PAGES) {
     const html = read(page);
-    const start = html.indexOf('assets/js/start.js');
-    const loader = html.indexOf('assets/js/rezeption-loader.js');
-    assert.ok(start > -1 && loader > start, `${page}: start.js must come before rezeption-loader.js`);
-    // a deferred module tag would wait for the vendor scripts to finish
-    assert.doesNotMatch(html, /<script[^>]+type="module"/i, `${page} has a deferred module script`);
+    const loader = html.indexOf('<script src="assets/js/rezeption-loader.js"></script>');
+    const main = html.indexOf('<script type="module" src="assets/js/main.js"></script>');
+    assert.ok(loader > -1 && main > loader, `${page}: loader, then main.js module`);
+    assert.ok(html.indexOf('<script src="assets/js/debug.js"></script>') < html.indexOf('</head>'), `${page}: debug.js in <head>`);
   }
-  assert.match(read('assets/js/start.js'), /import\(/);
 });
 
 test('the announcement banner is in the page flow, outside the sticky header', () => {

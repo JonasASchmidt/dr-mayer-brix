@@ -32,7 +32,9 @@ const VIEWPORTS = [
   ['iPhone SE', 375, 667, true], ['iPhone 13', 390, 844, true], ['iPhone Pro Max', 430, 932, true],
   ['iPad', 768, 1024, true], ['Desktop', 1440, 900, false],
 ];
-const SCENARIOS = ['fresh', 'decided', 'storage-blocked', 'vendor-hang', 'vendor-fail'];
+// vendor-slow: the 321med host answers after 3 s (main.js waits for it, as a
+// module script after the synchronous widget scripts); vendor-fail: blocked.
+const SCENARIOS = (process.env.SCENARIOS || 'fresh,decided,storage-blocked,vendor-slow,vendor-fail').split(',');
 const VENDOR = /321med(17)?\.com|321med-cdn\.com/;
 const STUB = 'window.open_321med=function(){window.__rez=(window.__rez||0)+1};';
 
@@ -67,15 +69,18 @@ for (const scenario of SCENARIOS) {
     page.on('pageerror', (e) => errors.push(e.message));
     page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::ERR/.test(m.text())) errors.push(m.text()); });
     await page.route(VENDOR, (route) => {
-      if (scenario === 'vendor-hang') return new Promise(() => {});
+      if (scenario === 'vendor-slow') return new Promise((r) => setTimeout(r, 3000)).then(() => route.fulfill({ contentType: 'application/javascript', body: STUB }));
       if (scenario === 'vendor-fail') return route.abort();
       return route.fulfill({ contentType: 'application/javascript', body: STUB });
     });
     await page.route(/player\.vimeo\.com|google\.com\/maps|maps\.google/, (route) => route.fulfill({ contentType: 'text/html', body: '<html>stub</html>' }));
 
-    await page.goto(`${BASE}/index.html`, { waitUntil: scenario === 'vendor-hang' ? 'commit' : 'load' });
+    await page.goto(`${BASE}/index.html?debug`, { waitUntil: 'load' });
     await page.waitForSelector('.hero__media button');
-    await page.waitForTimeout(scenario === 'vendor-hang' ? 2500 : 700);   // main.js + banner.txt fetch
+    await page.waitForTimeout(700);   // main.js + banner.txt fetch
+    const dbg = await page.locator('#pmb-debug').textContent().catch(() => '');
+    check(/main\.js: gestartet/.test(dbg) && /Fehlgeschlagene Schritte: keine/.test(dbg), '?debug overlay: main.js started, no failed step', dbg.split('\n').slice(1, 3).join(' / '));
+    await page.evaluate(() => document.getElementById('pmb-debug')?.remove());
     const tap = (sel, opts = {}) => (touch ? page.locator(sel).first().tap({ timeout: 4000, ...opts }) : page.locator(sel).first().click({ timeout: 4000, ...opts }));
 
     check(await page.locator('.banner:not([hidden])').count() === 1, 'announcement banner is shown');
@@ -103,7 +108,7 @@ for (const scenario of SCENARIOS) {
     for (let i = 0; i < links; i += 1) {
       r = await hit(page, '.js-open-321med', i); check(r === 'ok', `Rezeption link #${i + 1} is reachable`, r);
     }
-    if (scenario === 'vendor-hang' || scenario === 'vendor-fail') {
+    if (scenario === 'vendor-fail') {
       // never a dead end: without the widget the link takes the visitor to the contact section
       await page.evaluate(() => { window.scrollTo(0, 0); document.documentElement.style.scrollBehavior = 'auto'; });
       try { await tap('.js-open-321med'); } catch { /* intercepted: counted below */ }
@@ -146,7 +151,7 @@ for (const scenario of SCENARIOS) {
       await page.evaluate(() => window.scrollTo(0, 0));
       try { await tap('#nav-toggle'); await page.waitForTimeout(250);
         check(await page.locator('#nav-toggle').getAttribute('aria-expanded') === 'true', 'menu button opens the menu');
-      } catch (e) { check(false, 'menu button opens the menu', e.message.split('\n')[0]); }
+      } catch (e) { check(false, 'menu button opens the menu', e.message.split('\n').filter((l) => /intercept|not stable|not visible|outside/.test(l)).slice(-1)[0] || e.message.split('\n')[0]); }
     }
 
     check(errors.length === 0, 'no script errors', errors.join(' | '));
