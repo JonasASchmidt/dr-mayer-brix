@@ -15,7 +15,9 @@ Then open http://localhost:4173/.
 ## Editing the announcement banner
 
 The whole "CMS" for the mint banner at the top of the site is one plain-text
-file: `content/banner.txt`.
+file: `content/mitteilung.txt` (formerly `banner.txt`: ad and cookie-notice
+blockers drop files by such names, so the page now uses neutral names for the
+message, the external-services bar and their scripts and CSS classes).
 
 - **Empty file → banner is off.** Nothing else to flip — there's no separate
   on/off setting to get wrong.
@@ -45,7 +47,7 @@ file: `content/banner.txt`.
 
 To change it (no coding needed):
 
-1. Go to the file on GitHub: `content/banner.txt` in this repo.
+1. Go to the file on GitHub: `content/mitteilung.txt` in this repo.
 2. Click the pencil (✎) icon to edit.
 3. Type the new message, or delete everything to turn the banner off.
 4. Scroll down and click **"Commit changes"** (committing straight to `main`
@@ -69,13 +71,16 @@ channel and asks for its own consent). The choice lives in `localStorage`
 `localStorage.removeItem('external-services-consent')` in the browser console
 and reload. Vimeo only loads after clicking play.
 
-Every init step in `assets/js/main.js` runs on its own (one failing step
+`assets/js/main.js` loads each feature as its own module (`import()`), so one
+file blocked by a content blocker disables only that feature, not the page.
+Every init step runs on its own (one failing step
 can't take the others down), and storage access never throws. The announcement
-banner (`content/banner.txt`) is in the page flow under the header, not an
+banner (`content/mitteilung.txt`) is in the page flow under the header, not an
 overlay, so it can't cover the video's play button on phones.
 
 Diagnosis on a phone: open any page with `?debug` (e.g. `index.html?debug`);
-a box lists whether main.js started, failed steps, script errors, widget and
+a box lists whether main.js started, failed features, which of the site's
+files the browser refuses to load (blockers), script errors, widget and
 storage status.
 
 Mobile tap check (Chromium emulation of phones, tablet and desktop, incl.

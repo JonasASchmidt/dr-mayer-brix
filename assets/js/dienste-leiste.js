@@ -1,4 +1,4 @@
-// assets/js/cookie-banner.js
+// assets/js/dienste-leiste.js
 //
 // Sticky bottom consent bar (see consent.js). The Online-Rezeption is the
 // practice's main way to be reached and asks for its own data-processing
@@ -6,16 +6,16 @@
 // bar only decides about Google Maps ("Alle zulassen" vs. "Nur Notwendige").
 // The floating cookie button (bottom left) reopens the bar at any time, e.g.
 // to withdraw the Maps consent.
-import { getConsent, setConsent, activateEmbeds, safeStorage } from './consent.js';
+import { getConsent, setConsent, activateEmbeds, safeStorage } from './dienste.js';
 
 export function renderCookieBannerHTML() {
-  return '<div class="cookie-banner__inner">'
-    + '<p class="cookie-banner__text">Karten und der 360°-Rundgang laden von Google Maps und übertragen dabei Daten. '
+  return '<div class="dienste-leiste__inner">'
+    + '<p class="dienste-leiste__text">Karten und der 360°-Rundgang laden von Google Maps und übertragen dabei Daten. '
     + 'Die Online-Rezeption (321med) lädt immer. '
     + '<a href="datenschutz.html#cookies">Datenschutz</a></p>'
-    + '<div class="cookie-banner__actions">'
-    + '<button type="button" class="cookie-banner__btn" data-consent="essential">Nur Notwendige</button>'
-    + '<button type="button" class="cookie-banner__btn" data-consent="all">Alle zulassen</button>'
+    + '<div class="dienste-leiste__actions">'
+    + '<button type="button" class="dienste-leiste__btn" data-auswahl="essential">Nur Notwendige</button>'
+    + '<button type="button" class="dienste-leiste__btn" data-auswahl="all">Alle zulassen</button>'
     + '</div></div>';
 }
 
@@ -33,7 +33,7 @@ export function initCookieBanner(doc = document, storage = safeStorage(doc.defau
 
   const fab = doc.createElement('button');
   fab.type = 'button';
-  fab.className = 'cookie-fab';
+  fab.className = 'dienste-knopf';
   fab.setAttribute('aria-label', 'Cookie-Einstellungen');
   fab.title = 'Cookie-Einstellungen';
   fab.innerHTML = COOKIE_ICON;
@@ -53,19 +53,19 @@ export function initCookieBanner(doc = document, storage = safeStorage(doc.defau
   function show() {
     if (bar) return;
     bar = doc.createElement('div');
-    bar.className = 'cookie-banner';
+    bar.className = 'dienste-leiste';
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', 'Einwilligung zu externen Diensten');
     bar.innerHTML = renderCookieBannerHTML();
-    bar.querySelectorAll('[data-consent]').forEach((btn) => {
-      btn.addEventListener('click', () => choose(btn.dataset.consent));
+    bar.querySelectorAll('[data-auswahl]').forEach((btn) => {
+      btn.addEventListener('click', () => choose(btn.dataset.auswahl));
     });
     doc.body.appendChild(bar);
     fab.hidden = true;
   }
 
   // The "Google Maps laden" buttons inside the embed placeholders.
-  doc.querySelectorAll('.js-embed-consent').forEach((btn) => btn.addEventListener('click', () => choose('all')));
+  doc.querySelectorAll('.js-embed-laden').forEach((btn) => btn.addEventListener('click', () => choose('all')));
   fab.addEventListener('click', show);
 
   if (state.consent === null) show();

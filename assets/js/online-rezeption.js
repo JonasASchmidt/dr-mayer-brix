@@ -15,11 +15,11 @@ export function openOnlineRezeption() {
   return false;
 }
 
-const WAIT_MS = 8000;
+const WAIT_MS = 4000;
 const POLL_MS = 150;
 
 // Opens the widget; if the vendor script is still loading (slow connection),
-// keeps trying for a few seconds, and if it never shows up, takes the
+// keeps trying for a few seconds (ad / privacy blockers often drop the vendor script altogether), and if it never shows up, takes the
 // visitor to the contact section (phone) instead of doing nothing — the
 // Online-Rezeption link is never a dead end.
 export function requestOnlineRezeption({

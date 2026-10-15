@@ -8,7 +8,7 @@ export function escapeHtml(str) {
     .replaceAll('"', '&quot;');
 }
 
-// The banner's whole "CMS" is one plain-text file (content/banner.txt):
+// The banner's whole "CMS" is one plain-text file (content/mitteilung.txt):
 // empty (or whitespace-only) = banner off, anything else = banner on with
 // that text. No JSON, no enabled flag to flip — editing the file's content
 // IS the on/off switch, so a non-technical editor can't get the syntax
@@ -23,7 +23,7 @@ export function escapeHtml(str) {
 const BOLD_RE = /\*\*(.+?)\*\*/g;
 
 // Links. Three ways to get one, all rendered white (hover: ink) by
-// .banner__text a in styles.css:
+// .mitteilung__text a in styles.css:
 //
 // 1. Just write an email address or a phone number — both are detected
 //    and linked automatically:
@@ -139,7 +139,7 @@ export function renderBannerHTML(text) {
   // getRangeParagraphSpacing) applies at every line break in the source
   // text node, including the single \n between this banner's two lines,
   // not only at blank-line gaps. Rendering those as one <p> with an
-  // internal <br> (the previous approach) meant .banner__text's flex gap
+  // internal <br> (the previous approach) meant .mitteilung__text's flex gap
   // never applied there at all — a <br> doesn't create a second flex
   // item for `gap` to act between. One <p> per line makes every line
   // break a real paragraph boundary, so the gap actually applies
@@ -152,23 +152,23 @@ export function renderBannerHTML(text) {
     .map((p) => `<p>${renderLine(p)}</p>`)
     .join('');
   // No .container here: the banner is now a floating card positioned and
-  // sized by .banner itself (per Figma), not a full-width bar that needs
+  // sized by .mitteilung itself (per Figma), not a full-width bar that needs
   // an inner content-width-capped wrapper.
   // Figma's dismiss control is the same lucide "x" icon as the nav's own
   // close button (identical 24×24 geometry, verified against close.svg's
   // path), just recolored white for the teal background instead of grey —
   // a real <img>, not a "×" text glyph standing in for it.
-  return `<div class="banner__inner"><div class="banner__text">${paragraphs}</div><button type="button" class="banner__dismiss" aria-label="Hinweis schließen"><img src="assets/img/icons/close-white.svg" width="24" height="24" alt=""></button></div>`;
+  return `<div class="mitteilung__inner"><div class="mitteilung__text">${paragraphs}</div><button type="button" class="mitteilung__dismiss" aria-label="Hinweis schließen"><img src="assets/img/icons/close-white.svg" width="24" height="24" alt=""></button></div>`;
 }
 
 // Dismissing the banner only hides it for the current page view — nothing
 // is persisted (no sessionStorage/localStorage/cookie). A reload or a fresh
-// visit always shows it again as long as content/banner.txt has content;
+// visit always shows it again as long as content/mitteilung.txt has content;
 // there is deliberately no "don't show this again" memory.
 export async function loadBanner(slotEl) {
   try {
-    const res = await fetch('content/banner.txt', { cache: 'no-cache' });
-    if (!res.ok) throw new Error(`banner.txt ${res.status}`);
+    const res = await fetch('content/mitteilung.txt', { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`mitteilung.txt ${res.status}`);
     const text = await res.text();
     const html = renderBannerHTML(text);
     if (html) {

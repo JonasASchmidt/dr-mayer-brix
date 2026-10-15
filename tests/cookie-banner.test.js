@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CONSENT_KEY, getConsent, setConsent, safeStorage } from '../assets/js/consent.js';
-import { renderCookieBannerHTML } from '../assets/js/cookie-banner.js';
+import { CONSENT_KEY, getConsent, setConsent, safeStorage } from '../assets/js/dienste.js';
+import { renderCookieBannerHTML } from '../assets/js/dienste-leiste.js';
 import { readFileSync } from 'node:fs';
 
 function fakeStorage(initial = {}) {
@@ -39,8 +39,8 @@ test('blocked storage never throws and counts as undecided', () => {
 test('banner offers Nur Notwendige and Alle zulassen and links to the cookie section', () => {
   const html = renderCookieBannerHTML();
   assert.equal(html.match(/<button/g).length, 2);
-  assert.match(html, /data-consent="essential">Nur Notwendige</);
-  assert.match(html, /data-consent="all">Alle zulassen</);
+  assert.match(html, /data-auswahl="essential">Nur Notwendige</);
+  assert.match(html, /data-auswahl="all">Alle zulassen</);
   assert.match(html, /href="datenschutz\.html#cookies"/);
 });
 
@@ -91,9 +91,9 @@ test('every page loads the widget loader, main.js as a module and the debug help
 test('the announcement banner is in the page flow, outside the sticky header', () => {
   for (const page of PAGES) {
     const html = read(page);
-    assert.ok(html.indexOf('</header>') < html.indexOf('id="site-banner"'), `${page}: banner is inside the header`);
+    assert.ok(html.indexOf('</header>') < html.indexOf('id="site-mitteilung"'), `${page}: banner is inside the header`);
   }
-  assert.doesNotMatch(read('assets/css/styles.css'), /\.banner \{[^}]*position:\s*absolute/);
+  assert.doesNotMatch(read('assets/css/styles.css'), /\.mitteilung \{[^}]*position:\s*absolute/);
 });
 
 test('images are not lazy-loaded (team photo must show without a tap)', () => {

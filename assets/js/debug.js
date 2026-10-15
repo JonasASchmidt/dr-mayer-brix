@@ -19,7 +19,7 @@
   }
   function render() {
     var s = window.__pmb;
-    var banner = document.getElementById('site-banner');
+    var banner = document.getElementById('site-mitteilung');
     var lines = [
       'Browser: ' + navigator.userAgent,
       'main.js: ' + (s ? (s.booted ? 'gestartet' : 'geladen, nicht gestartet') : 'NICHT GELADEN'),
@@ -27,6 +27,7 @@
       '321med-Widget: ' + (typeof window.open_321med === 'function' ? 'da' : 'nicht da'),
       'Speicher: ' + storageOk(),
       'Mitteilung: ' + (banner ? (banner.hidden ? 'versteckt' : 'sichtbar') : 'fehlt'),
+      'Blockiert/nicht ladbar: ' + (blocked.length ? blocked.join(', ') : 'nichts'),
       'Fehler: ' + (errors.length ? errors.join(' | ') : 'keine'),
     ];
     var box = document.getElementById('pmb-debug') || document.createElement('pre');
@@ -37,5 +38,17 @@
     box.textContent = lines.join('\n');
     if (!box.parentNode) document.body.appendChild(box);
   }
-  window.addEventListener('load', function () { render(); setTimeout(render, 3000); });
+  // A blocker that matches on file names makes the fetch fail outright.
+  var blocked = [];
+  var probes = ['main.js', 'nav.js', 'video-facade.js', 'accordion.js', 'email-obfuscate.js', 'online-rezeption.js', 'dienste-leiste.js', 'dienste.js', 'mitteilung.js'];
+  function probe() {
+    var root = (document.querySelector('script[src$="debug.js"]') || {}).src || '';
+    root = root.replace(/debug\.js.*$/, '');
+    var pending = probes.map(function (f) {
+      return fetch(root + f, { cache: 'no-store' }).then(function (r) { if (!r.ok) blocked.push(f + ' (' + r.status + ')'); }, function () { blocked.push(f); });
+    });
+    pending.push(fetch(root.replace('assets/js/', 'content/mitteilung.txt'), { cache: 'no-store' }).then(function (r) { if (!r.ok) blocked.push('mitteilung.txt (' + r.status + ')'); }, function () { blocked.push('mitteilung.txt'); }));
+    return Promise.all(pending);
+  }
+  window.addEventListener('load', function () { render(); probe().then(render); setTimeout(render, 3000); });
 })();

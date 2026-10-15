@@ -53,9 +53,9 @@ test('requestOnlineRezeption falls back to the contact section when the widget n
   const timers = fakeTimers();
   let fallbacks = 0;
   requestOnlineRezeption({ open: () => false, ...timers, fallback: () => { fallbacks += 1; } });
-  timers.advance(5000);
+  timers.advance(3000);
   assert.equal(fallbacks, 0);
-  timers.advance(4000);
+  timers.advance(2000);
   assert.equal(fallbacks, 1);
   assert.equal(timers.running, false);
 });
