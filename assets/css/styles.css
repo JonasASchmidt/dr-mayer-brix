@@ -665,6 +665,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    center: (line-height − chevron height) / 2 = (30px − 24px) / 2 = 3px
    mobile, (36px − 24px) / 2 = 6px at the 24px desktop trigger size below. */
 .accordion__chevron { flex-shrink: 0; margin-top: 0.1875rem; }
+/* On very narrow phones a long word ("Naturheilkundliche") would otherwise
+   keep the label from shrinking and push the chevron out of the card:
+   let the label shrink and hyphenate (German, <html lang="de">). */
+.accordion__trigger > span { min-width: 0; -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
 @media (min-width: 64rem) {
   .accordion__chevron { margin-top: 0.375rem; }
 }
@@ -817,8 +821,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
    the global ".section h2" margin-bottom would double up with this
    card's own gap. */
 .buch-card > h2 { margin-bottom: 0; }
-.buch-layout { display: grid; gap: var(--space-6); align-items: start; width: 100%; }
-.buch-layout img { max-width: 15.3125rem; margin-inline: auto; }
+.buch-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-items: start; width: 100%; }
+/* At most Figma's 245px, but shrinks with the column on narrow phones —
+   always proportionally (height: auto keeps the cover's aspect ratio). */
+.buch-layout img { width: 100%; max-width: 15.3125rem; height: auto; margin-inline: auto; }
 /* Figma: the 4 body paragraphs, the Leseprobe link, and the price line are
    all explicitly 14px (Body text SM) — no larger/bolder emphasis on the
    price specifically, each 8px apart (not the section-wide 16px default). */
@@ -830,7 +836,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--color-brand); o
 .price { font-size: 0.875rem; font-weight: 600; }
 
 @media (min-width: 48rem) {
-  .buch-layout { grid-template-columns: 15.3125rem 1fr; }
+  .buch-layout { grid-template-columns: minmax(0, 15.3125rem) minmax(0, 1fr); }
   .buch-layout img { margin-inline: 0; }
 }
 

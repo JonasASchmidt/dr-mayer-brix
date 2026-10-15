@@ -158,6 +158,40 @@ for (const scenario of SCENARIOS) {
     await ctx.close();
   }
 }
+// Layout sweep, every 10px from 300 to 1440: no horizontal page overflow,
+// every image keeps its proportions, nothing sticks out of its card.
+console.log('layout · 300–1440px');
+{
+  const page = await browser.newPage();
+  await page.route(/321med|vimeo|google/, (route) => route.abort());
+  const problems = [];
+  for (let w = 300; w <= 1440; w += 10) {
+    await page.setViewportSize({ width: w, height: 900 });
+    await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+    await page.waitForTimeout(150);
+    const found = await page.evaluate(() => {
+      const out = [];
+      if (document.documentElement.scrollWidth > innerWidth) out.push(`page scrolls sideways (${document.documentElement.scrollWidth}px)`);
+      for (const img of document.querySelectorAll('main img')) {
+        if (!img.naturalWidth || getComputedStyle(img).objectFit === 'cover') continue;
+        const r = img.getBoundingClientRect();
+        if (r.width && Math.abs(r.height / r.width - img.naturalHeight / img.naturalWidth) > 0.02) out.push(`${img.getAttribute('src')} distorted`);
+      }
+      for (const card of document.querySelectorAll('.buch-card, .schwerpunkte__card, .accordion, .leistungen-group')) {
+        const cb = card.getBoundingClientRect();
+        for (const child of card.querySelectorAll('*')) {
+          const r = child.getBoundingClientRect();
+          if (r.width && r.right > cb.right + 0.5) { out.push(`${child.tagName.toLowerCase()} sticks out of .${card.classList[0]} by ${Math.round(r.right - cb.right)}px`); break; }
+        }
+      }
+      return out;
+    });
+    for (const f of found) problems.push(`${w}px: ${f}`);
+  }
+  check(problems.length === 0, 'no overflow, no distorted images at any width', problems.slice(0, 8).join(' | '));
+  await page.close();
+}
+
 await browser.close();
 server.close();
 console.log(failures ? `\n${failures} check(s) FAILED` : '\nall checks passed');
